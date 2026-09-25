@@ -1,5 +1,7 @@
 # G0 verification record
 
+For the newer live feeding implementation and its pending checkpoint, see `feeding-verification.md`. The G0-specific results below are retained as the first-slice record.
+
 ## Status
 
 G0 native probe is implemented and accepted for continuation after the learner reported that it appears to work. This is general hands-on feedback, not certification of each application or environment. **This is not a finished aquarium and no fish feeding exists yet.** No public release has been made.

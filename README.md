@@ -1,28 +1,30 @@
-# Desktop Aquarium — G0 integration probe
+# Desktop Aquarium - feeding prototype
 
-**Not the finished aquarium.** This first runnable slice draws three labelled temporary pixel markers (REAR / MIDDLE / FRONT) and a draggable feeder. It does not dispense food or simulate fish yet.
+Working project label, not final competition submission copy. The real Windows prototype now renders five original pixel fish and accepts held mouse shaking to release food. Fish approach and visibly consume food. G0 markers are available only via the explicit `--g0` test flag.
 
-## Run on Windows 11 x64
-
-From the repository root with the approved .NET 10 SDK:
+## Run
 
 ```powershell
-dotnet restore Aquarium.slnx
+dotnet restore Aquarium.slnx --locked-mode
 dotnet build Aquarium.slnx -c Release
 dotnet test tests/Aquarium.Core.Tests/Aquarium.Core.Tests.csproj -c Release
 dotnet run --project src/Aquarium.Windows/Aquarium.Windows.csproj -c Release -- --feed
 ```
 
-Drag the feeder body, release to put it down, and use its X to close only the tool. The notification-area icon offers Open feeder, Hide, Show again and Exit. Fullscreen work is intended to suppress the probe automatically. No application startup registration or system cursor scheme is changed. All three markers are placeholders, not fish artwork.
+Or double-click `scripts/Start-Aquarium.cmd`. Requires the development .NET 10 SDK for now; self-contained distribution is a later slice. The target is Windows 11 x64 on the primary display; current native test evidence is specifically an RDP session, not general compatibility certification.
 
-The habitat targets the primary display. Move two normal opaque windows across the labelled markers to inspect clipping; click/scroll through them to check ordinary input. The FRONT marker stays over ordinary windows; MIDDLE is masked by the foremost work window; REAR is masked by all work windows. Maximize is distinct from fullscreen. Transparency/rounded boundaries are an approximation.
+Pick up the feeder body, shake left/right while holding, and release to put it down. Ordinary cursor movement never dispenses food. X closes only the feeder. The tray provides Open feeder / Hide / Show again / Exit. Fullscreen protection and manual Hide are distinct. No registration at login, background service, account, model download or external runtime API is added.
 
-## Optional local diagnostics
+## App-owned launcher
 
-```powershell
-dotnet run --project src/Aquarium.Windows/Aquarium.Windows.csproj -c Release -- --feed --diagnostics artifacts/g0/state.json
-```
+On a new local setup, double-click `scripts/Setup-FeederShortcut.cmd`, or run `scripts/Create-FeederShortcut.ps1 -ExePath <absolute-path-to-Aquarium.Windows.exe>`. The installer creates only `Feed Fish.lnk`, refuses unrelated shortcut collisions and does not change security policy or login startup settings.
 
-The opt-in report is overwritten, not appended. It records only the probe's own window handles/state, counts, display geometry and flags; it contains no foreign window titles, document text or keystrokes. It is not telemetry and is excluded from Git. `--probe-seconds 10` closes a controlled test run automatically.
+The current development machine's Desktop grant is now active and its real `Feed Fish.lnk` has been installed. Two launches through that actual Desktop shortcut reused the same resident and visible resting feeder. The link targets the current Release build folder; this is development installation evidence, not a self-contained release. See `docs/feeding-verification.md` for the receipt and remaining coverage.
 
-See `docs/verification.md` for actual results versus pending manual checks. Canonical plans are under `devpost/`; generated HTML and the personal learner profile are local-only. No public release or broad compatibility claim exists yet.
+## Test evidence
+
+`docs/feeding-verification.md` separates tests executed from unrun work. The G0 fixture runner uses `--g0`; the feeding fixture runner uses the actual world and targets only its own native windows and the feeder. Both require an idle interactive test desktop. Native fixture success does not replace user feedback.
+
+Optional local diagnostic state can be enabled using `--diagnostics artifacts/feeding/state.json`; it is an overwritten local report, never telemetry. `--probe-seconds 45` is a bounded test-run exit, not a feeding animation.
+
+Canonical plans are in `devpost/`; generated HTML and the learner profile are local-only. No public release, final license selection or broad performance claim has been made.

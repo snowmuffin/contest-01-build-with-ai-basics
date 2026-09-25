@@ -6,6 +6,7 @@ using System.Windows.Interop;
 using System.Windows.Media;
 using Aquarium.Core;
 using Aquarium.Windows.Platform;
+using Aquarium.Windows.Rendering;
 
 namespace Aquarium.Windows;
 
@@ -13,14 +14,17 @@ namespace Aquarium.Windows;
 internal sealed class DesktopOverlay : Window
 {
     private readonly ProbeCanvas canvas=new();
+    private readonly SpriteRenderer aquarium=new();
+    private readonly bool probe;
     public nint Handle {get;private set;}
-    public long FrameCount=>canvas.FrameCount;
+    public long FrameCount=>probe?canvas.FrameCount:aquarium.FrameCount;
     public Rect2[] MarkerRects=>canvas.Markers;
-    public DesktopOverlay()
+    public DesktopOverlay(bool probe=false)
     {
-        Title="Aquarium G0 passive habitat";WindowStyle=WindowStyle.None;ResizeMode=ResizeMode.NoResize;
+        this.probe=probe;
+        Title=probe?"Aquarium G0 passive habitat":"Aquarium habitat";WindowStyle=WindowStyle.None;ResizeMode=ResizeMode.NoResize;
         AllowsTransparency=true;Background=Brushes.Transparent;ShowInTaskbar=false;ShowActivated=false;
-        Topmost=true;Focusable=false;IsHitTestVisible=false;Content=canvas;
+        Topmost=true;Focusable=false;IsHitTestVisible=false;Content=probe?canvas:aquarium;
         SourceInitialized+=(_,_)=>
         {
             Handle=new WindowInteropHelper(this).Handle;
@@ -40,6 +44,7 @@ internal sealed class DesktopOverlay : Window
         if(Handle!=0)NativeMethods.SetWindowPos(Handle,0,(int)physical.X,(int)physical.Y,(int)physical.Width,(int)physical.Height,NativeMethods.NoActivate|NativeMethods.NoZOrder);
     }
     public void UpdateFrame(EnvironmentSnapshot snapshot,double phase) => canvas.Update(snapshot,phase);
+    public void UpdateWorld(EnvironmentSnapshot snapshot,SceneFrame frame) => aquarium.Update(snapshot,frame);
     private sealed class ProbeCanvas : FrameworkElement
     {
         private EnvironmentSnapshot? snapshot;

@@ -10,7 +10,7 @@ import json, os, struct, subprocess, threading, time, zlib, sys
 from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[1]
-OUT=ROOT/'artifacts/g0/native';OUT.mkdir(parents=True,exist_ok=True)
+OUT=ROOT/'artifacts/feeding/native';OUT.mkdir(parents=True,exist_ok=True)
 STATE=OUT/'state.json'
 u=c.WinDLL('user32',use_last_error=True);g=c.WinDLL('gdi32');k=c.WinDLL('kernel32');d=c.WinDLL('dwmapi')
 LRESULT=c.c_ssize_t
@@ -51,7 +51,7 @@ api(g,'SelectObject',w.HANDLE,[w.HDC,w.HANDLE]);api(g,'DeleteDC',w.BOOL,[w.HDC])
 api(g,'CreateDIBSection',w.HBITMAP,[w.HDC,c.POINTER(BI),w.UINT,c.POINTER(c.c_void_p),w.HANDLE,w.DWORD])
 api(g,'BitBlt',w.BOOL,[w.HDC,c.c_int,c.c_int,c.c_int,c.c_int,w.HDC,c.c_int,c.c_int,w.DWORD])
 
-report={'kind':'controlled native fixtures, not final user acceptance','checks':[],'input_scope':'test-owned windows and the G0 feeder only','screenshots':'own fixture client area only'}
+report={'kind':'actual feeding against test-owned native windows, not learner acceptance','checks':[],'input_scope':'test-owned windows and the G0 feeder only','screenshots':'own fixture client area only'}
 def check(name,ok,detail=None):
  report['checks'].append({'name':name,'passed':bool(ok),'detail':detail})
  if not ok: raise AssertionError(name+': '+str(detail))
@@ -108,10 +108,10 @@ def proc(h,msg,wp,lp):
 def fixture_thread():
  try:
   instance=k.GetModuleHandleW(None);brush=g.CreateSolidBrush(0x003d332b)
-  wc=WC(0,proc,0,0,instance,None,None,brush,None,'AquariumG0NativeFixture')
+  wc=WC(0,proc,0,0,instance,None,None,brush,None,'AquariumFeedingNativeFixture')
   if not u.RegisterClassW(c.byref(wc)):raise c.WinError(c.get_last_error())
   for i,b in enumerate(boxes):
-   h=u.CreateWindowExW(0,wc.name,'Aquarium G0 controlled fixture '+str(i),0x10cf0000,*b,None,None,instance,None)
+   h=u.CreateWindowExW(0,wc.name,'Aquarium feeding controlled fixture '+str(i),0x10cf0000,*b,None,None,instance,None)
    if not h:raise c.WinError(c.get_last_error())
    handles.append(h)
   ready.set();msg=w.MSG()
@@ -128,6 +128,13 @@ def send(flags,data=0):
  if u.SendInput(1,c.byref(packet),c.sizeof(INPUT))!=1:raise c.WinError(c.get_last_error())
 def click(p,allowed):safe_move(p,allowed);send(2);time.sleep(.10);send(4);time.sleep(.25)
 
+
+def activate_fixture():
+ candidates=[(display_w-150,180),(150,340),(display_w-160,display_h-250),(100,display_h//2),(display_w//2,display_h-200)]
+ p=next((p for p in candidates if target_root(p)==handles[0]),None)
+ if p is None:raise RuntimeError('No unobstructed test-owned point; native check blocked without touching other apps')
+ click(p,[handles[0]])
+
 initial_foreground=u.GetForegroundWindow()
 app=None;saved_cursor=w.POINT();u.GetCursorPos(c.byref(saved_cursor));pointer_moved=False
 try:
@@ -135,82 +142,93 @@ try:
  if idle<2:raise RuntimeError('Desktop recently active; rerun only while idle')
  if STATE.exists():STATE.unlink()
  exe=ROOT/'src/Aquarium.Windows/bin/Release/net10.0-windows/Aquarium.Windows.exe'
- app=subprocess.Popen([str(exe),'--g0','--feed','--diagnostics',str(STATE),'--probe-seconds','25'],cwd=ROOT)
- time.sleep(2);s=wait_until(lambda s:bool(s['markers']))
- check('process entered interactive session',s['session']>0,{'session':s['session'],'display':s['display'],'scale':s['transform']['Scale']})
- check('passive overlay is layered, noactivate and transparent',(s['overlayExtendedStyle']&0x08080020)==0x08080020)
+ app=subprocess.Popen([str(exe),'--feed','--diagnostics',str(STATE),'--probe-seconds','45'],cwd=ROOT)
+ time.sleep(1.5);s=wait_until(lambda s:s.get('foodImplemented') and len(s.get('fish') or [])==5)
+ check('actual world has five fish, no G0 markers substituted',s['stage'].startswith('G1/G2') and s['foodImplemented'])
+ check('feeder opens resting without food',s['feederMode']=='Resting' and s['emitted']==0)
  scale=s['transform']['Scale'];display_w=round(s['display']['Width']);display_h=round(s['display']['Height'])
- rear,middle,front=s['markers']
- def point(r,dx,dy):return ((r['X']+dx)*scale,(r['Y']+dy)*scale)
- boxes=[tuple(round(v*scale) for v in [rear['X']-50,rear['Y']-65,420,330]),tuple(round(v*scale) for v in [middle['X']-25,middle['Y']-45,98,120])]
- thread=threading.Thread(target=fixture_thread,daemon=True);thread.start();ready.wait(3)
- check('two native fixture windows created',len(handles)==2,error)
- A,B=handles;u.SetWindowPos(A,None,0,0,0,0,0x13);u.SetWindowPos(B,None,0,0,0,0,0x13);time.sleep(.4)
- # Windows may reject background activation; a verified, test-owned click establishes the intended foreground.
- pointer_moved=True;click((boxes[1][0]+35,boxes[1][1]+65),[B]);time.sleep(.7);s=wait_until(lambda s:s['overlayVisible'])
- check('fixture B is actually foremost after controlled click',u.GetForegroundWindow()==B)
- check('passive habitat did not activate its own process',not s['foregroundIsAquarium'],{'fixture_foreground':u.GetForegroundWindow() in handles})
- f=point(front,5,35);mleft=point(middle,5,35);mright=point(middle,115,35);r=point(rear,5,35)
- report['fixture_setup']={'boxes':boxes,'foreground':u.GetForegroundWindow(),'handles':handles,'snapshot':s}
- for hh in handles:
-  rr=w.RECT();u.GetWindowRect(hh,c.byref(rr));report['fixture_setup'].setdefault('actual_bounds',[]).append([rr.left,rr.top,rr.right,rr.bottom])
- report['fixture_setup']['sample_roots']=[target_root(v) for v in [f,mleft,mright,r]]
- if any(v not in handles for v in report['fixture_setup']['sample_roots']):
-  report['blocked']='A foreign window covers the controlled test region. No input sent; obtain an unobstructed local desktop for the native gate.'
-  raise RuntimeError(report['blocked'])
- check('middle clipped where foremost window covers it',rgb(mleft)!=[82,198,175],rgb(mleft))
- check('middle drawn above rear window',rgb(mright)==[82,198,175],rgb(mright))
- check('front drawn above ordinary windows',rgb(f)==[223,129,166],rgb(f))
- check('rear clipped by work window',rgb(r)!=[238,181,96],rgb(r))
- # Both sample points are solid opaque marker pixels. Hit testing must skip the overlay.
- check('opaque marker routes hit test to fixture',target_root(f)==A)
- empty=(boxes[0][0]+15,boxes[0][1]+boxes[0][3]-25)
- check('transparent area routes hit test to fixture',target_root(empty)==A)
- # Capture only the area fully covered by our two fixture windows, not the user's desktop.
- x,y,bw,bh=boxes[0]
- screenshot_fixture((x+10,y+40,bw-20,bh-50),OUT/'fixture-composition.png')
- pointer_moved=True;old_down=counts.get('down',0);click(f,[A]);check('real injected click delivered through opaque overlay',counts.get('down',0)==old_down+1,dict(counts))
- old_wheel=counts.get('wheel',0);safe_move(empty,[A]);send(0x800,120);time.sleep(.2);check('wheel delivered through transparent overlay',counts.get('wheel',0)==old_wheel+1,dict(counts))
- safe_move(f,[A]);send(2);time.sleep(.1);u.SetCursorPos(round(f[0]+20),round(f[1]+12));time.sleep(.2);send(4);time.sleep(.2)
- check('fixture receives drag through passive overlay',counts.get('drag',0)>=1,dict(counts))
- u.SetForegroundWindow(B);time.sleep(.5);check('middle returns when B raised',rgb(mright)==[82,198,175])
- u.SetForegroundWindow(A);time.sleep(.5);check('middle occlusion follows changed order',rgb(mright)!=[82,198,175])
- s=state();fp=s['feederPosition'];feed=(round((fp['X']+40)*scale),round((fp['Y']+55)*scale))
- safe_move(feed,[s['feederHandle']]);send(2);time.sleep(.35)
- s=state();check('feeder owns native capture after deliberate pickup',s['feederMode']=='Held' and s['feederCapture'] and s['nativeCaptureOwned'])
- for n in range(1,5):u.SetCursorPos(round(feed[0]+n*12),round(feed[1]-n*8));time.sleep(.12)
- s=state();check('captured feeder actually moved',s['moveCount']>0 and s['feederPosition']!=fp,{'moves':s['moveCount'],'before':fp,'after':s['feederPosition']})
- send(4);s=wait_until(lambda s:s['feederMode']=='Resting' and not s['feederCapture'])
- check('release clears capture and rests feeder',not s['nativeCaptureOwned'])
- # Move onto a fixture before changing its state. No user window receives input.
- click(empty,[A]);u.PostMessageW(A,0x8010,0,0);time.sleep(.7)
- s=state();check('ordinary maximize does not suppress habitat',s['overlayVisible'],s['suppression'])
- u.PostMessageW(A,0x8011,0,0);time.sleep(.8)
- s=wait_until(lambda s:not s['overlayVisible'])
- check('foreign borderless fullscreen suppresses both surfaces',not s['feederVisible'] and 'Fullscreen' in s['suppression'],s['suppression'])
- frames=s['frames'];time.sleep(.7);check('hidden render count stops',state()['frames']==frames)
- u.PostMessageW(A,0x8012,0,0);time.sleep(.8)
+ boxes=[(20,30,display_w-40,display_h-100),(40,60,210,130)]
+ threading.Thread(target=fixture_thread,daemon=True).start();ready.wait(3)
+ check('native test background created',len(handles)==2,error)
+ A,B=handles
+ u.SetWindowPos(A,None,0,0,0,0,0x13);time.sleep(.3)
+ pointer_moved=True;activate_fixture();time.sleep(.5)
+ check('actual native fixture is foreground',u.GetForegroundWindow()==A)
+ # Native input goes to the tool only, not to a simulated world entry point.
+ s=state();first=s['fish'][0];fp=s['feederPosition'];fh=s['feederHandle']
+ point=lambda x,y:(round((x)*scale),round((y)*scale))
+ body=point(fp['X']+40,fp['Y']+55)
+ safe_move(body,[fh]);send(2);time.sleep(.25)
+ s=wait_until(lambda s:s['feederMode']=='Held')
+ goal=(min(display_w/scale-220,max(80,first['position']['X']+100)),max(80,first['position']['Y']-150))
+ delta=((goal[0]-fp['X'])*scale,(goal[1]-fp['Y'])*scale)
+ for i in range(1,10):
+  if u.GetForegroundWindow()!=fh:raise RuntimeError('Foreground changed during controlled feeder drag')
+  u.SetCursorPos(round(body[0]+delta[0]*i/9),round(body[1]+delta[1]*i/9));time.sleep(.04)
+ send(4);s=wait_until(lambda s:s['feederMode']=='Resting')
+ check('one-way relocation does not dispense',s['emitted']==0,s['emitted'])
+ fp=s['feederPosition'];body=point(fp['X']+40,fp['Y']+55)
+ safe_move(body,[fh]);send(2);time.sleep(.25);wait_until(lambda s:s['feederMode']=='Held')
+ for i in range(18):
+  if u.GetForegroundWindow()!=fh:raise RuntimeError('Foreground changed during shake; aborting')
+  u.SetCursorPos(body[0]+(60 if i%2 else -60),body[1]);time.sleep(.05)
+ s=wait_until(lambda s:s['emitted']>0)
+ check('physical held drag emits actual pellets',s['shakes']>0 and len(s['food'])>0,{'shakes':s['shakes'],'emitted':s['emitted'],'pellets':len(s['food'])})
+ send(4);s=wait_until(lambda s:s['feederMode']=='Resting' and not s['nativeCaptureOwned']);emitted=s['emitted']
+ check('release leaves emitted pellets available',len(s['food'])>0)
+ ids=sorted(f['id'] for f in s['fish']);seen_meals=[];deadline=time.monotonic()+10;first_after_emit=s
+ while time.monotonic()<deadline:
+  s=state();seen_meals.extend(s.get('meals') or [])
+  if s['consumed']>0:break
+  time.sleep(.08)
+ check('fish visibly approaches and consumes live input food',s['consumed']>0,{'consumed':s['consumed'],'emitted':s['emitted'],'simulation_time':s['simulationTime']})
+ check('feeding does not create replacement fish',sorted(f['id'] for f in s['fish'])==ids)
+ check('normal cursor never emits after release',s['emitted']==emitted)
+ check('recorded meals are visible foreground contact',bool(seen_meals) and all(m['Visible'] and m['Band']==2 for m in seen_meals),{'observed_meals':len(seen_meals)})
+ check('pellet accounting is consistent',s['emitted']==s['consumed']+s['expired']+len(s['food']))
+ # Retain only a crop fully covered by our own opaque background; not user desktop contents.
+ f=next((f for f in s['fish'] if f['activity']=='Eat'),s['fish'][0]);fx,fy=point(f['position']['X'],f['position']['Y'])
+ x=max(boxes[0][0]+16,min(display_w-700,fx-180));y=max(boxes[0][1]+50,min(display_h-500,fy-180))
+ safe_rect=(int(x),int(y),660,410)
+ if all(target_root(p)==A for p in [(x+5,y+5),(x+650,y+5),(x+5,y+400),(x+650,y+400)]):
+  screenshot_fixture(safe_rect,OUT/'feeding-live.png');report['screenshot']='feeding-live.png (test-owned background only)'
+ report['feeding_state']=s
+ # Close and re-open through real process activation, still without a direct emission command.
+ fp=s['feederPosition'];click(point(fp['X']+151,fp['Y']+14),[fh]);s=wait_until(lambda s:s['feederMode']=='Closed')
+ check('X closes only the tool while fish continue',s['overlayVisible'] and len(s['fish'])==5)
+ second=subprocess.run([str(exe),'--feed'],cwd=ROOT,timeout=5);s=wait_until(lambda s:s['feederVisible'])
+ check('repeat executable activation reuses resident and feeder',second.returncode==0 and s['pid']==app.pid and s['feederHandle']==fh and s['feederMode']=='Resting')
+ # Repeat the real input loop with a maximized ordinary work window.
+ activate_fixture();u.PostMessageW(A,0x8010,0,0);time.sleep(.7)
  s=wait_until(lambda s:s['overlayVisible'] and s['feederVisible'])
- check('fullscreen exit restores feeder resting',s['feederMode']=='Resting' and not s['feederCapture'])
- fp=s['feederPosition'];xp=((fp['X']+151)*scale,(fp['Y']+14)*scale)
- click(xp,[s['feederHandle']]);s=wait_until(lambda s:s['feederMode']=='Closed')
- check('X closes feeder but not habitat',s['overlayVisible'] and not s['feederVisible'])
- second=subprocess.run([str(exe),'--feed'],cwd=ROOT,timeout=5)
- s=wait_until(lambda s:s['feederVisible'])
- check('second launch reuses original process',s['pid']==app.pid and second.returncode==0)
+ check('maximized ordinary window still permits live aquarium',s['suppression']=='None')
+ before=s['consumed'];fp=s['feederPosition'];body=point(fp['X']+40,fp['Y']+55)
+ safe_move(body,[fh]);send(2);time.sleep(.25);wait_until(lambda s:s['feederMode']=='Held')
+ before_emitted=state()['emitted']
+ for i in range(16):
+  if u.GetForegroundWindow()!=fh:raise RuntimeError('Foreground changed; aborting second shake')
+  u.SetCursorPos(body[0]+(60 if i%2 else -60),body[1]);time.sleep(.05)
+ send(4);s=wait_until(lambda s:s['feederMode']=='Resting' and s['emitted']>before_emitted)
+ s=wait_until(lambda s:s['consumed']>before,timeout=11)
+ check('visible consumption also works over maximized window',s['consumed']>before,{'consumed_after':s['consumed'],'consumed_before':before,'total_emitted':s['emitted']})
+ check('same five identities after maximized-window feeding',sorted(f['id'] for f in s['fish'])==ids)
+ report['maximized_feeding_state']=s
+ # Exercise the actual .lnk, not merely a direct executable invocation.
+ shortcut=ROOT/'artifacts/feeding/shortcuts/Feed Fish.lnk'
+ if not shortcut.is_file():raise RuntimeError('Create the controlled-folder shortcut before running this harness')
+ old_report=s['report'];os.startfile(str(shortcut));s=wait_until(lambda s:s['report']>old_report and s['lastEvent']=='open-feeder')
+ check('actual feeder shortcut reuses the same resident',s['pid']==app.pid and s['feederHandle']==fh)
  report['all_automated_checks_passed']=True
 except Exception as ex:
  report['error']=str(ex);report['all_automated_checks_passed']=False
  if app and STATE.exists():report['failure_state']=state()
 finally:
- # Release only test-generated input, restore the pointer, and remove only test-owned windows.
  if pointer_moved:send(4);u.SetCursorPos(saved_cursor.x,saved_cursor.y)
  for h in handles:u.PostMessageW(h,0x10,0,0)
- report['fixture_input_counts']=counts
  if app:
-  try:app.wait(timeout=45);report['auto_exit_code']=app.returncode;report['final_state']=state()
+  try:app.wait(timeout=45);report['auto_exit_code']=app.returncode
   except subprocess.TimeoutExpired:report['auto_exit_pending']=True
  (OUT/'report.json').write_text(json.dumps(report,indent=2),encoding='utf-8')
- print(json.dumps(report,ensure_ascii=True))
-
-sys.exit(0 if report.get("all_automated_checks_passed") else 2 if report.get("blocked") else 1)
+ (OUT/('report-'+str(time.time_ns())+'.json')).write_text(json.dumps(report,indent=2),encoding='utf-8')
+ print(json.dumps({'checks':report['checks'],'passed':report.get('all_automated_checks_passed'),'error':report.get('error'),'screenshot':report.get('screenshot'),'state':report.get('failure_state') or {'consumed':report.get('feeding_state',{}).get('consumed')}},ensure_ascii=True))
+sys.exit(0 if report.get('all_automated_checks_passed') else 1)

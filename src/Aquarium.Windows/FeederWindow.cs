@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using Aquarium.Core;
 using Aquarium.Windows.Platform;
 
@@ -22,18 +23,22 @@ internal sealed class FeederWindow : Window
     public bool BodyCaptured=>body.IsMouseCaptured;
     public event Action? ClosedByUser;
     public event Action<string>? Changed;
-    public FeederWindow(FeederState state)
+    public event Action<Point2>? HeldMoved;
+    public FeederWindow(FeederState state,bool probe=false)
     {
         this.state=state;
-        Title="Aquarium G0 feeder";Width=164;Height=112;WindowStyle=WindowStyle.None;ResizeMode=ResizeMode.NoResize;
+        Title=probe?"Aquarium G0 feeder":"Aquarium feeder";Width=164;Height=112;WindowStyle=WindowStyle.None;ResizeMode=ResizeMode.NoResize;
         AllowsTransparency=true;Background=Brushes.Transparent;ShowInTaskbar=false;ShowActivated=false;Topmost=true;
         var grid=new Grid{Background=Brushes.Transparent};
         body=new Border{Background=new SolidColorBrush(Color.FromRgb(36,61,65)),BorderBrush=new SolidColorBrush(Color.FromRgb(109,205,175)),BorderThickness=new Thickness(2),Padding=new Thickness(12,22,12,8),Cursor=Cursors.Hand};
-        var stack=new StackPanel();
-        stack.Children.Add(new TextBlock{Text="G0 FEEDER",Foreground=Brushes.White,FontSize=15,FontWeight=FontWeights.Bold});
-        stateText=new TextBlock{Text="Resting | drag to hold",Foreground=Brushes.White,FontSize=11,Margin=new Thickness(0,8,0,0)};
-        stack.Children.Add(stateText);stack.Children.Add(new TextBlock{Text="Input probe - no food yet",Foreground=Brushes.LightGray,FontSize=10,Margin=new Thickness(0,6,0,0)});body.Child=stack;grid.Children.Add(body);
-        var close=new Button{Content="\u00d7",Width=25,Height=23,HorizontalAlignment=HorizontalAlignment.Right,VerticalAlignment=VerticalAlignment.Top,Margin=new Thickness(3),ToolTip="Close feeder only"};
+        var inner=new Grid();
+        var picture=new Image{Source=new BitmapImage(new Uri("pack://application:,,,/Assets/feeder.png")),Width=56,Height=70,HorizontalAlignment=HorizontalAlignment.Left,VerticalAlignment=VerticalAlignment.Center};
+        RenderOptions.SetBitmapScalingMode(picture,BitmapScalingMode.NearestNeighbor);inner.Children.Add(picture);
+        var stack=new StackPanel{Margin=new Thickness(61,8,0,0)};
+        stack.Children.Add(new TextBlock{Text=probe?"G0 TOOL":"FEED FISH",Foreground=Brushes.White,FontSize=11,FontWeight=FontWeights.Bold});
+        stateText=new TextBlock{Text="Drag to hold",Foreground=Brushes.White,FontSize=10,Margin=new Thickness(0,8,0,0)};
+        stack.Children.Add(stateText);stack.Children.Add(new TextBlock{Text=probe?"Input probe":"Then shake",Foreground=Brushes.LightGray,FontSize=10,Margin=new Thickness(0,5,0,0)});inner.Children.Add(stack);body.Child=inner;grid.Children.Add(body);
+        var close=new Button{Content="×",Width=25,Height=23,HorizontalAlignment=HorizontalAlignment.Right,VerticalAlignment=VerticalAlignment.Top,Margin=new Thickness(3),ToolTip="Close feeder only"};
         close.Click+=(_,e)=>{e.Handled=true;CancelHold();state.Close();Hide();ClosedByUser?.Invoke();Changed?.Invoke("close");};grid.Children.Add(close);Content=grid;
         body.MouseLeftButtonDown+=Begin;
         body.MouseMove+=Move;
@@ -58,7 +63,7 @@ internal sealed class FeederWindow : Window
         Activate();if(!body.CaptureMouse())return;
         if(!state.BeginHold()){body.ReleaseMouseCapture();return;}
         NativeMethods.GetCursorPos(out var p);dragStart=transform.ToLocal(p.ToPoint());origin=state.Position;
-        stateText.Text="Held | release to put down";body.Cursor=Cursors.SizeAll;Changed?.Invoke("begin-hold");
+        stateText.Text="Hold + shake";body.Cursor=Cursors.SizeAll;Changed?.Invoke("begin-hold");
     }
     private void Move(object sender,MouseEventArgs e)
     {
@@ -66,13 +71,13 @@ internal sealed class FeederWindow : Window
         if(e.LeftButton!=MouseButtonState.Pressed){CancelHold();return;}
         NativeMethods.GetCursorPos(out var p);var current=transform.ToLocal(p.ToPoint());
         state.Move(snapshot.WorkArea.ClampOrigin(new(origin.X+current.X-dragStart.X,origin.Y+current.Y-dragStart.Y),Width,Height));
-        Place();MoveCount++;e.Handled=true;
+        Place();MoveCount++;HeldMoved?.Invoke(current);e.Handled=true;
     }
     public void CancelHold()
     {
         var wasHeld=state.Mode==FeederMode.Held;state.Release();
         if(body.IsMouseCaptured)body.ReleaseMouseCapture();
-        stateText.Text="Resting | drag to hold";body.Cursor=Cursors.Hand;
+        stateText.Text="Drag to hold";body.Cursor=Cursors.Hand;
         if(wasHeld)Changed?.Invoke("end-hold");
     }
 }

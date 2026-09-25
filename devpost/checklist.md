@@ -13,9 +13,11 @@ The first increment is the spec's critical Windows integration gate. Core tests 
 
 ## Current Execution Status
 
-G0 is accepted for continuation: the learner reported that the running probe appears to work. This records hands-on feedback without inferring specific apps, local-console use, or broad compatibility. The 26 core tests and 25 controlled native fixture checks passed in the previously documented RDP session. Expanded ordinary-app/local-console and lifecycle coverage remains explicitly pending in slices 3 and 4; no unrun test is marked passed.
+G0 is saved as `b9d361a`. The learner positively reviewed the running feeding test and explicitly requested continuation after the real Desktop launcher was installed and verified. This accepts the current feeding experience without inventing a detailed checklist of mouse actions or local-console coverage.
 
-Slice 2 is next: the real feeding loop. Fast mode and the complete-core-journey checkpoint are unchanged.
+Slice 2 is mechanically verified and accepted for its checkpoint: 54 core tests passed again; prior native receipts record 25 G0 and 18 feeding checks; two actual Desktop shortcut launches reused one resident. Live-session counters separately recorded holding, food emission and consumption, without agent-generated mouse input during the Desktop-grant task. Detailed browser/game/local-console coverage is not inferred. Its commit is being saved before any G3 change.
+
+Next is G3 stability and recovery, in the approved Fast mode. Final hands-on exploration and release acceptance remain pending. HTML and private learner content remain outside Git.
 
 ## Slices
 
@@ -61,8 +63,8 @@ Slice 2 is next: the real feeding loop. Fast mode and the complete-core-journey 
 
 ## Hands-on Checkpoints
 
-- [ ] Early native integration checked after slice 1 — learner tries click-through, layering, dragging and recovery before fish behavior is expanded.
-- [ ] Complete core journey checked after slice 2 — learner uses the real feeder and reports feel/clarity, with fixes verified before continuation.
+- [x] Early native integration checked after slice 1 - learner reported the running probe appears to work; specific application/session coverage is not inferred.
+- [x] Complete core journey checkpoint accepted after positive review of the live test, verified Desktop installation, and explicit instruction to continue; no unreported detailed manual sequence or environment coverage inferred.
 - [ ] Final kick-the-tires exploration and feedback completed after slice 4.
 
 ## Final Review
@@ -82,7 +84,19 @@ Reflection: not yet offered; personal answer belongs only in the ignored profile
 Activity mode: not selected; tie the wrap-up to actual implementation evidence.
 
 ## Revisions
+- G0 checkpoint accepted after general positive learner feedback; commit `b9d361a` preserves the verified probe. Specific local-console/browser/game checks remain unrun, not inferred from that feedback.
+- Default application now runs the feeding world. `--g0` preserves the labelled native-regression probe and does not substitute for the real fish loop.
+- Core/Windows boundaries are unchanged. Core motion/feeding uses `World.cs`, `Feeding.cs`, and `DepthTransitions.cs`; UI mouse callbacks enter the one UI-owned core synchronously, with the instance broker still marshalled onto the dispatcher. Renderer lives in `Rendering/SpriteRenderer.cs`.
+- A movement-invariant test found a boundary snap after edge feeding. Clamping destinations instead of the fish's current position fixes the discontinuity without weakening the test.
+- The native feeding harness aborts if the test-owned input point is occluded by another application; it now selects a verified visible point on its own fixture. This is test safety, not a new product behavior.
+- Desktop shortcut placement was delayed by failed grant requests. The learner subsequently approved access; the successful grant was verified before installing the real Desktop shortcut. Two actual Desktop launches and idempotent setup passed without bypassing access controls.
 
 - G0 uses code-only `DesktopOverlay.cs` and `FeederWindow.cs` rather than empty XAML wrappers; the approved two-project WPF/Win32 architecture is unchanged. A stdlib Python native fixture script provides reproducible controlled integration evidence without introducing a runtime dependency.
 - An inactive, visible XAML shell island initially suppressed the entire habitat. The adapter now masks its known bounds and reserves blanket suppression for active/protected interactions. Native fixture checks were rerun after the fix.
 - The background fixture could not assume `SetForegroundWindow` succeeded. The test now verifies its own target and uses a bounded click on that fixture to establish ordering before reading pixels. No input is sent to unrelated windows; fixture failures are not application passes.
+
+- The learner positively reviewed the running feeding test. Record this as observed-test feedback, not an independent manual-use claim. A user-run shortcut helper addresses the failed MCP directory-grant path without bypassing it; the actual Desktop launch/feed check remains open.
+
+- Desktop access resolution: actual `Feed Fish.lnk` installation and two settled same-instance launches are verified. The first immediate composite assertion is retained as an unsuccessful verification attempt; later checks wait for process settlement. No new application code or G3 test pass is claimed.
+
+- The learner accepted the current live feeding experience and requested continuation after launcher access was resolved. Prior repeated pending-review text is superseded; no redesign or new gate is required. Final user review and untested environment claims remain separate.

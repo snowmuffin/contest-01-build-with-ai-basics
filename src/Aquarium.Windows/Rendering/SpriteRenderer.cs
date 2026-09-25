@@ -1,0 +1,95 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Windows;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using Aquarium.Core;
+
+namespace Aquarium.Windows.Rendering;
+
+// A single drawing surface, cached bitmap frames and cached clips; not one UI control per fish/pellet.
+internal sealed class SpriteRenderer : FrameworkElement
+{
+    private readonly BitmapSource[,] sprites=new BitmapSource[3,4];
+    private readonly Geometry[] clips=new Geometry[3];
+    private long clipVersion=long.MinValue;
+    private EnvironmentSnapshot? environment;
+    private SceneFrame? scene;
+    public long FrameCount {get;private set;}
+    private static readonly Brush Pellet=Frozen(249,215,137),PelletShadow=Frozen(81,60,34),Spark=Frozen(253,240,189);
+    public SpriteRenderer()
+    {
+        var atlas=new BitmapImage();atlas.BeginInit();atlas.CacheOption=BitmapCacheOption.OnLoad;
+        atlas.UriSource=new Uri("pack://application:,,,/Assets/fish-atlas.png");atlas.EndInit();atlas.Freeze();
+        for(var palette=0;palette<3;palette++)for(var frame=0;frame<4;frame++)
+        {var bitmap=new CroppedBitmap(atlas,new Int32Rect(frame*40,palette*24,40,24));bitmap.Freeze();sprites[palette,frame]=bitmap;}
+        RenderOptions.SetBitmapScalingMode(this,BitmapScalingMode.NearestNeighbor);
+        SnapsToDevicePixels=true;IsHitTestVisible=false;
+    }
+    private static Brush Frozen(byte r,byte g,byte b){var brush=new SolidColorBrush(Color.FromRgb(r,g,b));brush.Freeze();return brush;}
+    public void Update(EnvironmentSnapshot value,SceneFrame frame)
+    {
+        environment=value;scene=frame;
+        if(value.Version!=clipVersion)
+        {
+            clipVersion=value.Version;
+            for(var band=0;band<3;band++)
+            {
+                Geometry clip=new RectangleGeometry(Rect(value.Display));
+                var n=band==2?0:band==1?Math.Min(1,value.WorkWindows.Count):value.WorkWindows.Count;
+                foreach(var r in value.ProtectedRegions.Concat(value.WorkWindows.Take(n)))
+                    clip=new CombinedGeometry(GeometryCombineMode.Exclude,clip,new RectangleGeometry(Rect(r)));
+                clip.Freeze();clips[band]=clip;
+            }
+        }
+        InvalidateVisual();
+    }
+    protected override void OnRender(DrawingContext drawing)
+    {
+        if(scene is null || environment is null)return;
+        FrameCount++;
+        var dpi=VisualTreeHelper.GetDpi(this).DpiScaleX;
+        double Snap(double v)=>Math.Round(v*dpi)/dpi;
+        for(var band=0;band<3;band++)
+        {
+            drawing.PushClip(clips[band]);
+            foreach(var f in scene.Fish)
+            {
+                if((int)f.Band!=band)continue;
+                var bounds=FishGeometry.Bounds(f.Position,f.Width,f.Height);
+                if(!environment.Display.Intersects(bounds))continue;
+                var x=Snap(f.Position.X);var y=Snap(f.Position.Y);
+                var speed=Math.Sqrt(f.Velocity.X*f.Velocity.X+f.Velocity.Y*f.Velocity.Y);
+                var index=(int)(scene.Time*(speed>100?11:6)+f.Id)%4;
+                drawing.PushTransform(new ScaleTransform(f.FacingRight?1:-1,1,x,y));
+                drawing.DrawImage(sprites[(f.Id-1)%3,index],new Rect(x-f.Width/2,y-f.Height/2,f.Width,f.Height));
+                if(f.Activity==FishActivity.Eat)
+                    drawing.DrawRectangle(Spark,null,new Rect(x+f.Width*.34,y-1.5,3,3));
+                drawing.Pop();
+            }
+            drawing.Pop();
+        }
+        drawing.PushClip(clips[2]);
+        foreach(var p in scene.Food)
+        {
+            var x=Snap(p.Position.X);var y=Snap(p.Position.Y);
+            drawing.DrawRectangle(PelletShadow,null,new Rect(x-2,y-2,5,5));
+            drawing.DrawRectangle(Pellet,null,new Rect(x-1,y-1,3,3));
+        }
+        foreach(var meal in scene.RecentMeals)
+        {
+            var age=scene.Time-meal.Time;if(age<0||age>.38)continue;
+            var radius=3+age*18;
+            drawing.PushOpacity(Math.Clamp(1-age/.38,0,1));
+            for(var i=0;i<3;i++)
+            {
+                var angle=i*Math.PI*2/3;
+                drawing.DrawRectangle(Spark,null,new Rect(Snap(meal.FoodPosition.X+Math.Cos(angle)*radius),Snap(meal.FoodPosition.Y+Math.Sin(angle)*radius),2,2));
+            }
+            drawing.Pop();
+        }
+        drawing.Pop();
+    }
+    private static Rect Rect(Rect2 r)=>new(r.X,r.Y,r.Width,r.Height);
+}

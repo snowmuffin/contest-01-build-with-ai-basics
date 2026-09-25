@@ -15,8 +15,12 @@ namespace Aquarium.Windows;
 internal sealed class HostController : IDisposable
 {
     private readonly DesktopSnapshotService observer=new();
-    private readonly DesktopOverlay overlay=new();
-    private readonly FeederState feederState=new();
+    private readonly DesktopOverlay overlay;
+    private readonly bool probe;
+    private readonly World world=new();
+    private SceneFrame? scene;
+    private double lastTick,accumulator;
+    private FeederState feederState=>world.Feeder;
     private readonly FeederWindow feeder;
     private readonly VisibilityPolicy visibility=new();
     private readonly Forms.NotifyIcon tray;
@@ -31,18 +35,19 @@ internal sealed class HostController : IDisposable
     private string lastEvent="startup";
     private long reportCount;
     private int closeCount;
-    public HostController(string? diagnostics)
+    public HostController(string? diagnostics,bool probe=false)
     {
-        this.diagnostics=diagnostics;
-        feeder=new(feederState);
-        feeder.Changed+=ev=>{lastEvent=ev;WriteReport();};feeder.ClosedByUser+=()=>closeCount++;
+        this.diagnostics=diagnostics;this.probe=probe;overlay=new DesktopOverlay(probe);
+        feeder=new(feederState,probe);
+        feeder.Changed+=ev=>{world.ResetFeeding();lastEvent=ev;WriteReport();};
+        feeder.HeldMoved+=point=>{if(!probe && snapshot is not null)world.SubmitHeldMotion(point,time.Elapsed.TotalSeconds,snapshot);};feeder.ClosedByUser+=()=>closeCount++;
         var menu=new Forms.ContextMenuStrip();
-        menu.Items.Add("G0 integration probe (not final fish)").Enabled=false;
+        menu.Items.Add(probe?"G0 integration probe":"Desktop Aquarium · prototype").Enabled=false;
         menu.Items.Add("Open feeder",null,(_,_)=>OpenFeeder());
         menu.Items.Add("Hide",null,(_,_)=>SetManualHidden(true));
         menu.Items.Add("Show again",null,(_,_)=>SetManualHidden(false));
         menu.Items.Add(new Forms.ToolStripSeparator());menu.Items.Add("Exit",null,(_,_)=>System.Windows.Application.Current.Shutdown());
-        tray=new Forms.NotifyIcon{Icon=System.Drawing.SystemIcons.Application,Text="Aquarium G0 - input/depth probe",ContextMenuStrip=menu,Visible=true};
+        tray=new Forms.NotifyIcon{Icon=new System.Drawing.Icon(Path.Combine(AppContext.BaseDirectory,"Assets","feeder.ico")),Text=probe?"Aquarium G0 probe":"Desktop Aquarium",ContextMenuStrip=menu,Visible=true};
         tray.DoubleClick+=(_,_)=>OpenFeeder();
         SystemEvents.SessionSwitch+=OnSession;
         timer=new DispatcherTimer(DispatcherPriority.Background){Interval=TimeSpan.FromMilliseconds(33)};timer.Tick+=Tick;
@@ -88,20 +93,33 @@ internal sealed class HostController : IDisposable
         if(disposed)return;var t=time.Elapsed.TotalSeconds;
         if(t>=nextObserve || observer.Dirty){Observe();nextObserve=t+(visibility.Visible?0.10:0.5);ApplyVisibility();}
         if(feederState.Mode==FeederMode.Held && (NativeMethods.GetAsyncKeyState(1)&0x8000)==0)feeder.CancelHold();
-        if(visibility.Visible && snapshot is not null)overlay.UpdateFrame(snapshot,t);
+        var elapsed=Math.Clamp(t-lastTick,0,0.05);lastTick=t;
+        if(visibility.Visible && snapshot is not null)
+        {
+            if(probe)overlay.UpdateFrame(snapshot,t);
+            else
+            {
+                world.SetEnabled(true);accumulator+=elapsed;
+                while(accumulator>=1.0/60){world.Advance(1.0/60,snapshot);accumulator-=1.0/60;}
+                scene=world.Snapshot();overlay.UpdateWorld(snapshot,scene);
+            }
+        }
+        else {world.SetEnabled(false);accumulator=0;}
         if(t>=nextReport){WriteReport();nextReport=t+0.25;}
     }
     private void ApplyVisibility()
     {
         timer.Interval=TimeSpan.FromMilliseconds(visibility.Visible?33:500);
+        world.SetEnabled(visibility.Visible);
         if(visibility.Visible && snapshot is not null)
         {
-            overlay.UpdateFrame(snapshot,time.Elapsed.TotalSeconds);
+            if(probe)overlay.UpdateFrame(snapshot,time.Elapsed.TotalSeconds);
+            else overlay.UpdateWorld(snapshot,scene??world.Snapshot());
             if(!overlay.IsVisible){overlay.Show();overlay.Position(observer.PhysicalDisplay,observer.Transform);}
             if(feederState.Mode!=FeederMode.Closed && !feeder.IsVisible){feeder.Place();feeder.Show();feeder.Place();}
         }
         else
-        {feeder.CancelHold();if(feeder.IsVisible)feeder.Hide();if(overlay.IsVisible)overlay.Hide();}
+        {feeder.CancelHold();world.ResetFeeding();accumulator=0;lastTick=time.Elapsed.TotalSeconds;if(feeder.IsVisible)feeder.Hide();if(overlay.IsVisible)overlay.Hide();}
     }
     private void WriteReport()
     {
@@ -110,7 +128,7 @@ internal sealed class HostController : IDisposable
         {
             var capture=NativeMethods.GetCapture();
             var report=new{
-                stage="G0 native integration probe",pid=Environment.ProcessId,session=Process.GetCurrentProcess().SessionId,
+                stage=probe?"G0 native integration probe":"G1/G2 live feeding prototype",pid=Environment.ProcessId,session=Process.GetCurrentProcess().SessionId,
                 utc=DateTimeOffset.UtcNow,report=++reportCount,alive=!disposed,lastEvent,
                 overlayVisible=overlay.IsVisible,feederVisible=feeder.IsVisible,feederMode=feederState.Mode.ToString(),
                 manualHidden=visibility.ManualHidden,suppression=visibility.Reasons.ToString(),
@@ -123,7 +141,10 @@ internal sealed class HostController : IDisposable
                 feederPosition=feederState.Position,markers=overlay.MarkerRects,frames=overlay.FrameCount,
                 workWindowCount=snapshot?.WorkWindows.Count,protectedRegionCount=snapshot?.ProtectedRegions.Count,
                 shellState=observer.ShellState,eventHooks=observer.HookCount,
-                foodImplemented=false,finalArtwork=false
+                foodImplemented=!probe,finalArtwork=false,
+                fish=scene?.Fish.Select(f=>new{id=f.Id,position=f.Position,velocity=f.Velocity,band=f.Band.ToString(),activity=f.Activity.ToString(),transition=f.Transition.ToString(),facingRight=f.FacingRight,width=f.Width,height=f.Height,visible=snapshot is not null&&Occlusion.VisibleAt(f.Position,f.Band,snapshot)}),
+                food=scene?.Food,meals=scene?.RecentMeals,simulationTime=world.Time,
+                emitted=world.TotalEmitted,consumed=world.TotalConsumed,expired=world.TotalExpired,shakes=world.ShakeCount,curiosity=world.CuriosityCount
             };
             var path=Path.GetFullPath(diagnostics);Directory.CreateDirectory(Path.GetDirectoryName(path)!);
             File.WriteAllText(path+".tmp",JsonSerializer.Serialize(report,new JsonSerializerOptions{WriteIndented=true}));File.Move(path+".tmp",path,true);
@@ -134,6 +155,6 @@ internal sealed class HostController : IDisposable
     public void Dispose()
     {
         if(disposed)return;disposed=true;timer.Stop();feeder.CancelHold();SystemEvents.SessionSwitch-=OnSession;
-        feeder.Hide();overlay.Hide();lastEvent="exit";WriteReport();tray.Visible=false;tray.ContextMenuStrip?.Dispose();tray.Dispose();observer.Dispose();feeder.Close();overlay.Close();
+        feeder.Hide();overlay.Hide();lastEvent="exit";WriteReport();tray.Visible=false;tray.ContextMenuStrip?.Dispose();tray.Icon?.Dispose();tray.Dispose();observer.Dispose();feeder.Close();overlay.Close();
     }
 }
