@@ -186,85 +186,85 @@ def pick_up():
  pointer_moved=True;safe_move(at,[s['feederHandle']]);send(2)
  return wait_until(lambda s:s['feederMode']=='Held' and s['nativeCaptureOwned']),at
 
+# Short, explicitly non-isolated performance sample. Not a sustained/battery benchmark.
+OUT=ROOT/'artifacts/g4/performance';OUT.mkdir(parents=True,exist_ok=True);STATE=OUT/'state.json'
+report={'kind':'short same-host Release process sample','checks':[],'samples':[]}
+api(k,'OpenProcess',w.HANDLE,[w.DWORD,w.BOOL,w.DWORD]);api(k,'CloseHandle',w.BOOL,[w.HANDLE])
+api(k,'GetProcessTimes',w.BOOL,[w.HANDLE,c.POINTER(w.FILETIME),c.POINTER(w.FILETIME),c.POINTER(w.FILETIME),c.POINTER(w.FILETIME)])
+api(k,'GetSystemTimes',w.BOOL,[c.POINTER(w.FILETIME),c.POINTER(w.FILETIME),c.POINTER(w.FILETIME)])
+class MEM(c.Structure):
+ _fields_=[('cb',w.DWORD),('faults',w.DWORD)]+[(name,c.c_size_t) for name in ['peak_ws','working_set','peak_pool','pool','peak_nonpaged','nonpaged','pagefile','peak_pagefile','private']]
+ps=c.WinDLL('psapi');api(ps,'GetProcessMemoryInfo',w.BOOL,[w.HANDLE,c.POINTER(MEM),w.DWORD])
+process_handle=None
+
+def ticks(ft):return (ft.dwHighDateTime<<32)|ft.dwLowDateTime
+
+def take(phase):
+ idle=w.FILETIME();kernel=w.FILETIME();user=w.FILETIME();k.GetSystemTimes(c.byref(idle),c.byref(kernel),c.byref(user))
+ sample={'phase':phase,'wall':time.monotonic(),'system_idle_ticks':ticks(idle),'system_total_ticks':ticks(kernel)+ticks(user)}
+ if process_handle:
+  created=w.FILETIME();exited=w.FILETIME();p_kernel=w.FILETIME();p_user=w.FILETIME()
+  if not k.GetProcessTimes(process_handle,c.byref(created),c.byref(exited),c.byref(p_kernel),c.byref(p_user)):raise c.WinError(c.get_last_error())
+  mem=MEM();mem.cb=c.sizeof(MEM)
+  if not ps.GetProcessMemoryInfo(process_handle,c.byref(mem),mem.cb):raise c.WinError(c.get_last_error())
+  s=state();sample.update(cpu_seconds=(ticks(p_kernel)+ticks(p_user))/1e7,working_set=mem.working_set,private_bytes=mem.private,frames=s['frames'],simulation=s['simulationTime'],food=len(s.get('food') or []),emitted=s['emitted'],consumed=s['consumed'],visible=s['overlayVisible'])
+ report['samples'].append(sample)
+
+def sample_phase(name,duration=5,move=None):
+ start=time.monotonic();last_sample=-1;i=0
+ while time.monotonic()-start<duration:
+  if move:move(i);i+=1
+  if time.monotonic()-last_sample>=.25:take(name);last_sample=time.monotonic()
+  time.sleep(.05)
+ take(name)
+
 try:
- last=LAST(c.sizeof(LAST),0);u.GetLastInputInfo(c.byref(last))
- if ((k.GetTickCount()-last.tick)&0xffffffff)/1000<2:raise RuntimeError('Desktop is active; rerun while idle')
+ sample_phase('no-aquarium baseline',4)
+ exe=Path(os.environ.get('AQUARIUM_TEST_EXE',str(ROOT/'artifacts/g4/extracted-r2/DesktopAquarium/app/Aquarium.Windows.exe'))).resolve()
+ if not exe.is_relative_to(ROOT) or not exe.is_file():raise RuntimeError('Measurement executable must be an existing project artifact')
  if STATE.exists():STATE.unlink()
- exe=Path(os.environ.get('AQUARIUM_TEST_EXE',str(ROOT/'src/Aquarium.Windows/bin/Release/net10.0-windows/Aquarium.Windows.exe'))).resolve()
- if not exe.is_relative_to(ROOT) or not exe.is_file():raise RuntimeError('Test executable must be an existing project artifact')
- app=subprocess.Popen([str(exe),'--feed','--diagnostics',str(STATE),'--probe-seconds','65'],cwd=ROOT)
- s=wait_until(lambda s:s.get('alive') and s['feederVisible'] and len(s.get('fish') or [])==5,6)
- check('actual feeding host is running',s['foodImplemented'] and s['pid']==app.pid)
+ app=subprocess.Popen([str(exe),'--feed','--diagnostics',str(STATE),'--probe-seconds','50'],cwd=ROOT)
+ s=wait_until(lambda s:s['feederVisible'] and len(s.get('fish') or [])==5,6)
+ process_handle=k.OpenProcess(0x410,False,app.pid)
+ if not process_handle:raise c.WinError(c.get_last_error())
  display_w=round(s['display']['Width']);display_h=round(s['display']['Height'])
  boxes=[(0,80,display_w,display_h-160)]
  threading.Thread(target=fixture_thread,daemon=True).start();ready.wait(3)
- check('controlled real work window created',len(handles)==1,error);A=handles[0]
- pointer_moved=True;fixture_click();time.sleep(.3)
- check('work fixture foreground established',u.GetForegroundWindow()==A)
- tray_ids=tray_action('Hide');s=wait_until(lambda s:s['manualHidden'] and not s['overlayVisible'])
- check('actual tray Hide removes both surfaces',not s['feederVisible'])
- sim=s['simulationTime'];frames=s['frames'];time.sleep(.8);s=state()
- check('manual Hide freezes drawing and simulation',s['frames']==frames and s['simulationTime']==sim,{'frame_before':frames,'frame_after':s['frames'],'time_before':sim,'time_after':s['simulationTime']})
- second=subprocess.run([str(exe),'--feed'],cwd=ROOT,timeout=6);s=state()
- check('feeder launch cannot override manual Hide',second.returncode==0 and s['manualHidden'] and not s['overlayVisible'])
- fixture_click();u.PostMessageW(A,0x8011,0,0);s=wait_until(lambda s:'Fullscreen' in s['suppression'])
- check('fullscreen protection coexists with manual Hide',s['manualHidden'] and not s['overlayVisible'])
- u.PostMessageW(A,0x8012,0,0);s=wait_until(lambda s:'Fullscreen' not in s['suppression'])
- check('fullscreen exit does not undo manual Hide',s['manualHidden'] and not s['overlayVisible'])
- tray_action('Show again');s=wait_until(lambda s:s['overlayVisible'] and s['feederVisible'])
- check('tray Show restores only a resting feeder',s['feederMode']=='Resting' and not s['nativeCaptureOwned'])
- s,at=pick_up();emitted=s['emitted'];u.PostMessageW(s['feederHandle'],0x001f,0,0)
- s=wait_until(lambda s:s['feederMode']=='Resting' and not s['nativeCaptureOwned']);send(4)
- check('WM_CANCELMODE releases captured feeder',not s['feederCapture'] and s['emitted']==emitted)
- s,at=pick_up();u.SetForegroundWindow(A);time.sleep(.25)
- check('external work window gains focus for interruption test',u.GetForegroundWindow()==A)
- s=wait_until(lambda s:s['feederMode']=='Resting');send(4)
- check('deactivation cancels held input',not s['nativeCaptureOwned'])
- s,at=pick_up();before=s['emitted']
- # A real foreign fullscreen transition occurs while the left button is still down.
- u.SetForegroundWindow(A);u.PostMessageW(A,0x8011,0,0)
- s=wait_until(lambda s:'Fullscreen' in s['suppression'] and not s['overlayVisible']);send(4)
- check('fullscreen during holding clears capture and tool',s['feederMode']=='Resting' and not s['feederVisible'] and not s['nativeCaptureOwned'])
- sim=s['simulationTime'];frames=s['frames'];time.sleep(.8);s=state()
- check('fullscreen stops simulation, redraw and emission',s['simulationTime']==sim and s['frames']==frames and s['emitted']==before)
- u.PostMessageW(A,0x8012,0,0);s=wait_until(lambda s:s['overlayVisible'] and s['feederVisible'])
- check('fullscreen recovery cannot resume old hold',s['feederMode']=='Resting' and s['emitted']==before)
- s,at=pick_up();u.PostMessageW(s['overlayHandle'],0x007e,32,display_w|(display_h<<16))
- s=wait_until(lambda s:s['feederMode']=='Resting' and not s['nativeCaptureOwned']);send(4)
- check('simulated display-change notification cancels drag',not s['feederCapture'])
- s=wait_until(lambda s:s['overlayVisible']);p=s['feederPosition'];scale=s['transform']['Scale']
- check('display-change recovery leaves feeder inside primary display',p['X']>=0 and p['Y']>=0 and p['X']+164<=display_w/scale+1 and p['Y']+112<=display_h/scale+1)
- prior_handle=s['feederHandle'];prior_holds=s['holdCount']
- children=[subprocess.Popen([str(exe),'--feed'],cwd=ROOT) for _ in range(10)]
- codes=[p.wait(timeout=8) for p in children];s=state()
- check('ten rapid launches all receive handled-command acknowledgements',codes==[0]*10,codes)
- check('rapid launches preserve resident, feeder and no automatic pickup',s['pid']==app.pid and s['feederHandle']==prior_handle and s['holdCount']==prior_holds and s['feederMode']=='Resting')
- # Test the framework recovery message on our own icon, without restarting Explorer.
- msg=u.RegisterWindowMessageW('TaskbarCreated')
- for h in tray_ids:u.PostMessageW(h,msg,0,0)
- time.sleep(.3);tray_action('Hide');s=wait_until(lambda s:s['manualHidden'])
- check('simulated TaskbarCreated keeps tray menu usable',s['trayVisible'])
- tray_action('Show again');s=wait_until(lambda s:s['overlayVisible'])
- check('restoration after tray recovery keeps ordinary input',s['feederMode']=='Resting' and not s['nativeCaptureOwned'])
- fixture_click();u.PostMessageW(A,0x8010,0,0);time.sleep(.5);s=state()
- check('ordinary maximize remains distinct from fullscreen',s['overlayVisible'] and 'Fullscreen' not in s['suppression'])
- tray_action('Exit');code=app.wait(timeout=5);s=state()
- check('actual tray Exit terminates the resident normally',code==0 and not s['alive'])
- check('exit stops timer, tray, hooks and capture',not s['timerRunning'] and not s['trayVisible'] and s['eventHooks']==0 and not s['nativeCaptureOwned'])
- check('exit destroys both native windows',not u.IsWindow(s['overlayHandle']) and not u.IsWindow(s['feederHandle']))
- report['all_automated_checks_passed']=True
+ if len(handles)!=1:raise RuntimeError('No controlled performance window')
+ A=handles[0];pointer_moved=True;fixture_click();time.sleep(.7)
+ sample_phase('ordinary habitat',5)
+ s,at=pick_up()
+ def shake(i):
+  if u.GetForegroundWindow()!=s['feederHandle']:raise RuntimeError('User foreground changed; stopping benchmark input')
+  u.SetCursorPos(round(at[0]+(55 if i%2 else -55)),round(at[1]))
+ sample_phase('held shaking / feeding',5,shake)
+ send(4);wait_until(lambda s:s['feederMode']=='Resting')
+ time.sleep(.6);tray_action('Hide');wait_until(lambda s:s['manualHidden'] and not s['overlayVisible'])
+ sample_phase('manual hidden',5)
+ tray_action('Show again');wait_until(lambda s:s['overlayVisible'])
+ check('restored after sample without held input',state()['feederMode']=='Resting')
+ tray_action('Exit');app.wait(timeout=5)
+ check('measured package exited normally',app.returncode==0)
+ report['passed']=True
 except Exception as ex:
- report['error']=str(ex);report['all_automated_checks_passed']=False
- if STATE.exists():report['failure_state']=state()
+ report['passed']=False;report['error']=str(ex)
 finally:
+ if process_handle:k.CloseHandle(process_handle)
  if pointer_moved:send(4);u.SetCursorPos(saved_cursor.x,saved_cursor.y)
  for h in handles:u.PostMessageW(h,0x10,0,0)
  if app:
-  try:app.wait(timeout=70);report['exit_code']=app.returncode
-  except subprocess.TimeoutExpired:report['auto_exit_pending']=True
- if STATE.exists():report['final_state']=state()
- report['environment']={'remote_session':bool(u.GetSystemMetrics(0x1000)),'real_resolution_change_performed':False,'real_session_disconnect_performed':False,'explorer_restarted':False}
+  try:app.wait(timeout=55)
+  except subprocess.TimeoutExpired:report['exit_pending']=True
+ summary=[]
+ for name in dict.fromkeys(s['phase'] for s in report['samples']):
+  items=[s for s in report['samples'] if s['phase']==name]
+  if len(items)<2:continue
+  a,b=items[0],items[-1];duration=b['wall']-a['wall'];total=b['system_total_ticks']-a['system_total_ticks']
+  row={'phase':name,'seconds':round(duration,2),'whole_system_cpu_percent':round(100*(1-(b['system_idle_ticks']-a['system_idle_ticks'])/total),3) if total else None}
+  if 'cpu_seconds' in a:
+   row.update(process_cpu_percent_of_all_logical_processors=round((b['cpu_seconds']-a['cpu_seconds'])/duration/os.cpu_count()*100,4),working_set_mib_end=round(b['working_set']/1048576,2),private_mib_start=round(a['private_bytes']/1048576,2),private_mib_end=round(b['private_bytes']/1048576,2),observed_render_fps=round((b['frames']-a['frames'])/duration,2),max_food=max(s['food'] for s in items),emitted_during=b['emitted']-a['emitted'],consumed_during=b['consumed']-a['consumed'])
+  summary.append(row)
+ report.update(summary=summary,logical_processors=os.cpu_count(),remote_session=bool(u.GetSystemMetrics(0x1000)),diagnostics_enabled=True,gpu_measured=False,per_frame_latency_measured=False,sustained_run=False)
  (OUT/'report.json').write_text(json.dumps(report,indent=2),encoding='utf-8')
- (OUT/('report-'+str(time.time_ns())+'.json')).write_text(json.dumps(report,indent=2),encoding='utf-8')
- print(json.dumps({k:v for k,v in report.items() if k not in ['failure_state','final_state']},ensure_ascii=True))
-sys.exit(0 if report.get('all_automated_checks_passed') else 1)
+ print(json.dumps({k:v for k,v in report.items() if k!='samples'},ensure_ascii=True))
+sys.exit(0 if report.get('passed') else 1)

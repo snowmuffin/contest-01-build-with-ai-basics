@@ -10,7 +10,7 @@ import json, os, struct, subprocess, threading, time, zlib, sys
 from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[1]
-OUT=ROOT/'artifacts/feeding/native';OUT.mkdir(parents=True,exist_ok=True)
+OUT=Path(os.environ.get('AQUARIUM_TEST_OUTPUT',str(ROOT/'artifacts/feeding/native')));OUT.mkdir(parents=True,exist_ok=True)
 STATE=OUT/'state.json'
 u=c.WinDLL('user32',use_last_error=True);g=c.WinDLL('gdi32');k=c.WinDLL('kernel32');d=c.WinDLL('dwmapi')
 LRESULT=c.c_ssize_t
@@ -141,7 +141,8 @@ try:
  last=LAST(c.sizeof(LAST),0);u.GetLastInputInfo(c.byref(last));idle=((k.GetTickCount()-last.tick)&0xffffffff)/1000
  if idle<2:raise RuntimeError('Desktop recently active; rerun only while idle')
  if STATE.exists():STATE.unlink()
- exe=ROOT/'src/Aquarium.Windows/bin/Release/net10.0-windows/Aquarium.Windows.exe'
+ exe=Path(os.environ.get('AQUARIUM_TEST_EXE',str(ROOT/'src/Aquarium.Windows/bin/Release/net10.0-windows/Aquarium.Windows.exe'))).resolve()
+ if not exe.is_relative_to(ROOT) or not exe.is_file():raise RuntimeError('Test executable must be an existing project artifact')
  app=subprocess.Popen([str(exe),'--feed','--diagnostics',str(STATE),'--probe-seconds','45'],cwd=ROOT)
  time.sleep(1.5);s=wait_until(lambda s:s.get('foodImplemented') and len(s.get('fish') or [])==5)
  check('actual world has five fish, no G0 markers substituted',s['stage'].startswith('G1/G2') and s['foodImplemented'])
@@ -214,7 +215,7 @@ try:
  check('same five identities after maximized-window feeding',sorted(f['id'] for f in s['fish'])==ids)
  report['maximized_feeding_state']=s
  # Exercise the actual .lnk, not merely a direct executable invocation.
- shortcut=ROOT/'artifacts/feeding/shortcuts/Feed Fish.lnk'
+ shortcut=Path(os.environ.get('AQUARIUM_TEST_SHORTCUT',str(ROOT/'artifacts/feeding/shortcuts/Feed Fish.lnk')))
  if not shortcut.is_file():raise RuntimeError('Create the controlled-folder shortcut before running this harness')
  old_report=s['report'];os.startfile(str(shortcut));s=wait_until(lambda s:s['report']>old_report and s['lastEvent']=='open-feeder')
  check('actual feeder shortcut reuses the same resident',s['pid']==app.pid and s['feederHandle']==fh)

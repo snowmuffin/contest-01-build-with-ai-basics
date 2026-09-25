@@ -13,11 +13,13 @@ The first increment is the spec's critical Windows integration gate. Core tests 
 
 ## Current Execution Status
 
-G0 is committed as `b9d361a`; G2 live feeding is committed as `d2f35a4` and accepted for continuation after the learner's positive review, real Desktop launcher verification and explicit request to proceed. Do not reopen that checkpoint. Unreported specific manual sequences and local-console coverage are not inferred.
+G0 `b9d361a`, live feeding G2 `d2f35a4`, and G3 recovery `d26b420` are committed. The learner accepted the current feeding experience and requested continuation; do not reopen that checkpoint. G3 native and browser evidence remains specific to the documented RDP environment.
 
-G3 implementation is mechanically verified: Release build and 64 core tests pass; 25 G0 and 18 feeding regressions pass again; 25 lifecycle checks, 7 actual isolated-profile Edge F11 checks and 3 malformed-client checks pass. See `docs/g3-verification.md` for exact evidence, unsuccessful attempts and limits. The G3 commit is being saved before G4.
+G4 is in progress, NOT complete. A self-contained runtime-10.0.10 ZIP candidate exists at `artifacts/packages/g4-d26b420-r2/DesktopAquarium-win-x64.zip`. Its 482 payload hashes are verified; the matching app/runtime payload passed 18 feeding and 25 lifecycle native checks. Startup confirms package-local runtime module loading, including with invalid child DOTNET_ROOT and no SDK in child PATH. This is not a true clean-machine or offline test.
 
-Native results remain RDP-specific. Simulated display-change/TaskbarCreated notifications and unit-tested session flags are explicitly not real resolution changes, Explorer restart or a session reconnect. Final user exploration and the no-SDK/offline G4 environment are still pending. Continue the approved Fast-mode order without a new product interview.
+The source lockfile mutation caused by the first RID publish was repaired. The corrected wrapper preserves canonical lock hashes; a fresh publish followed by normal locked restore/build and all 64 tests passes. The package scripts and partial verification evidence form a progress checkpoint, not the completed G4 slice.
+
+See `docs/g4-verification.md` for the roughly five-second resource samples, actual RDP observations, remaining clean/offline/sustained checks and publication-notice audit. G4 and final hands-on review/wrap-up/ship remain unchecked. Generated HTML and private profile remain excluded from Git.
 
 ## Slices
 
@@ -41,7 +43,7 @@ Native results remain RDP-specific. Simulated display-change/TaskbarCreated noti
   Learner check: Use the app-owned desktop shortcut, pick up and shake the feeder, release it and continue working, then pick it up again and close it. Describe whether the interaction feels understandable and whether the fish feel autonomous. This is the early complete-core-journey feedback checkpoint.
   Commit: `Implement the live shake-to-feed aquarium loop`
 
-- [ ] **3. G3 — Keep the aquarium safe across fullscreen, hiding and interrupted input**
+- [x] **3. G3 — Keep the aquarium safe across fullscreen, hiding and interrupted input**
   Becomes usable: The complete feeding app reliably yields to fullscreen/system tasks, recovers resting rather than held, preserves manual Hide, and avoids stuck input or duplicate tools during repeated use.
   Why now: Basic protection already existed in G0. This expands the actual acceptance matrix with the complete behavior, when lifecycle regressions and hidden food emission can be observed rather than guessed.
   PRD ref: `prd.md > Fullscreen work takes priority — accepted, MVP value`; `prd.md > Aquarium controls and feeder activation — accepted, MVP value`; `prd.md > States and Boundaries`.
@@ -57,7 +59,7 @@ Native results remain RDP-specific. Simulated display-change/TaskbarCreated noti
   PRD ref: `prd.md > Platform and Documentation Decisions`; `prd.md > What We're Building`; `prd.md > Non-Goals`.
   Spec ref: `spec.md > Where It Runs and How Someone Tries It`; `spec.md > External Services and Dependencies`; `spec.md > Verification Order and Important Failure Modes`; `spec.md > Decisions and Open Issues`.
   Build: Add the planned self-contained publish/ZIP script and reproducible instructions. Record exact dependencies/runtime and asset provenance. Measure Release behavior in ordinary, feeding and hidden states. Keep HTML learning/review files outside Git. Do not publish publicly, select a license on the learner's behalf, or draft their final competition submission in this slice.
-  Verify (mechanical): Run Release build/core tests and `dotnet publish src/Aquarium.Windows/Aquarium.Windows.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=false -p:PublishTrimmed=false -o artifacts/win-x64`. Inspect the complete ZIP and record hashes. Run the extracted app on a controlled Windows 11 x64 local session without an SDK and with runtime networking unavailable; do not disconnect the user's host or alter security policy. Repeat real feeding and clean Exit. Compare baseline/ordinary/feeding/hidden CPU, memory, available GPU and frame timings with environment/counts recorded. Check that generated HTML/private profile/secrets are not staged. Missing clean-environment evidence remains unrun, not a pass.
+  Verify (mechanical): Run Release build/core tests and `scripts/Publish-Windows.ps1` (self-contained win-x64 with publish-only restore isolation), followed by `dotnet restore Aquarium.slnx --locked-mode` to verify that packaging preserved normal source restore. Inspect the complete ZIP and record hashes. Run the extracted app on a controlled Windows 11 x64 local session without an SDK and with runtime networking unavailable; do not disconnect the user's host or alter security policy. Repeat real feeding and clean Exit. Compare baseline/ordinary/feeding/hidden CPU, memory, available GPU and frame timings with environment/counts recorded. Check that generated HTML/private profile/secrets are not staged. Missing clean-environment evidence remains unrun, not a pass.
   Learner check: Extract and start the package, open the feeder, complete the feeding loop and explore awkward inputs. Give final feedback on the actual app, not a documentation page.
   Commit: `Package and verify the offline Windows prototype`
 
@@ -102,3 +104,5 @@ Activity mode: not selected; tie the wrap-up to actual implementation evidence.
 - The learner accepted the current live feeding experience and requested continuation after launcher access was resolved. Prior repeated pending-review text is superseded; no redesign or new gate is required. Final user review and untested environment claims remain separate.
 
 - G3: guard independent lock/disconnect flags, bound local activation acknowledgements/retries, and use a fixed-step clock that discards hidden time. A real Hide-frame assertion found a queued invisible render; adding visibility guards fixed it without changing the assertion. Actual Edge F11 and native fixtures passed; simulated notifications and unrun environments remain labelled.
+
+- G4 partial: packaged and extracted the real app, checked bundle-local runtime loading and reran feeding/lifecycle tests on the package. A bare RID publish changed canonical lockfiles and broke NU1004 locked restore; the publishing wrapper now isolates restore state and verifies source lock hashes. R2 publish followed by locked restore/build/64 tests passed. Clean no-SDK/offline and sustained performance remain unrun, so G4 stays unchecked.

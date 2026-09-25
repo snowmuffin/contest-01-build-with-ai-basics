@@ -63,9 +63,8 @@ dotnet restore Aquarium.slnx
 dotnet test tests/Aquarium.Core.Tests/Aquarium.Core.Tests.csproj -c Release
 dotnet run --project src/Aquarium.Windows/Aquarium.Windows.csproj -- --feed
 
-dotnet publish src/Aquarium.Windows/Aquarium.Windows.csproj -c Release -r win-x64 `
-  --self-contained true -p:PublishSingleFile=false -p:PublishTrimmed=false `
-  -o artifacts/win-x64
+# Preserves normal source lockfiles while producing self-contained win-x64 artifacts:
+./scripts/Publish-Windows.ps1 -RuntimeVersion 10.0.10
 ```
 
 Planned packaged use: extract the **whole** published directory, run `Aquarium.Windows.exe`, then run the documented `scripts/Create-FeederShortcut.ps1 -ExePath <absolute-exe-path>` once to create the app-owned desktop shortcut. That script must refuse to overwrite an unrelated shortcut; use the OS's current-user Desktop known-folder location rather than a hardcoded path. The shortcut targets the absolute executable path plus `--feed` and its own bundled icon. No startup registration, background service, administrator elevation or security-policy modification is required by the design.
@@ -307,6 +306,14 @@ The established G0 internals remain: code-only WPF windows, geometry-version-bas
 `SimulationClock.cs` supplies bounded fixed steps and discards hidden time. Its `SessionAvailability` flags preserve lock/disconnect independently. Native environment notifications and WM_CANCELMODE cancel a held tool; current tray interactions respect the same guard policy. The production instance broker still accepts only the fixed feeder command, now with dispatcher-completion acknowledgement, bounded retries and correct mutex ownership. No extra public control interface was added.
 
 The live host has passed 64 core tests, the prior 25 G0/18 feeding regression checks, 25 lifecycle native checks, 7 actual isolated-profile Edge F11 checks and 3 malformed-client protocol checks. Hidden queued drawing was repaired after a failing native freeze assertion. No actual display setting or session was changed by these tests. Native evidence remains RDP-only; games, real reconnect/DPI changes and clean offline packaging remain unrun. See `docs/g3-verification.md`; neither planned target support nor these results are final release acceptance.
+
+## G4 package candidate evidence
+
+The corrected `scripts/Publish-Windows.ps1` now creates a self-contained folder/ZIP with explicit runtime 10.0.10, bundled assets, app launch/setup helpers, source checkpoint and file hashes. The current candidate is `artifacts/packages/g4-d26b420-r2/DesktopAquarium-win-x64.zip`. Its application/runtime files match the tested first candidate; only README line endings changed. Package startup was rerun after R2 extraction.
+
+Packaged feeding (18 checks), packaged lifecycle (25 checks), 482 file-hash checks and package-local host/runtime module loading are verified. The host is still SDK-equipped and connected; invalid child DOTNET_ROOT/PATH is not a clean/offline environment. Resource data is a five-second-per-phase RDP sample: about 20 render frames/s when visible and zero hidden redraw, not a performance guarantee. Sustained CPU/GPU/frame latency and local-console/no-SDK/offline tests remain.
+
+An initial publish modified normal source lockfiles and caused NU1004 on locked restore. Publish restore now uses a fresh artifact-only lock path with lock generation disabled, while canonical file hashes are guarded. Source locked restore/build/64 tests pass after republishing. See `docs/g4-verification.md`. G4 remains incomplete, and final review, redistribution-notice/source-license checks and ship are not complete.
 
 ## Documentation Sources
 
