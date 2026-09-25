@@ -1,0 +1,22 @@
+.env
+.env.*
+!.env.example
+node_modules/
+dist/
+build/
+.DS_Store
+Thumbs.db
+/devpost/learner-profile.md
+
+# Local visual documentation only; canonical Markdown remains in Git.
+/devpost/*.html
+
+# Build, test and local diagnostic outputs
+**/bin/
+**/obj/
+**/TestResults/
+/artifacts/
+/.cache/
+/.vs/
+*.user
+/skills-install.*.log

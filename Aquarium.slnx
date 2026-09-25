@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Aquarium.Core/Aquarium.Core.csproj" />
+    <Project Path="src/Aquarium.Windows/Aquarium.Windows.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Aquarium.Core.Tests/Aquarium.Core.Tests.csproj" />
+  </Folder>
+</Solution>

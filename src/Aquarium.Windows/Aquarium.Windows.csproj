@@ -1,0 +1,2 @@
+<Project Sdk="Microsoft.NET.Sdk"><PropertyGroup><OutputType>WinExe</OutputType><TargetFramework>net10.0-windows</TargetFramework><UseWPF>true</UseWPF><UseWindowsForms>true</UseWindowsForms><!-- WPF owns process DPI via the manifest. WinForms is used only for NotifyIcon; no WinForms application bootstrap. -->
+<NoWarn>$(NoWarn);WFO0003</NoWarn><ApplicationManifest>app.manifest</ApplicationManifest></PropertyGroup><ItemGroup><ProjectReference Include="..\Aquarium.Core\Aquarium.Core.csproj" /></ItemGroup></Project>
