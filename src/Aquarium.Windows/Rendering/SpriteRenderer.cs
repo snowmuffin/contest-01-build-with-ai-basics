@@ -47,7 +47,7 @@ internal sealed class SpriteRenderer : FrameworkElement
     }
     protected override void OnRender(DrawingContext drawing)
     {
-        if(scene is null || environment is null)return;
+        if(!IsVisible || scene is null || environment is null)return;
         FrameCount++;
         var dpi=VisualTreeHelper.GetDpi(this).DpiScaleX;
         double Snap(double v)=>Math.Round(v*dpi)/dpi;

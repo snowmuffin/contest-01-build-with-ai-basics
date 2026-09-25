@@ -54,9 +54,9 @@ Implements `prd.md > Platform and Documentation Decisions`.
 
 **Approved first validation envelope:** Windows 11 x64, a local interactive desktop session, and one primary-monitor habitat. Basic geometry/DPI changes must recover safely; cross-monitor ecosystems and identical RDP behavior are not promised. Windows 10, ARM64, multiple simultaneous habitats, macOS and Linux are outside this agreed first validation envelope. Target selection does not establish that any environment has passed the planned checks.
 
-The inspected host reports Windows NT build **26200**, x64. UI behavior has not been tested. Validation should record the actual display resolution, scaling and local-vs-remote session; also test a stable supported Windows installation before claiming broad Windows 11 compatibility. Proposed scenarios include 100/125/150/200% scaling where available. Tests in unavailable environments remain explicitly unrun.
+The inspected host reports Windows NT build **26200**, x64. UI evidence now exists for the documented RDP environment; see `docs/g3-verification.md` for the precise tested cases. Validation should record the actual display resolution, scaling and local-vs-remote session; also test a stable supported Windows installation before claiming broad Windows 11 compatibility. Proposed scenarios include 100/125/150/200% scaling where available. Tests in unavailable environments remain explicitly unrun.
 
-Planned source commands, available **after** the build creates the projects:
+Source build/test/run commands for the current implementation; the publish command is the G4 delivery target:
 
 ```powershell
 dotnet restore Aquarium.slnx
@@ -280,7 +280,7 @@ Other failure handling: stop emission on capture loss; cancel hold on display/DP
 
 **Already selected by the learner:** first OS Windows; no runtime external services; core/OS separation; the approved feeding/depth/fullscreen/controls product behavior; HTML reviews outside Git. Do not reopen the approved PRD.
 
-**Technical recommendation approved:** the learner explicitly accepted C#/.NET 10 plus WPF/Win32, Windows 11 x64 primary-display-first validation, geometric masking subject to the early capability gate, and self-contained ZIP delivery. Do not request a second technical sign-off. The next artifact is the `5-build` Markdown checklist; build-order review and build-mode selection are separate from this completed technical approval.
+**Technical recommendation approved:** the learner explicitly accepted C#/.NET 10 plus WPF/Win32, Windows 11 x64 primary-display-first validation, geometric masking subject to the early capability gate, and self-contained ZIP delivery. Do not request a second technical sign-off. The build checklist and Fast mode have also been approved; `checklist.md` records current execution.
 
 **Genuine uncertainty being addressed:** the learner asked how a fish can be between ordinary windows without breaking their order. The proposed answer is logical bands plus masks, while keeping a small feeder interactive and the fish layer passive. Evidence must come from the real-window depth/input gate; this remains unverified until build.
 
@@ -301,6 +301,12 @@ A speed-invariant test exposed a boundary snap after edge feeding; clamping targ
 The original pixel atlas/feeder/icon are reproducible from `scripts/Generate-Assets.py`. New assets are local resources, not remotely fetched. `Create-FeederShortcut.ps1` passed workspace-local tests. After explicit Desktop access was granted, it also created the actual Desktop `Feed Fish.lnk`; idempotent reuse and two launches against the same running resident/feeder were verified. The development link targets the current Release build folder. Details and the local-only receipt are recorded in `docs/feeding-verification.md`. Earlier grant failures were not bypassed and are no longer a blocker.
 
 The established G0 internals remain: code-only WPF windows, geometry-version-based mask caching, inactive XAML-island region masking, slower hidden watcher and the documented narrow WFO0003 DPI-manifest exception. The application does not inject input or capture other applications; those operations exist only in controlled test scripts against test-owned surfaces. See `docs/feeding-verification.md` for exact passes and remaining work. Slice 2 is accepted for continuation after launcher verification and positive review; G3 and final review remain.
+
+## G3 implementation evidence
+
+`SimulationClock.cs` supplies bounded fixed steps and discards hidden time. Its `SessionAvailability` flags preserve lock/disconnect independently. Native environment notifications and WM_CANCELMODE cancel a held tool; current tray interactions respect the same guard policy. The production instance broker still accepts only the fixed feeder command, now with dispatcher-completion acknowledgement, bounded retries and correct mutex ownership. No extra public control interface was added.
+
+The live host has passed 64 core tests, the prior 25 G0/18 feeding regression checks, 25 lifecycle native checks, 7 actual isolated-profile Edge F11 checks and 3 malformed-client protocol checks. Hidden queued drawing was repaired after a failing native freeze assertion. No actual display setting or session was changed by these tests. Native evidence remains RDP-only; games, real reconnect/DPI changes and clean offline packaging remain unrun. See `docs/g3-verification.md`; neither planned target support nor these results are final release acceptance.
 
 ## Documentation Sources
 

@@ -17,6 +17,7 @@ internal sealed class DesktopOverlay : Window
     private readonly SpriteRenderer aquarium=new();
     private readonly bool probe;
     public nint Handle {get;private set;}
+    public event Action? EnvironmentChanged;
     public long FrameCount=>probe?canvas.FrameCount:aquarium.FrameCount;
     public Rect2[] MarkerRects=>canvas.Markers;
     public DesktopOverlay(bool probe=false)
@@ -35,6 +36,7 @@ internal sealed class DesktopOverlay : Window
     }
     private nint Hook(nint h,int msg,nint wp,nint lp,ref bool handled)
     {
+        if(msg==NativeMethods.WmDpiChanged || msg==NativeMethods.WmDisplayChange)EnvironmentChanged?.Invoke();
         if(msg==NativeMethods.WmMouseActivate){handled=true;return new nint(3);}
         return 0;
     }
@@ -77,7 +79,7 @@ internal sealed class DesktopOverlay : Window
         }
         protected override void OnRender(DrawingContext dc)
         {
-            if(snapshot is null)return;
+            if(!IsVisible || snapshot is null)return;
             FrameCount++;
             for(var i=0;i<3;i++)
             {

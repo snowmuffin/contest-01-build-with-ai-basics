@@ -23,7 +23,7 @@ public partial class App : Application
                 if(e.Args[i]=="--diagnostics" && i+1<e.Args.Length)diagnostics=e.Args[++i];
                 else if(e.Args[i]=="--probe-seconds" && i+1<e.Args.Length && int.TryParse(e.Args[++i],out var seconds))duration=Math.Clamp(seconds,1,600);
             }
-            host=new HostController(diagnostics,e.Args.Contains("--g0"));broker.Listen(()=>Dispatcher.BeginInvoke(new Action(()=>host?.OpenFeeder())));
+            host=new HostController(diagnostics,e.Args.Contains("--g0"));broker.Listen(()=>Dispatcher.InvokeAsync(new Action(()=>host?.OpenFeeder())).Task);
             if(e.Args.Contains("--feed"))host.OpenFeeder();
             if(duration is int timeout){var clock=new DispatcherTimer{Interval=TimeSpan.FromSeconds(timeout)};clock.Tick+=(_,_)=>{clock.Stop();Shutdown();};clock.Start();}
         }

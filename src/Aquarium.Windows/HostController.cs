@@ -19,7 +19,10 @@ internal sealed class HostController : IDisposable
     private readonly bool probe;
     private readonly World world=new();
     private SceneFrame? scene;
-    private double lastTick,accumulator;
+    private readonly SimulationClock simulationClock=new();
+    private readonly SessionAvailability sessionAvailability=new();
+    private bool trayMenuOpen;
+    private bool Allowed=>visibility.Visible&&!trayMenuOpen;
     private FeederState feederState=>world.Feeder;
     private readonly FeederWindow feeder;
     private readonly VisibilityPolicy visibility=new();
@@ -46,26 +49,52 @@ internal sealed class HostController : IDisposable
         menu.Items.Add("Open feeder",null,(_,_)=>OpenFeeder());
         menu.Items.Add("Hide",null,(_,_)=>SetManualHidden(true));
         menu.Items.Add("Show again",null,(_,_)=>SetManualHidden(false));
+        menu.Opening+=(_,_)=>{trayMenuOpen=true;ApplyVisibility();};
+        menu.Closed+=(_,_)=>{trayMenuOpen=false;if(!disposed)ApplyVisibility();};
         menu.Items.Add(new Forms.ToolStripSeparator());menu.Items.Add("Exit",null,(_,_)=>System.Windows.Application.Current.Shutdown());
         tray=new Forms.NotifyIcon{Icon=new System.Drawing.Icon(Path.Combine(AppContext.BaseDirectory,"Assets","feeder.ico")),Text=probe?"Aquarium G0 probe":"Desktop Aquarium",ContextMenuStrip=menu,Visible=true};
         tray.DoubleClick+=(_,_)=>OpenFeeder();
         SystemEvents.SessionSwitch+=OnSession;
+        overlay.EnvironmentChanged+=OnEnvironmentChanged;feeder.EnvironmentChanged+=OnEnvironmentChanged;
         timer=new DispatcherTimer(DispatcherPriority.Background){Interval=TimeSpan.FromMilliseconds(33)};timer.Tick+=Tick;
         Observe();ApplyVisibility();timer.Start();WriteReport();
     }
     private void OnSession(object sender,SessionSwitchEventArgs e)
     {
         System.Windows.Application.Current.Dispatcher.BeginInvoke(new Action(()=>
-        {observer.SessionLocked=e.Reason is SessionSwitchReason.SessionLock or SessionSwitchReason.ConsoleDisconnect or SessionSwitchReason.RemoteDisconnect;nextObserve=0;Tick(null,EventArgs.Empty);}));
+        {
+            if(disposed)return;
+            switch(e.Reason)
+            {
+                case SessionSwitchReason.SessionLock: sessionAvailability.Apply(SessionSignal.Lock);break;
+                case SessionSwitchReason.SessionUnlock: sessionAvailability.Apply(SessionSignal.Unlock);break;
+                case SessionSwitchReason.ConsoleDisconnect:
+                case SessionSwitchReason.RemoteDisconnect: sessionAvailability.Apply(SessionSignal.Disconnect);break;
+                case SessionSwitchReason.ConsoleConnect:
+                case SessionSwitchReason.RemoteConnect: sessionAvailability.Apply(SessionSignal.Connect);break;
+                default:return;
+            }
+            observer.SessionLocked=sessionAvailability.Unavailable;
+            feeder.CancelHold();world.ResetFeeding();nextObserve=0;Tick(null,EventArgs.Empty);
+        }));
+    }
+    private void OnEnvironmentChanged()
+    {
+        if(disposed)return;
+        // Native callbacks only invalidate/cancel; reading fresh geometry is deferred to the dispatcher.
+        feeder.CancelHold();world.ResetFeeding();visibility.Observe(Suppression.DisplayChange);
+        ApplyVisibility();nextObserve=0;
+        System.Windows.Application.Current.Dispatcher.BeginInvoke(new Action(()=>{if(!disposed)Tick(null,EventArgs.Empty);}));
     }
     public void OpenFeeder()
     {
-        if(snapshot is null)return;
+        if(disposed || snapshot is null)return;
         feederState.Open(snapshot.WorkArea.ClampOrigin(new(snapshot.Cursor.X+20,snapshot.Cursor.Y+20),feeder.Width,feeder.Height));
         feeder.UpdateEnvironment(snapshot,observer.Transform);feeder.Place();ApplyVisibility();lastEvent="open-feeder";WriteReport();
     }
     public void SetManualHidden(bool hidden)
     {
+        if(disposed)return;
         if(hidden)visibility.Hide();else visibility.Show();ApplyVisibility();lastEvent=hidden?"manual-hide":"manual-show";WriteReport();
     }
     private void Observe()
@@ -91,27 +120,27 @@ internal sealed class HostController : IDisposable
     private void Tick(object? sender,EventArgs e)
     {
         if(disposed)return;var t=time.Elapsed.TotalSeconds;
-        if(t>=nextObserve || observer.Dirty){Observe();nextObserve=t+(visibility.Visible?0.10:0.5);ApplyVisibility();}
+        if(t>=nextObserve || observer.Dirty){Observe();nextObserve=t+(Allowed?0.10:0.5);ApplyVisibility();}
         if(feederState.Mode==FeederMode.Held && (NativeMethods.GetAsyncKeyState(1)&0x8000)==0)feeder.CancelHold();
-        var elapsed=Math.Clamp(t-lastTick,0,0.05);lastTick=t;
-        if(visibility.Visible && snapshot is not null)
+        var steps=simulationClock.Advance(t,Allowed);
+        if(Allowed && snapshot is not null)
         {
             if(probe)overlay.UpdateFrame(snapshot,t);
             else
             {
-                world.SetEnabled(true);accumulator+=elapsed;
-                while(accumulator>=1.0/60){world.Advance(1.0/60,snapshot);accumulator-=1.0/60;}
+                world.SetEnabled(true);
+                for(var i=0;i<steps;i++)world.Advance(1.0/60,snapshot);
                 scene=world.Snapshot();overlay.UpdateWorld(snapshot,scene);
             }
         }
-        else {world.SetEnabled(false);accumulator=0;}
+        else world.SetEnabled(false);
         if(t>=nextReport){WriteReport();nextReport=t+0.25;}
     }
     private void ApplyVisibility()
     {
-        timer.Interval=TimeSpan.FromMilliseconds(visibility.Visible?33:500);
-        world.SetEnabled(visibility.Visible);
-        if(visibility.Visible && snapshot is not null)
+        timer.Interval=TimeSpan.FromMilliseconds(Allowed?33:500);
+        world.SetEnabled(Allowed);
+        if(Allowed && snapshot is not null)
         {
             if(probe)overlay.UpdateFrame(snapshot,time.Elapsed.TotalSeconds);
             else overlay.UpdateWorld(snapshot,scene??world.Snapshot());
@@ -119,7 +148,7 @@ internal sealed class HostController : IDisposable
             if(feederState.Mode!=FeederMode.Closed && !feeder.IsVisible){feeder.Place();feeder.Show();feeder.Place();}
         }
         else
-        {feeder.CancelHold();world.ResetFeeding();accumulator=0;lastTick=time.Elapsed.TotalSeconds;if(feeder.IsVisible)feeder.Hide();if(overlay.IsVisible)overlay.Hide();}
+        {feeder.CancelHold();world.ResetFeeding();simulationClock.Advance(time.Elapsed.TotalSeconds,false);if(feeder.IsVisible)feeder.Hide();if(overlay.IsVisible)overlay.Hide();}
     }
     private void WriteReport()
     {
@@ -131,7 +160,9 @@ internal sealed class HostController : IDisposable
                 stage=probe?"G0 native integration probe":"G1/G2 live feeding prototype",pid=Environment.ProcessId,session=Process.GetCurrentProcess().SessionId,
                 utc=DateTimeOffset.UtcNow,report=++reportCount,alive=!disposed,lastEvent,
                 overlayVisible=overlay.IsVisible,feederVisible=feeder.IsVisible,feederMode=feederState.Mode.ToString(),
-                manualHidden=visibility.ManualHidden,suppression=visibility.Reasons.ToString(),
+                manualHidden=visibility.ManualHidden,suppression=(visibility.Reasons|(trayMenuOpen?Suppression.SystemUi:Suppression.None)).ToString(),
+                timerRunning=timer.IsEnabled,trayVisible=!disposed&&tray.Visible,
+                trayMenu=MenuReport(),
                 feederCapture=feeder.BodyCaptured,nativeCaptureOwned=capture!=0 && NativeMethods.IsOwn(capture),
                 holdCount=feederState.HoldCount,moveCount=feeder.MoveCount,closeCount,
                 overlayHandle=(long)overlay.Handle,feederHandle=(long)feeder.Handle,
@@ -152,9 +183,16 @@ internal sealed class HostController : IDisposable
         catch(IOException){ } // Diagnostics must never take down the desktop host.
         catch(UnauthorizedAccessException){ }
     }
+    private object? MenuReport()
+    {
+        if(disposed || tray.ContextMenuStrip is not { Visible:true } menu)return null;
+        return new {handle=(long)menu.Handle,items=menu.Items.Cast<Forms.ToolStripItem>()
+            .Where(item=>item.Enabled).Select(item=>new {text=item.Text,
+                bounds=menu.RectangleToScreen(item.Bounds)}).ToArray()};
+    }
     public void Dispose()
     {
         if(disposed)return;disposed=true;timer.Stop();feeder.CancelHold();SystemEvents.SessionSwitch-=OnSession;
-        feeder.Hide();overlay.Hide();lastEvent="exit";WriteReport();tray.Visible=false;tray.ContextMenuStrip?.Dispose();tray.Icon?.Dispose();tray.Dispose();observer.Dispose();feeder.Close();overlay.Close();
+        world.SetEnabled(false);feeder.Hide();overlay.Hide();lastEvent="exit";tray.Visible=false;tray.ContextMenuStrip?.Dispose();tray.Icon?.Dispose();tray.Dispose();observer.Dispose();feeder.Close();overlay.Close();WriteReport();
     }
 }

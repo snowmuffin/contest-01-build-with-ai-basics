@@ -13,11 +13,11 @@ The first increment is the spec's critical Windows integration gate. Core tests 
 
 ## Current Execution Status
 
-G0 is saved as `b9d361a`. The learner positively reviewed the running feeding test and explicitly requested continuation after the real Desktop launcher was installed and verified. This accepts the current feeding experience without inventing a detailed checklist of mouse actions or local-console coverage.
+G0 is committed as `b9d361a`; G2 live feeding is committed as `d2f35a4` and accepted for continuation after the learner's positive review, real Desktop launcher verification and explicit request to proceed. Do not reopen that checkpoint. Unreported specific manual sequences and local-console coverage are not inferred.
 
-Slice 2 is mechanically verified and accepted for its checkpoint: 54 core tests passed again; prior native receipts record 25 G0 and 18 feeding checks; two actual Desktop shortcut launches reused one resident. Live-session counters separately recorded holding, food emission and consumption, without agent-generated mouse input during the Desktop-grant task. Detailed browser/game/local-console coverage is not inferred. Its commit is being saved before any G3 change.
+G3 implementation is mechanically verified: Release build and 64 core tests pass; 25 G0 and 18 feeding regressions pass again; 25 lifecycle checks, 7 actual isolated-profile Edge F11 checks and 3 malformed-client checks pass. See `docs/g3-verification.md` for exact evidence, unsuccessful attempts and limits. The G3 commit is being saved before G4.
 
-Next is G3 stability and recovery, in the approved Fast mode. Final hands-on exploration and release acceptance remain pending. HTML and private learner content remain outside Git.
+Native results remain RDP-specific. Simulated display-change/TaskbarCreated notifications and unit-tested session flags are explicitly not real resolution changes, Explorer restart or a session reconnect. Final user exploration and the no-SDK/offline G4 environment are still pending. Continue the approved Fast-mode order without a new product interview.
 
 ## Slices
 
@@ -31,7 +31,7 @@ Next is G3 stability and recovery, in the approved Fast mode. Final hands-on exp
   Learner check: Start the same command on the Windows desktop. Try clicking/scrolling the work app through the marker, move the feeder across another app and release it, overlap/reorder two windows, and try fullscreen plus Hide/Show/Exit. Report anything blocked, visually wrong, or unexpectedly focused. This is a native integration probe, not the finished aquarium.
   Commit: `Prove Windows overlay input and depth integration`
 
-- [ ] **2. G1/G2 — Feed a fish through the real desktop feeder loop**
+- [x] **2. G1/G2 — Feed a fish through the real desktop feeder loop**
   Becomes usable: Original pixel-art fish swim on the display and occasionally notice the cursor. A real feeder launcher opens one resting tool; holding and shaking releases food; a fish visibly approaches and eats; releasing/X returns the user to ordinary work.
   Why now: This delivers the unique kernel immediately after the native risk gate. Deterministic rules, unit tests and their visible Windows connections are built together, rather than completing a core library with nothing usable on screen.
   PRD ref: `prd.md > The Core Journey`; `prd.md > Desktop presence and cursor curiosity — MVP value`; `prd.md > Window depth — accepted direction, MVP value`; `prd.md > Feeder handling — accepted, MVP value`; `prd.md > Look and Feel`.
@@ -100,3 +100,5 @@ Activity mode: not selected; tie the wrap-up to actual implementation evidence.
 - Desktop access resolution: actual `Feed Fish.lnk` installation and two settled same-instance launches are verified. The first immediate composite assertion is retained as an unsuccessful verification attempt; later checks wait for process settlement. No new application code or G3 test pass is claimed.
 
 - The learner accepted the current live feeding experience and requested continuation after launcher access was resolved. Prior repeated pending-review text is superseded; no redesign or new gate is required. Final user review and untested environment claims remain separate.
+
+- G3: guard independent lock/disconnect flags, bound local activation acknowledgements/retries, and use a fixed-step clock that discards hidden time. A real Hide-frame assertion found a queued invisible render; adding visibility guards fixed it without changing the assertion. Actual Edge F11 and native fixtures passed; simulated notifications and unrun environments remain labelled.

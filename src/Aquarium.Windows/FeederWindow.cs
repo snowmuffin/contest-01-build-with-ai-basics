@@ -19,6 +19,7 @@ internal sealed class FeederWindow : Window
     private DisplayTransform transform;
     private Point2 dragStart,origin;
     public nint Handle {get;private set;}
+    public event Action? EnvironmentChanged;
     public long MoveCount {get;private set;}
     public bool BodyCaptured=>body.IsMouseCaptured;
     public event Action? ClosedByUser;
@@ -45,7 +46,13 @@ internal sealed class FeederWindow : Window
         body.MouseLeftButtonUp+=(_,e)=>{e.Handled=true;CancelHold();};
         body.LostMouseCapture+=(_,_)=>CancelHold();
         Deactivated+=(_,_)=>CancelHold();
-        SourceInitialized+=(_,_)=>{Handle=new WindowInteropHelper(this).Handle;var ex=(long)NativeMethods.GetWindowLongPtr(Handle,NativeMethods.GwlExStyle);NativeMethods.SetWindowLongPtr(Handle,NativeMethods.GwlExStyle,new nint(ex|NativeMethods.ExToolWindow));};
+        SourceInitialized+=(_,_)=>{Handle=new WindowInteropHelper(this).Handle;var ex=(long)NativeMethods.GetWindowLongPtr(Handle,NativeMethods.GwlExStyle);NativeMethods.SetWindowLongPtr(Handle,NativeMethods.GwlExStyle,new nint(ex|NativeMethods.ExToolWindow));HwndSource.FromHwnd(Handle)?.AddHook(Hook);};
+    }
+    private nint Hook(nint h,int msg,nint wp,nint lp,ref bool handled)
+    {
+        if(msg==NativeMethods.WmDpiChanged || msg==NativeMethods.WmDisplayChange)EnvironmentChanged?.Invoke();
+        if(msg==0x001f)CancelHold(); // WM_CANCELMODE; do not leave a captured drag active.
+        return 0;
     }
     public void UpdateEnvironment(EnvironmentSnapshot value,DisplayTransform tx){snapshot=value;transform=tx;}
     public void Place()

@@ -23,6 +23,8 @@ The current development machine's Desktop grant is now active and its real `Feed
 
 ## Test evidence
 
+`docs/g3-verification.md` records lifecycle/guard verification, actual isolated-profile Edge F11, repeated activation and bounded malformed-client handling. Other sessions/displays/games remain untested.
+
 `docs/feeding-verification.md` separates tests executed from unrun work. The G0 fixture runner uses `--g0`; the feeding fixture runner uses the actual world and targets only its own native windows and the feeder. Both require an idle interactive test desktop. Native fixture success does not replace user feedback.
 
 Optional local diagnostic state can be enabled using `--diagnostics artifacts/feeding/state.json`; it is an overwritten local report, never telemetry. `--probe-seconds 45` is a bounded test-run exit, not a feeding animation.
