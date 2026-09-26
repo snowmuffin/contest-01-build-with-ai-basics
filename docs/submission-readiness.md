@@ -16,11 +16,11 @@ The participant requested preparation up to, but not including, submission; refi
 | Core desktop feeding loop and Windows coexistence | Implemented; earlier G2/G3 evidence is recorded in verification documents |
 | Candidate runtime | 10.0.12 from live official metadata, release date 2026-09-08; host SDK/shared runtime unchanged |
 | Upstream notices | Exact distribution/source-version notice texts and hashes collected under notices/dotnet-10.0.12 |
-| Release candidate | See the current generated package receipt; new native regression is pending when the desktop session is available |
+| Release candidate | `artifacts/packages/pre-submit-01/DesktopAquarium-win-x64.zip`; 489 hashes match, new-runtime native regression pending |
 | Core tests | 64 passing after the candidate diagnostics change; Release build has zero reported warnings/errors |
 | Clean/offline test kit | Prepared; absence of Windows Sandbox on this host means not executed |
 | Screen recording | Recorder tooling present; new capture blocked by input-desktop access denial, not completed |
-| Source/history audit | Run Audit-PreSubmit.py and review its actual report; a pattern scan is not an absolute secrecy guarantee |
+| Source/history audit | 109 history blobs scanned with zero configured credential-pattern hits; owner metadata review still required |
 | App map | Local-only technical reference, not a claim of completed final review or learning activity |
 
 ## Owner items intentionally left blank

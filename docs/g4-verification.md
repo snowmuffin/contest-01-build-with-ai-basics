@@ -1,5 +1,7 @@
 # G4 package candidate verification
 
+> Historical runtime-10.0.10 candidate evidence. The newer runtime-10.0.12 preparation pass and its still-pending native/clean-room checks are in `pre-submit-verification.md`. Do not transfer these old runtime test passes to the new package automatically.
+
 ## Current status
 
 **Partial G4 checkpoint, not a completed release.** G2 live feeding is saved as `d2f35a4`; G3 recovery as `d26b420`. The self-contained candidate is built and tested on the existing RDP host. A genuinely separate no-SDK/offline environment, sustained GPU/frame-time testing and final hands-on review are still outstanding. No repository was published, visibility changed, final license selected, or competition entry submitted.

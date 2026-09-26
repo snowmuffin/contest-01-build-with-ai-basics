@@ -49,3 +49,19 @@ results folder is the only writable host mapping. Kit creation is not a clean-ro
 
 Candidate hashes, clean-room configuration generation and source-audit receipts are appended after
 those operations complete. Unavailable checks remain open in `devpost/checklist.md`.
+
+## Created candidate and audit
+
+- Candidate ZIP: `artifacts/packages/pre-submit-01/DesktopAquarium-win-x64.zip`.
+- Candidate source checkpoint: `12baa4d72d75c629bf67ff98f1f12325b8435ddb`; source worktree was clean at publish.
+- ZIP bytes: `73839304`; SHA-256: `C9FEB59FA731C6C812247E45964F42CBDE27B637F5BD16ABE331AFD20874A8B8`.
+- Extracted copy: `artifacts/pre-submit/extracted/DesktopAquarium/`.
+- All 489 file hashes/lengths matched after safe-path extraction. The inventory includes six upstream notice texts plus their provenance; case-insensitive globbing is not used to double-count them.
+- Read-only audit inspected 109 historical Git blobs across 5 commits. It found zero configured credential-pattern hits and no tracked private profile/HTML. This is not an absolute secret-free or legal certification. Git author metadata is present in the local bundle and must be approved for public exposure.
+- App code dependency isolation remains intact. Normal locked restore after publish passes.
+- Clean-room kit created: `artifacts/pre-submit/clean-room/Offline-Aquarium.wsb`. Package/script mounts are read-only; only the dedicated results folder is writable. Networking is disabled in the guest configuration. It has not executed; the host does not have Sandbox installed.
+- Source snapshot: `artifacts/pre-submit/DesktopAquarium-source-12baa4d.zip`; complete local recovery bundle: `artifacts/pre-submit/DesktopAquarium-checkpoint.bundle`. Bundle verification passed. Neither was uploaded.
+- Recording helper ran its preflight and refused capture due to input-desktop access denial. No video is accepted or uploaded. Longer interactive measurements were not run.
+- App-map paths/anchors and no-script/no-network structure are checked. Isolated headless Edge produced a DOM dump containing the map; this is not a completed learner walkthrough or visual acceptance of the actual app.
+
+Remaining: normal interactive session for candidate feeding/lifecycle and recording, separate SDK-free/offline acceptance, final package review, participant-authored fields/survey, project license and public links. Actual submission remains explicitly prohibited in this preparation pass.

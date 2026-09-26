@@ -10,7 +10,7 @@ Application code for the desktop aquarium is new in this repository. The solutio
 
 A project publication license and final asset provenance must be reviewed before public distribution. No license has been selected on the participant's behalf.
 
-## G4 publication checkpoint
+## Earlier G4 publication checkpoint (superseded by the pre-submission candidate below)
 
 The self-contained candidate includes .NET Core and Windows Desktop runtime 10.0.10 and the bundled original fish/feeder assets. Its app/ publish output did not automatically include standalone runtime license/notice text files. The project's final source license and required runtime/dependency redistribution notices must be collected/reviewed before public distribution. This dependency summary alone is not a completed license audit, and no public release was made.
 

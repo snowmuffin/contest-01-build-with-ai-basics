@@ -21,7 +21,7 @@ The current tool session has no accessible input desktop: OpenInputDesktop retur
 
 Windows Sandbox executables are absent on this host. A network-disabled clean-room kit can be generated for a machine where Sandbox is already available, but its existence is NOT an offline/no-SDK pass. Actual separate-environment and final hands-on checks remain pending. The project license, final participant-authored form fields, public repository/demo links and final Submit are intentionally untouched.
 
-See `docs/submission-readiness.md` and `docs/pre-submit-verification.md` for the current candidate/evidence. `devpost/app-map.html` is a local reference preview, not a completed learning activity. Do not mark 5-build final review, 6-ship, or G4 complete yet.
+Candidate `pre-submit-01` (runtime 10.0.12, source `12baa4d`) has 489 verified payload hashes. Clean-room kit and source archive/bundle are prepared but not executed/published. Read-only audit found no configured credential-pattern hits in 109 history blobs. See `docs/submission-readiness.md` and `docs/pre-submit-verification.md` for evidence. `devpost/app-map.html` is a local reference preview, not a completed learning activity. Do not mark 5-build final review, 6-ship, or G4 complete yet.
 
 ## Slices
 
@@ -81,7 +81,7 @@ See `docs/submission-readiness.md` and `docs/pre-submit-verification.md` for the
 - [ ] Optional edit and transfer reflection addressed — offered/declined/already covered/not applicable as appropriate.
 - [ ] `devpost/app-map.html` generated from finished code, checked, and shown locally; remains Git-ignored.
 
-Activity and evidence: not performed yet; no learning or runtime evidence claimed.
+Activity and evidence: no learner wrap-up activity is claimed. A local static app-map preview has been generated with five checked path/symbol anchors and a headless-browser DOM check; this is reference material pending final review, not proof of completed learning.
 Route and stops: select actual source paths and symbols after they exist.
 Edit outcome: not performed.
 Reflection: not yet offered; personal answer belongs only in the ignored profile.

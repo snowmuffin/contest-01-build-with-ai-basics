@@ -33,12 +33,14 @@ Canonical plans are in `devpost/`; generated HTML and the learner profile are lo
 
 ## Local package candidate (G4 still open)
 
-Build with `scripts/Publish-Windows.ps1 -RuntimeVersion 10.0.10`; output must be a new folder under `artifacts/`. This wrapper keeps platform-specific publish restore separate from the normal source lockfiles. Verify normal `dotnet restore Aquarium.slnx --locked-mode` after packaging.
+Build with `scripts/Publish-Windows.ps1 -RuntimeVersion 10.0.12`; output must be a new folder under `artifacts/`. This wrapper keeps platform-specific publish restore separate from the normal source lockfiles. Verify normal `dotnet restore Aquarium.slnx --locked-mode` after packaging.
 
-Current ZIP: `artifacts/packages/g4-d26b420-r2/DesktopAquarium-win-x64.zip`.
+Current ZIP: `artifacts/packages/pre-submit-01/DesktopAquarium-win-x64.zip`.
 Extract the **whole** folder and run its `Start-Aquarium.cmd` or `app/Aquarium.Windows.exe`.
 Close an already-running development aquarium using its tray Exit first, otherwise single-instance forwarding intentionally reuses that existing process. The current Desktop shortcut still targets the development Release folder, not this package. No automatic migration of that shortcut is performed.
 
-`docs/g4-verification.md` records hashes, packaged tests, loaded runtime paths and short resource samples. The candidate has not passed a separate SDK-free/offline machine or final user review and is not a publicly released artifact. Required runtime notices and the project's publication license still need review.
+`docs/g4-verification.md` records hashes, packaged tests, loaded runtime paths and short resource samples. The candidate has not passed a separate SDK-free/offline machine or final user review and is not a publicly released artifact. Matching upstream runtime/WPF/WinForms notice files are now bundled with provenance; the project owner's source/publication license decision remains pending.
 
 Test-only environment overrides `AQUARIUM_TEST_EXE`, `AQUARIUM_TEST_OUTPUT` and (feeding harness) `AQUARIUM_TEST_SHORTCUT` select a project-local candidate for `Verify-FeedingNative.py`/`Verify-G3Native.py`. They do not alter the product's runtime behavior. `Verify-PackagedStartup.ps1 -PackageDirectory <extracted-folder>` performs a bounded own-process runtime-module check. Native scripts require an idle authorized interactive desktop.
+
+Current preparation and owner-only items: `docs/submission-readiness.md`. New-runtime native/video checks are pending a normally accessible desktop session; earlier candidate passes must not be silently attributed to this newer package.

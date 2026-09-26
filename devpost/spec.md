@@ -325,7 +325,7 @@ Current runtime pin: 10.0.12, released 2026-09-08 in the live official 10.0 meta
 
 `New-CleanRoomKit.ps1` builds a guest-network-disabled WSB configuration with read-only package/scripts and only a dedicated results folder writable. It does not install Sandbox or change host networking/policies. `Run-OfflineAcceptance.ps1` records environment checks and the participant's actual manual outcomes; not-run stays not-run.
 
-The current session denies access to its input desktop, so new native rendering/input/video/long-sample checks have not run. Current app behavior remains protected by session suppression. The isolated source build and 64 core tests passed; previous native passes are historical evidence, not new-runtime acceptance. See `docs/pre-submit-verification.md` for this distinction.
+The runtime-10.0.12 candidate is `artifacts/packages/pre-submit-01/DesktopAquarium-win-x64.zip`, built from source `12baa4d`; all 489 payload hashes match. The current session denies access to its input desktop, so new native rendering/input/video/long-sample checks have not run. Current app behavior remains protected by session suppression. The isolated source build and 64 core tests passed; previous native passes are historical evidence, not new-runtime acceptance. See `docs/pre-submit-verification.md` for this distinction.
 
 ## Documentation Sources
 
