@@ -116,7 +116,13 @@ submission materials are still being reviewed; no public publishing is performed
     })
     $inventory | ConvertTo-Json -Depth 5 | Set-Content (Join-Path $package 'FILES.json') -Encoding UTF8
     $zip = Join-Path $output 'DesktopAquarium-win-x64.zip'
-    Compress-Archive -Path $package -DestinationPath $zip -CompressionLevel Optimal
+    # Some noninteractive PowerShell hosts throw while painting archive progress.
+    # Suppress that UI only; compression failures still propagate and hashes follow.
+    $savedProgress = $ProgressPreference
+    try {
+        $ProgressPreference = 'SilentlyContinue'
+        Compress-Archive -Path $package -DestinationPath $zip -CompressionLevel Optimal
+    } finally { $ProgressPreference = $savedProgress }
     $receipt = [ordered]@{package_directory=$package;zip=$zip;zip_bytes=(Get-Item $zip).Length;sha256=(Get-FileHash $zip -Algorithm SHA256).Hash;runtime=$RuntimeVersion;source_commit=$revision;clean_machine_tested=$false;offline_tested=$false}
     $receipt | ConvertTo-Json | Set-Content (Join-Path $output 'package-receipt.json') -Encoding UTF8
     $receipt | ConvertTo-Json

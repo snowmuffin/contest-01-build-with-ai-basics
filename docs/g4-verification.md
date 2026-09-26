@@ -33,6 +33,10 @@ The required separate Windows test without an SDK and without runtime networking
 Official feature-state reference: https://learn.microsoft.com/en-us/windows/win32/cimwin32prov/win32-optionalfeature
 Sandbox installation: https://learn.microsoft.com/en-us/windows/security/application-security/application-isolation/windows-sandbox/windows-sandbox-install
 
+### Repackaging retry
+
+Repackaging from checkpoint `3ee50d5` compiled successfully, but Windows PowerShell's `Compress-Archive` failed in `Write-Progress` with `IndexOutOfRangeException` under the noninteractive tool host. `package-01` is an unsuccessful partial artifact, not an accepted ZIP. The publish wrapper now suppresses only archive progress display inside a scoped try/finally; real compression failures still propagate. Retry uses a fresh `package-02` folder and must pass full extraction/hash verification. The previously measured pre-submit-01 candidate is unchanged.
+
 ### Measurement-tool changes
 
 The test now preserves requested duration separately from summary variables, refuses to overwrite an existing report, writes its current phase/PID for a bounded GPU sampler, and asserts behavior across all sampled states. Only test tools were changed; the product was not modified. The older owner instance was exited normally using keyboard navigation on its verified active tray menu after a pointer target overlapped a shell region. No unowned window received synthetic input.
