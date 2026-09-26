@@ -13,13 +13,15 @@ The first increment is the spec's critical Windows integration gate. Core tests 
 
 ## Current Execution Status
 
-G0 `b9d361a`, live feeding G2 `d2f35a4`, and G3 recovery `d26b420` are committed. The learner accepted the current feeding experience and requested continuation; do not reopen that checkpoint. G3 native and browser evidence remains specific to the documented RDP environment.
+The learner requested a submission-preparation pass first, with optional polish afterward. Freeze the current product scope; do not infer actual submission, public posting, final naming/license choice, or final user approval.
 
-G4 is in progress, NOT complete. A self-contained runtime-10.0.10 ZIP candidate exists at `artifacts/packages/g4-d26b420-r2/DesktopAquarium-win-x64.zip`. Its 482 payload hashes are verified; the matching app/runtime payload passed 18 feeding and 25 lifecycle native checks. Startup confirms package-local runtime module loading, including with invalid child DOTNET_ROOT and no SDK in child PATH. This is not a true clean-machine or offline test.
+G0, G2 and G3 remain committed and accepted as recorded. G4 is still open. The preparation pass adds an updated runtime-10.0.12 candidate, exact upstream notices, reproducible verification/recording helpers, a clean-room kit, and a local technical app-map preview. All 64 core tests and the isolated Release build pass after opt-in bounded rendering diagnostics were added. These diagnostics are not a visual/interaction redesign.
 
-The source lockfile mutation caused by the first RID publish was repaired. The corrected wrapper preserves canonical lock hashes; a fresh publish followed by normal locked restore/build and all 64 tests passes. The package scripts and partial verification evidence form a progress checkpoint, not the completed G4 slice.
+The current tool session has no accessible input desktop: OpenInputDesktop returned access denied (5), and there was no foreground window. An attempted own-tray click was denied. Do not force unlock, disconnect/reconnect, weaken security, or repeat injection through another route. Fresh native regression, screen capture and the longer live-input resource sample await a normal interactive session. Existing native results refer to the earlier runtime/build and are not silently transferred to the new candidate.
 
-See `docs/g4-verification.md` for the roughly five-second resource samples, actual RDP observations, remaining clean/offline/sustained checks and publication-notice audit. G4 and final hands-on review/wrap-up/ship remain unchecked. Generated HTML and private profile remain excluded from Git.
+Windows Sandbox executables are absent on this host. A network-disabled clean-room kit can be generated for a machine where Sandbox is already available, but its existence is NOT an offline/no-SDK pass. Actual separate-environment and final hands-on checks remain pending. The project license, final participant-authored form fields, public repository/demo links and final Submit are intentionally untouched.
+
+See `docs/submission-readiness.md` and `docs/pre-submit-verification.md` for the current candidate/evidence. `devpost/app-map.html` is a local reference preview, not a completed learning activity. Do not mark 5-build final review, 6-ship, or G4 complete yet.
 
 ## Slices
 
@@ -106,3 +108,5 @@ Activity mode: not selected; tie the wrap-up to actual implementation evidence.
 - G3: guard independent lock/disconnect flags, bound local activation acknowledgements/retries, and use a fixed-step clock that discards hidden time. A real Hide-frame assertion found a queued invisible render; adding visibility guards fixed it without changing the assertion. Actual Edge F11 and native fixtures passed; simulated notifications and unrun environments remain labelled.
 
 - G4 partial: packaged and extracted the real app, checked bundle-local runtime loading and reran feeding/lifecycle tests on the package. A bare RID publish changed canonical lockfiles and broke NU1004 locked restore; the publishing wrapper now isolates restore state and verifies source lock hashes. R2 publish followed by locked restore/build/64 tests passed. Clean no-SDK/offline and sustained performance remain unrun, so G4 stays unchecked.
+
+- Pre-submission pass requested: prepare technical deliverables before optional refinements, without publishing/submitting. A live metadata fetch showed runtime 10.0.12 while cached research still showed 10.0.10; new notices and candidate use the live value. Input-desktop denial and missing Sandbox prevent claiming fresh interactive/offline passes.

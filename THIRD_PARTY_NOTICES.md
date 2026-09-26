@@ -13,3 +13,15 @@ A project publication license and final asset provenance must be reviewed before
 ## G4 publication checkpoint
 
 The self-contained candidate includes .NET Core and Windows Desktop runtime 10.0.10 and the bundled original fish/feeder assets. Its app/ publish output did not automatically include standalone runtime license/notice text files. The project's final source license and required runtime/dependency redistribution notices must be collected/reviewed before public distribution. This dependency summary alone is not a completed license audit, and no public release was made.
+
+## Pre-submission runtime candidate
+
+The current candidate is pinned to .NET 10.0.12 (live official metadata release date 2026-09-08).
+`notices/dotnet-10.0.12/` preserves the exact runtime distribution LICENSE and ThirdPartyNotices bytes,
+with archive SHA-512 verification and per-file SHA-256 provenance. The Windows Desktop ZIP did not
+contain standalone notice files; any supplementary source notices are identified separately in the
+manifest and are not misrepresented as extracted binary-distribution files.
+
+These files describe upstream dependencies only. They do not choose a license for the original
+application. The owner must choose/confirm the application's source/distribution license before
+public publication. Test-only FFmpeg/Python/browser tools are not included in the application package.

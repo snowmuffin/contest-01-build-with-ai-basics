@@ -40,7 +40,7 @@ internal sealed class HostController : IDisposable
     private int closeCount;
     public HostController(string? diagnostics,bool probe=false)
     {
-        this.diagnostics=diagnostics;this.probe=probe;overlay=new DesktopOverlay(probe);
+        this.diagnostics=diagnostics;this.probe=probe;overlay=new DesktopOverlay(probe);overlay.EnableMetrics(diagnostics is not null);
         feeder=new(feederState,probe);
         feeder.Changed+=ev=>{world.ResetFeeding();lastEvent=ev;WriteReport();};
         feeder.HeldMoved+=point=>{if(!probe && snapshot is not null)world.SubmitHeldMotion(point,time.Elapsed.TotalSeconds,snapshot);};feeder.ClosedByUser+=()=>closeCount++;
@@ -172,7 +172,7 @@ internal sealed class HostController : IDisposable
                 feederPosition=feederState.Position,markers=overlay.MarkerRects,frames=overlay.FrameCount,
                 workWindowCount=snapshot?.WorkWindows.Count,protectedRegionCount=snapshot?.ProtectedRegions.Count,
                 shellState=observer.ShellState,eventHooks=observer.HookCount,
-                foodImplemented=!probe,finalArtwork=false,
+                foodImplemented=!probe,finalArtwork=false,renderMetrics=overlay.RenderMetricSnapshot,
                 fish=scene?.Fish.Select(f=>new{id=f.Id,position=f.Position,velocity=f.Velocity,band=f.Band.ToString(),activity=f.Activity.ToString(),transition=f.Transition.ToString(),facingRight=f.FacingRight,width=f.Width,height=f.Height,visible=snapshot is not null&&Occlusion.VisibleAt(f.Position,f.Band,snapshot)}),
                 food=scene?.Food,meals=scene?.RecentMeals,simulationTime=world.Time,
                 emitted=world.TotalEmitted,consumed=world.TotalConsumed,expired=world.TotalExpired,shakes=world.ShakeCount,curiosity=world.CuriosityCount

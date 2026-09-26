@@ -187,8 +187,12 @@ def pick_up():
  return wait_until(lambda s:s['feederMode']=='Held' and s['nativeCaptureOwned']),at
 
 # Short, explicitly non-isolated performance sample. Not a sustained/battery benchmark.
-OUT=ROOT/'artifacts/g4/performance';OUT.mkdir(parents=True,exist_ok=True);STATE=OUT/'state.json'
-report={'kind':'short same-host Release process sample','checks':[],'samples':[]}
+OUT=Path(os.environ.get('AQUARIUM_TEST_OUTPUT',str(ROOT/'artifacts/g4/performance'))).resolve();
+if not OUT.is_relative_to(ROOT/'artifacts'):raise RuntimeError('Measurement output must stay under project artifacts')
+OUT.mkdir(parents=True,exist_ok=True);STATE=OUT/'state.json'
+duration=float(os.environ.get('AQUARIUM_SAMPLE_SECONDS','5'))
+if not 5<=duration<=150:raise RuntimeError('Choose 5 to 150 seconds per phase')
+report={'kind':'finite same-host Release process sample','checks':[],'samples':[],'requested_phase_seconds':duration}
 api(k,'OpenProcess',w.HANDLE,[w.DWORD,w.BOOL,w.DWORD]);api(k,'CloseHandle',w.BOOL,[w.HANDLE])
 api(k,'GetProcessTimes',w.BOOL,[w.HANDLE,c.POINTER(w.FILETIME),c.POINTER(w.FILETIME),c.POINTER(w.FILETIME),c.POINTER(w.FILETIME)])
 api(k,'GetSystemTimes',w.BOOL,[c.POINTER(w.FILETIME),c.POINTER(w.FILETIME),c.POINTER(w.FILETIME)])
@@ -207,7 +211,7 @@ def take(phase):
   if not k.GetProcessTimes(process_handle,c.byref(created),c.byref(exited),c.byref(p_kernel),c.byref(p_user)):raise c.WinError(c.get_last_error())
   mem=MEM();mem.cb=c.sizeof(MEM)
   if not ps.GetProcessMemoryInfo(process_handle,c.byref(mem),mem.cb):raise c.WinError(c.get_last_error())
-  s=state();sample.update(cpu_seconds=(ticks(p_kernel)+ticks(p_user))/1e7,working_set=mem.working_set,private_bytes=mem.private,frames=s['frames'],simulation=s['simulationTime'],food=len(s.get('food') or []),emitted=s['emitted'],consumed=s['consumed'],visible=s['overlayVisible'])
+  s=state();sample.update(cpu_seconds=(ticks(p_kernel)+ticks(p_user))/1e7,working_set=mem.working_set,private_bytes=mem.private,frames=s['frames'],simulation=s['simulationTime'],food=len(s.get('food') or []),emitted=s['emitted'],consumed=s['consumed'],visible=s['overlayVisible'],render_metrics=s.get('renderMetrics'))
  report['samples'].append(sample)
 
 def sample_phase(name,duration=5,move=None):
@@ -223,7 +227,7 @@ try:
  exe=Path(os.environ.get('AQUARIUM_TEST_EXE',str(ROOT/'artifacts/g4/extracted-r2/DesktopAquarium/app/Aquarium.Windows.exe'))).resolve()
  if not exe.is_relative_to(ROOT) or not exe.is_file():raise RuntimeError('Measurement executable must be an existing project artifact')
  if STATE.exists():STATE.unlink()
- app=subprocess.Popen([str(exe),'--feed','--diagnostics',str(STATE),'--probe-seconds','50'],cwd=ROOT)
+ app=subprocess.Popen([str(exe),'--feed','--diagnostics',str(STATE),'--probe-seconds',str(min(600,int(duration*3+60)))],cwd=ROOT)
  s=wait_until(lambda s:s['feederVisible'] and len(s.get('fish') or [])==5,6)
  process_handle=k.OpenProcess(0x410,False,app.pid)
  if not process_handle:raise c.WinError(c.get_last_error())
@@ -232,15 +236,15 @@ try:
  threading.Thread(target=fixture_thread,daemon=True).start();ready.wait(3)
  if len(handles)!=1:raise RuntimeError('No controlled performance window')
  A=handles[0];pointer_moved=True;fixture_click();time.sleep(.7)
- sample_phase('ordinary habitat',5)
+ sample_phase('ordinary habitat',duration)
  s,at=pick_up()
  def shake(i):
   if u.GetForegroundWindow()!=s['feederHandle']:raise RuntimeError('User foreground changed; stopping benchmark input')
   u.SetCursorPos(round(at[0]+(55 if i%2 else -55)),round(at[1]))
- sample_phase('held shaking / feeding',5,shake)
+ sample_phase('held shaking / feeding',duration,shake)
  send(4);wait_until(lambda s:s['feederMode']=='Resting')
  time.sleep(.6);tray_action('Hide');wait_until(lambda s:s['manualHidden'] and not s['overlayVisible'])
- sample_phase('manual hidden',5)
+ sample_phase('manual hidden',duration)
  tray_action('Show again');wait_until(lambda s:s['overlayVisible'])
  check('restored after sample without held input',state()['feederMode']=='Resting')
  tray_action('Exit');app.wait(timeout=5)
@@ -264,7 +268,7 @@ finally:
   if 'cpu_seconds' in a:
    row.update(process_cpu_percent_of_all_logical_processors=round((b['cpu_seconds']-a['cpu_seconds'])/duration/os.cpu_count()*100,4),working_set_mib_end=round(b['working_set']/1048576,2),private_mib_start=round(a['private_bytes']/1048576,2),private_mib_end=round(b['private_bytes']/1048576,2),observed_render_fps=round((b['frames']-a['frames'])/duration,2),max_food=max(s['food'] for s in items),emitted_during=b['emitted']-a['emitted'],consumed_during=b['consumed']-a['consumed'])
   summary.append(row)
- report.update(summary=summary,logical_processors=os.cpu_count(),remote_session=bool(u.GetSystemMetrics(0x1000)),diagnostics_enabled=True,gpu_measured=False,per_frame_latency_measured=False,sustained_run=False)
+ report.update(summary=summary,logical_processors=os.cpu_count(),remote_session=bool(u.GetSystemMetrics(0x1000)),diagnostics_enabled=True,gpu_measured=False,per_frame_latency_measured=False,callback_metrics_available=any(x.get('render_metrics') for x in report['samples']),sustained_run=duration>=60)
  (OUT/'report.json').write_text(json.dumps(report,indent=2),encoding='utf-8')
  print(json.dumps({k:v for k,v in report.items() if k!='samples'},ensure_ascii=True))
 sys.exit(0 if report.get('passed') else 1)

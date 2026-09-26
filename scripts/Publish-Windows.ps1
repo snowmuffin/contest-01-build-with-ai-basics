@@ -1,8 +1,8 @@
 [CmdletBinding()]
 param(
-    # Latest version seen in the consulted official 10.0 release metadata (dated 2026-07-14).
+    # Pinned candidate version, rechecked against live official metadata on 2026-09-26.
     # Recheck servicing before public distribution; this does not update the machine's SDK/runtime.
-    [ValidatePattern('^10\.0\.\d+$')][string]$RuntimeVersion = '10.0.10',
+    [ValidatePattern('^10\.0\.\d+$')][string]$RuntimeVersion = '10.0.12',
     [string]$OutputDirectory
 )
 $ErrorActionPreference = 'Stop'
@@ -46,6 +46,19 @@ try {
     [IO.Directory]::CreateDirectory((Join-Path $package 'scripts')) | Out-Null
     Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'Create-FeederShortcut.ps1') -Destination (Join-Path $package 'scripts')
     Copy-Item -LiteralPath (Join-Path $root 'THIRD_PARTY_NOTICES.md') -Destination $package
+    $noticeSource = Join-Path $root ("notices\dotnet-" + $RuntimeVersion)
+    if (-not (Test-Path (Join-Path $noticeSource 'provenance.json'))) { throw 'Matching runtime notices are missing. Run Collect-RuntimeNotices.py before packaging.' }
+    $provenance = Get-Content (Join-Path $noticeSource 'provenance.json') -Raw | ConvertFrom-Json
+    if ($provenance.runtime_version -ne $RuntimeVersion) { throw 'Notice version does not match package runtime.' }
+    [IO.Directory]::CreateDirectory((Join-Path $package 'notices')) | Out-Null
+    Copy-Item -LiteralPath $noticeSource -Destination (Join-Path $package 'notices') -Recurse
+    foreach($record in $provenance.archives) {
+        foreach($notice in $record.notices) {
+            $sourceNotice = Join-Path $root $notice.path
+            if((Get-FileHash $sourceNotice -Algorithm SHA256).Hash -ine $notice.sha256) { throw 'Notice content differs from the verified distribution.' }
+        }
+    }
+
     $start = '@echo off' + "`r`n" + 'start "" "%~dp0app\Aquarium.Windows.exe" --feed' + "`r`n"
     [IO.File]::WriteAllText((Join-Path $package 'Start-Aquarium.cmd'), $start, [Text.Encoding]::ASCII)
     $setup = @'
@@ -79,7 +92,7 @@ policy, or system cursor settings. Do not disable SmartScreen or antivirus to ru
 The runtime is bundled. No account, model download or external service is required
 by the application. A real no-SDK/offline clean-machine run and final user review
 remain required before release claims. RDP tests do not certify other configurations.
-See BUILD.json for the source checkpoint/runtime. Source license and final public
+See BUILD.json for the source checkpoint/runtime and notices/ for bundled dependency notices. Source license and final public
 submission materials are still being reviewed; no public publishing is performed.
 '@
     [IO.File]::WriteAllText((Join-Path $package 'README.txt'), $readme, [Text.UTF8Encoding]::new($false))
@@ -89,7 +102,9 @@ submission materials are still being reviewed; no public publishing is performed
         runtime_version=$RuntimeVersion
         included_frameworks=$runtime.runtimeOptions.includedFrameworks
         runtime_metadata_source='https://builds.dotnet.microsoft.com/dotnet/release-metadata/10.0/releases.json'
-        metadata_release_date_observed='2026-07-14'
+        metadata_release_date_observed=$provenance.release_date
+        source_worktree_dirty=[bool](& git status --porcelain --untracked-files=no)
+        source_inputs=@(Get-ChildItem src -Recurse -File | Where-Object { $_.FullName -notmatch '\\(bin|obj)\\' } | Sort-Object FullName | ForEach-Object { [ordered]@{path=$_.FullName.Substring($root.Length+1).Replace('\','/');sha256=(Get-FileHash $_.FullName -Algorithm SHA256).Hash} })
         architecture='win-x64'
         self_contained=$true
         trimmed=$false

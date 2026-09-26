@@ -315,6 +315,18 @@ Packaged feeding (18 checks), packaged lifecycle (25 checks), 482 file-hash chec
 
 An initial publish modified normal source lockfiles and caused NU1004 on locked restore. Publish restore now uses a fresh artifact-only lock path with lock generation disabled, while canonical file hashes are guarded. Source locked restore/build/64 tests pass after republishing. See `docs/g4-verification.md`. G4 remains incomplete, and final review, redistribution-notice/source-license checks and ship are not complete.
 
+## Pre-submission candidate preparation
+
+Current runtime pin: 10.0.12, released 2026-09-08 in the live official 10.0 metadata fetched during this pass. The previous web cache showed 10.0.10; do not use that stale snapshot as current servicing evidence. The host SDK/shared runtime remain unchanged.
+
+`Collect-RuntimeNotices.py` validates official binary archive SHA-512 and preserves extracted runtime notices. WPF/WinForms v10.0.12 source notice files are separately identified; the Windows Desktop binary ZIP itself supplied none. Publishing bundles the matching notices and records exact source-input hashes plus worktree state. Dependency notices do not choose a license for the new application.
+
+`Rendering/RenderMetrics.cs` adds opt-in bounded diagnostic samples for OnRender callback intervals and callback CPU elapsed time. It does not measure compositor/GPU display latency. No new visual feature or runtime service is added. `Measure-Prototype.py` supports an explicitly bounded longer sample when the interactive desktop is available.
+
+`New-CleanRoomKit.ps1` builds a guest-network-disabled WSB configuration with read-only package/scripts and only a dedicated results folder writable. It does not install Sandbox or change host networking/policies. `Run-OfflineAcceptance.ps1` records environment checks and the participant's actual manual outcomes; not-run stays not-run.
+
+The current session denies access to its input desktop, so new native rendering/input/video/long-sample checks have not run. Current app behavior remains protected by session suppression. The isolated source build and 64 core tests passed; previous native passes are historical evidence, not new-runtime acceptance. See `docs/pre-submit-verification.md` for this distinction.
+
 ## Documentation Sources
 
 Official documentation consulted for technical claims on 2026-09-25. Proposed algorithms, component boundaries and defaults above are design decisions, not claims that Microsoft certifies this application.

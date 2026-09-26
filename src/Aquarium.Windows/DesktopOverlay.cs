@@ -20,6 +20,8 @@ internal sealed class DesktopOverlay : Window
     public event Action? EnvironmentChanged;
     public long FrameCount=>probe?canvas.FrameCount:aquarium.FrameCount;
     public Rect2[] MarkerRects=>canvas.Markers;
+    public void EnableMetrics(bool enabled) => aquarium.Metrics.Enabled = enabled;
+    public object? RenderMetricSnapshot => aquarium.Metrics.Snapshot();
     public DesktopOverlay(bool probe=false)
     {
         this.probe=probe;

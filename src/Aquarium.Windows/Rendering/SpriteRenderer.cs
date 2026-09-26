@@ -17,6 +17,7 @@ internal sealed class SpriteRenderer : FrameworkElement
     private EnvironmentSnapshot? environment;
     private SceneFrame? scene;
     public long FrameCount {get;private set;}
+    public RenderMetrics Metrics { get; } = new();
     private static readonly Brush Pellet=Frozen(249,215,137),PelletShadow=Frozen(81,60,34),Spark=Frozen(253,240,189);
     public SpriteRenderer()
     {
@@ -26,6 +27,7 @@ internal sealed class SpriteRenderer : FrameworkElement
         {var bitmap=new CroppedBitmap(atlas,new Int32Rect(frame*40,palette*24,40,24));bitmap.Freeze();sprites[palette,frame]=bitmap;}
         RenderOptions.SetBitmapScalingMode(this,BitmapScalingMode.NearestNeighbor);
         SnapsToDevicePixels=true;IsHitTestVisible=false;
+        IsVisibleChanged += (_, _) => Metrics.ResetInterval();
     }
     private static Brush Frozen(byte r,byte g,byte b){var brush=new SolidColorBrush(Color.FromRgb(r,g,b));brush.Freeze();return brush;}
     public void Update(EnvironmentSnapshot value,SceneFrame frame)
@@ -48,6 +50,7 @@ internal sealed class SpriteRenderer : FrameworkElement
     protected override void OnRender(DrawingContext drawing)
     {
         if(!IsVisible || scene is null || environment is null)return;
+        var started = Metrics.Begin();
         FrameCount++;
         var dpi=VisualTreeHelper.GetDpi(this).DpiScaleX;
         double Snap(double v)=>Math.Round(v*dpi)/dpi;
@@ -90,6 +93,7 @@ internal sealed class SpriteRenderer : FrameworkElement
             drawing.Pop();
         }
         drawing.Pop();
+        Metrics.End(started);
     }
     private static Rect Rect(Rect2 r)=>new(r.X,r.Y,r.Width,r.Height);
 }

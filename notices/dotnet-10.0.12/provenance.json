@@ -1,0 +1,68 @@
+{
+  "runtime_version": "10.0.12",
+  "release_date": "2026-09-08",
+  "metadata_source": "https://builds.dotnet.microsoft.com/dotnet/release-metadata/10.0/releases.json",
+  "metadata_sha256": "28e304ea0982d2ad11e14278ca597dbb443c6f8d27480b3ef7319192d9879b6b",
+  "latest_in_live_metadata": "10.0.12",
+  "latest_release_date_in_live_metadata": "2026-09-08",
+  "archives": [
+    {
+      "component": "runtime",
+      "source_url": "https://builds.dotnet.microsoft.com/dotnet/Runtime/10.0.12/dotnet-runtime-10.0.12-win-x64.zip",
+      "official_archive_sha512": "844fa99e16fd6f44e0a7c29def7a82d7846902334d6a955248a9519a4dddb3f5acceb9c9223bef69f8c83b8ae2417537e5b76dddf79fb7117dc85b5039bc1297",
+      "verified": true,
+      "notices": [
+        {
+          "archive_path": "LICENSE.txt",
+          "path": "notices/dotnet-10.0.12/runtime-LICENSE.txt",
+          "bytes": 9519,
+          "sha256": "7f6839a61ce892b79c6549e2dc5a81fdbd240a0b260f8881216b45b7fda8b45d"
+        },
+        {
+          "archive_path": "ThirdPartyNotices.txt",
+          "path": "notices/dotnet-10.0.12/runtime-ThirdPartyNotices.txt",
+          "bytes": 78887,
+          "sha256": "deb4427a295e1ed474b0d81c5a0d972c1b550b9a715cda939cdfa9236b1b418f"
+        }
+      ]
+    },
+    {
+      "component": "windowsdesktop",
+      "source_url": "https://builds.dotnet.microsoft.com/dotnet/WindowsDesktop/10.0.12/windowsdesktop-runtime-10.0.12-win-x64.zip",
+      "official_archive_sha512": "8b79f679c348aa08a10ee4e1ca75be54b135ae951b7328400fea8499f9eb8450ccb18f9f708af6182b2bcd88fcca719aa282939e907b017422f519de8dd42534",
+      "verified": true,
+      "notices": []
+    }
+  ],
+  "scope": "Unmodified notice files from the matching official binary distributions; not a legal audit of the project.",
+  "supplementary_source_notices": [
+    {
+      "project": "wpf",
+      "source_url": "https://raw.githubusercontent.com/dotnet/wpf/v10.0.12/LICENSE.TXT",
+      "bytes": 1115,
+      "path": "notices/dotnet-10.0.12/wpf-LICENSE.TXT",
+      "sha256": "ae48df11a335dc1a615f4f938b69cba73bcf4485c4f97af49b38efb0f216353b"
+    },
+    {
+      "project": "wpf",
+      "source_url": "https://raw.githubusercontent.com/dotnet/wpf/v10.0.12/THIRD-PARTY-NOTICES.TXT",
+      "bytes": 2703,
+      "path": "notices/dotnet-10.0.12/wpf-THIRD-PARTY-NOTICES.TXT",
+      "sha256": "d23dba2fee20c6b59d8f7088ee9ed372459c952a319b7ca90f3eec370cc76eb9"
+    },
+    {
+      "project": "winforms",
+      "source_url": "https://raw.githubusercontent.com/dotnet/winforms/v10.0.12/LICENSE.TXT",
+      "bytes": 1115,
+      "path": "notices/dotnet-10.0.12/winforms-LICENSE.TXT",
+      "sha256": "ae48df11a335dc1a615f4f938b69cba73bcf4485c4f97af49b38efb0f216353b"
+    },
+    {
+      "project": "winforms",
+      "source_url": "https://raw.githubusercontent.com/dotnet/winforms/v10.0.12/THIRD-PARTY-NOTICES.TXT",
+      "bytes": 1966,
+      "path": "notices/dotnet-10.0.12/winforms-THIRD-PARTY-NOTICES.TXT",
+      "sha256": "5a412b38efae0b162dc0893b319023f4cd14a8985a0f9f9ae01ac052b37a36eb"
+    }
+  ]
+}
