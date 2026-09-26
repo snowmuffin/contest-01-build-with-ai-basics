@@ -2,6 +2,12 @@
 
 > Latest environment update: Windows Sandbox is enabled after the owner-managed reboot, and the offline-native-05 no-SDK/no-network guest verification passed. G4 mechanical verification is complete; only the actual-package learner check remains.
 
+## Actual-package learner check - PASS
+
+After the clean-room pass, the owner used the actual package-02 build in the RDP session and reported that it worked well. The diagnostic receipt at artifacts/g4-only-20260926/learner-check-state.json showed five fish, the feeder in Resting mode, nine food items emitted and nine consumed, and the application still alive after the check. This records the G4 learner check without inferring a more detailed manual sequence than the owner reported.
+
+With this learner check plus the completed mechanical verification above, G4 is complete. Final kick-the-tires, Final Review, the learning wrap-up and submission work remain separate later steps and were not started.
+
 ## Final SDK-free/offline Sandbox result - PASS
 
 The rebuilt package-02 candidate passed the remaining clean-environment gate after Windows Sandbox activation and reboot. Final evidence is artifacts/g4-only-20260926/offline-native-05/results/acceptance.json.

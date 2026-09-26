@@ -21,7 +21,7 @@ After the owner-authorized Windows Sandbox enablement and manual reboot, the fin
 
 Earlier offline-native-01, -02 and -04 attempts are retained as verifier readiness/exit-code race failures, not product passes. Product source and artwork were unchanged. Final host locked restore, Release build and 64 core tests passed again after the successful guest run.
 
-G4 mechanical verification is complete. The outer G4 box remains intentionally unchecked until the actual-package learner check is performed and feedback is recorded. That learner check is the only remaining G4 item. Final kick-the-tires and Final Review remain separate later checkpoints.
+G4 is complete. After the mechanical pass, the learner used the actual package-02 build and reported that it worked well. Diagnostics after that check showed five fish, the feeder resting, nine food items emitted and nine consumed, with the application still alive. Final kick-the-tires and Final Review remain separate later checkpoints and were not started.
 
 ## Slices
 
@@ -55,7 +55,7 @@ G4 mechanical verification is complete. The outer G4 box remains intentionally u
   Learner check: Try the completed app alongside actual work, including fullscreen video and interrupted dragging. Verify the cursor is never stuck, ordinary movement cannot feed, and manual Hide is respected. Report any conflict with the primary task.
   Commit: `Harden desktop coexistence and lifecycle recovery`
 
-- [ ] **4. G4 — Run the self-contained package offline and record real limits**
+- [x] **4. G4 — Run the self-contained package offline and record real limits**
   Becomes usable: Another person can extract the complete Windows x64 publish folder and run the actual aquarium without an SDK, account or runtime service. Run/test instructions and measured support limits accompany it.
   Why now: Package and resource verification must exercise the finished kernel and recovery behavior, not certify an empty scaffold. It precedes the final user review and later submission work.
   PRD ref: `prd.md > Platform and Documentation Decisions`; `prd.md > What We're Building`; `prd.md > Non-Goals`.
@@ -116,3 +116,5 @@ Activity mode: not selected; tie the wrap-up to actual implementation evidence.
 - G4-only continuation: completed all three 60-second resource phases and eight assertions, rechecked the 489-file candidate and 64 core tests, and observed no PID GPU counter instances. Only measurement tooling changed. A separate no-SDK/offline Windows environment is unavailable; the outer G4 box stays unchecked, and no later stage was started.
 
 - G4 clean-room: offline-native-05 passed no-SDK/no-network startup, package-local .NET 10.0.12 loading, 489 payload hashes, 18 feeding checks, 25 lifecycle checks, clean exits and post-test payload integrity. Earlier guest attempts are retained as verifier-race failures. Product source was unchanged. The actual-package learner check remains before the outer G4 box is ticked.
+
+- G4 learner check: the owner used the actual package-02 build after the clean-room pass and reported that it worked well. Diagnostics showed five fish, feeder resting, 9 emitted / 9 consumed, and the app remained alive. This completes G4 only; Final kick-the-tires and Final Review remain separate and unchecked.
