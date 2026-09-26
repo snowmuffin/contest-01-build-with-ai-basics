@@ -1,6 +1,18 @@
 # G4 package candidate verification
 
-> Latest environment update: on the owner's explicit authorization and retry request, Windows Sandbox activation succeeded through normal UAC with `-NoRestart`. The operation reported `Enabled`, `RestartNeeded=true`, exit code `3010`. No reboot was issued. The owner will restart manually after their other work; this project is saved and paused meanwhile. Actual offline guest execution remains pending, with no automatic continuation or reboot scheduled. Evidence: `artifacts/g4-only-20260926/sandbox-enable-02/activation-result.json`. Earlier disabled-feature observations below are historical.
+> Latest environment update: Windows Sandbox is enabled after the owner-managed reboot, and the offline-native-05 no-SDK/no-network guest verification passed. G4 mechanical verification is complete; only the actual-package learner check remains.
+
+## Final SDK-free/offline Sandbox result - PASS
+
+The rebuilt package-02 candidate passed the remaining clean-environment gate after Windows Sandbox activation and reboot. Final evidence is artifacts/g4-only-20260926/offline-native-05/results/acceptance.json.
+
+The guest was Windows 11 Enterprise x64 10.0.26100. Before application execution, global dotnet was absent, SDK-directory count was zero, default-route count was zero, non-loopback-address count was zero, enabled-network-adapter count was zero, and Python was not on PATH. The same SDK/network conditions were rechecked after the native tests.
+
+All 489 package payload entries matched after extraction. The app initialized five fish and feeding support before the test-only Python driver was extracted. hostfxr.dll, hostpolicy.dll and coreclr.dll all loaded from the package app directory and reported .NET 10.0.12. Feeding passed all 18 existing native assertions with reported exit code 0; lifecycle passed all 25 with reported exit code 0. Each test left no resident aquarium process or captured input, and package payload hashes still matched after all testing.
+
+Earlier guest attempts are retained rather than rewritten. offline-native-01 exposed a startup-readiness race; offline-native-02 proved the 18 feeding assertions while PowerShell process exit-code capture returned null; offline-native-04 exposed an empty exit-code side-file race. These were verifier defects. The final harness waits for five-fish readiness and uses each native report's own recorded exit code. No product source, artwork or behavior changed.
+
+After the successful guest run the host source was again restored in locked mode, built Release with zero warnings/errors, and all 64 core tests passed. Windows Sandbox was then stopped. G4 mechanical verification is complete; the checklist still waits for the actual-package learner check before marking G4 complete.
 
 ## G4-only verification pass ? 2026-09-26
 

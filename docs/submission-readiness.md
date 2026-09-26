@@ -56,3 +56,7 @@ Input access is restored. Fresh candidate verification and a real local rehearsa
 ## G4-only update
 
 The latest G4 pass completed ordinary, feeding and hidden measurements for 60 seconds each and normal exit (eight assertions). This supersedes the earlier partial-long benchmark as current evidence; it is not a long-duration certification. GPU counters returned no PID instances and cannot be reported as zero. See `g4-verification.md`. G4 remains open only for the real separate SDK-free/offline environment test among the unfinished mechanical tasks; final user review is a subsequent owner checkpoint. No later submission work was performed.
+
+## G4 clean-room update
+
+The separate Windows Sandbox run is complete. offline-native-05 passed with no global dotnet/SDK, no guest runtime networking, 489 verified payload hashes, package-local .NET 10.0.12 loading, 18 feeding checks, 25 lifecycle checks, clean process/capture teardown and unchanged payload hashes. Final source locked restore, Release build and 64 core tests passed again. Actual-package learner feedback, Final Review, learning wrap-up, public links and submission remain pending.
