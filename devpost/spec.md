@@ -353,3 +353,9 @@ Official documentation consulted for technical claims on 2026-09-25. Proposed al
 The user chose RDP rather than console transfer. The unchanged pre-submit-01/runtime-10.0.12 package has fresh 18 feeding, 25 lifecycle, 7 actual Edge F11 and package-local loader passes; 64 source core tests pass. A cropped 7.95-second silent local rehearsal was recorded from actual input, not a simulated aquarium. No upload/final video approval occurred. Sparse fixture coordinates were replaced by verified test-owned activation/placement, without product z-order changes.
 
 Long-run ordinary/feeding measurements have two 60-second phase samples but the full attempt failed in test setup before hidden sampling. A later five-second-per-phase three-state run completed; no GPU or compositor latency guarantee. See `docs/rdp-candidate-verification.md`. Remaining clean/offline, local-console and final owner review requirements are unchanged; earlier input-access-denial statements above are historical, no longer the current blocker.
+
+## G4-only latest validation
+
+The owner requested G4 only. `docs/g4-verification.md > G4-only verification pass ? 2026-09-26` records one completed 60/60/60-second ordinary/feeding/hidden run with eight assertions and normal exit, replacing the earlier incomplete measurement as latest evidence. Source Release build/64 core tests and the 489-file runtime-10.0.12 package inventory were rechecked. Per-process GPU queries produced no instances; do not claim 0% GPU. No product feature or code change occurred.
+
+The SDK-free, runtime-network-unavailable separate Windows test still has not run. Host optional-feature checks found Sandbox disabled; no feature enablement, restart, console transfer or networking change was performed. G4 is not complete, and final review/learning/shipping remain outside this request. The previously generated clean-room kit is preparation, not acceptance evidence.

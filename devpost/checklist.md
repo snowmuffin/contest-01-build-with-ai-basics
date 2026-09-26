@@ -13,15 +13,13 @@ The first increment is the spec's critical Windows integration gate. Core tests 
 
 ## Current Execution Status
 
-The user chose to remain on the reconnected RDP session; do not retry console transfer. G0/G2/G3 remain accepted. G4 and the final owner review remain open, without reopening product scope.
+Current instruction: work through G4 only. Remain on RDP; do not retry console transfer or proceed to final user review, learning wrap-up, submission recording, public repository work or actual submission.
 
-The actual runtime-10.0.12 `pre-submit-01` candidate (application source `12baa4d`, 489 verified payload hashes) now has fresh 18-check feeding, 25-check lifecycle, 7-check actual Edge F11, and bundled-runtime-loading passes. Current source locked restore/Release build and 64 core tests pass. These are RDP observations, not a clean-machine/offline/local-console claim.
+G0/G2/G3 remain accepted. The runtime-10.0.12 candidate has the previously recorded native feeding/lifecycle/browser and package-local runtime checks. In this G4 pass, locked restore/Release build/64 core tests and 489 package hashes were rechecked. One finite measurement run now completed ordinary, feeding and hidden phases for 60 seconds each, with stable fish identity/food accounting, hidden freeze, safe recovery and normal exit: all eight assertions passed. The earlier incomplete benchmark is historical, not the latest outcome.
 
-A real 7.95-second local feeding rehearsal exists under `artifacts/pre-submit/demo/`; the recorded feeding run passed 18 checks. The cropped silent video has sampled-frame review only and does not show the Desktop icon. It has not been uploaded or approved as final submission footage.
+CPU/memory/callback results are recorded in `docs/g4-verification.md`. The GPU counter provider returned no process engine instances in 80 observations, so GPU utilization is unavailable rather than zero. These are finite RDP measurements, not long-duration or local-console certification. Product source and artwork were unchanged.
 
-Ordinary and feeding phases each ran for about 60 seconds, but that three-phase test stopped before its hidden phase; the whole attempt is incomplete. A later corrected five-second-per-phase run passed ordinary, feeding, hidden, restore and normal exit. No GPU/compositor-latency or long-duration guarantee is made. See `docs/rdp-candidate-verification.md` for exact evidence and failed setup attempts.
-
-No product source or candidate binaries changed; only test setup and documentation were corrected. Separate SDK-free/offline execution, final package review and the learning wrap-up remain pending. Naming/license/publication and participant-written fields/survey are not authorized or completed by this technical pass. The local app map remains a reference preview. Do not mark final review, G4 or 6-ship complete.
+The remaining G4 mechanical blocker is genuine separate SDK-free/offline Windows execution. Windows Sandbox and Hyper-V features are disabled, no Sandbox executable is available, and Docker is Linux. The prepared WSB kit has not run. Enabling a Windows feature/reboot is not silently authorized; no system/security/network changes were made. Keep G4 unchecked pending real evidence. Final review, app-map wrap-up, licensing/naming/public links/form answers and submission remain unchanged and outside this pass.
 
 ## Slices
 
@@ -112,3 +110,5 @@ Activity mode: not selected; tie the wrap-up to actual implementation evidence.
 - Pre-submission pass requested: prepare technical deliverables before optional refinements, without publishing/submitting. A live metadata fetch showed runtime 10.0.12 while cached research still showed 10.0.10; new notices and candidate use the live value. Input-desktop denial and missing Sandbox prevent claiming fresh interactive/offline passes.
 
 - RDP resume: input access recovered without console transfer. Real candidate feeding/lifecycle/browser/loader checks and an 8-second local rehearsal now exist; partial 60-second measurements and a completed short run are explicitly separated. Test-only fixture positioning/activation changed for the smaller desktop; no product behavior or user windows were changed.
+
+- G4-only continuation: completed all three 60-second resource phases and eight assertions, rechecked the 489-file candidate and 64 core tests, and observed no PID GPU counter instances. Only measurement tooling changed. A separate no-SDK/offline Windows environment is unavailable; the outer G4 box stays unchecked, and no later stage was started.

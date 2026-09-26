@@ -1,12 +1,50 @@
 # G4 package candidate verification
 
+## G4-only verification pass ? 2026-09-26
+
+**Current gate: partial G4; only separate SDK-free/offline environment execution remains technically blocked.** The owner asked to stop at G4. Final owner review, learning wrap-up, video/publication and submission steps were not started or marked complete in this pass.
+
+The measured package is the unchanged `pre-submit-01` Windows x64/runtime-10.0.12 candidate, application checkpoint `12baa4d`. All 489 inventory hashes/lengths and the original ZIP hash were checked again. Source locked restore, Release build and 64 core tests passed. The application source and artwork have not changed.
+
+### Completed finite three-phase measurement
+
+A single run completed ordinary habitat, held shaking/feeding and manual hidden, each for the requested 60 seconds, followed by safe restoration and normal tray Exit. All eight verification assertions passed: phase durations, stable five-fish identity, food cap/accounting, hidden rendering/simulation/emission stop, resting recovery, and normal exit. This supersedes the earlier partial benchmark as the latest completed finite run; it does not erase the failed earlier attempts.
+
+Environment: Windows 11 host, RDP session, 1512 x 949 at 100% scale, 32 logical processors. Diagnostic output was enabled; unrelated host work was not isolated. CPU is this process normalized across all logical processors, not one-core utilization. Whole-system baseline was 3.991% for 4.05 seconds; it is not subtracted to invent an incremental cost.
+
+| Phase | Seconds | App CPU | End working set (MiB) | Render callbacks/s |
+| --- | ---: | ---: | ---: | ---: |
+| ordinary habitat | 60.01 | 0.4760% | 134.11 | 19.86 |
+| held shaking / feeding | 60.02 | 0.1936% | 139.87 | 20.58 |
+| manual hidden | 60.04 | 0.0407% | 146.09 | 0.00 |
+
+The feeding interval emitted 799 new pellets and consumed 717, with up to 64 alive concurrently. At every sampled point, total emitted equalled consumed + expired + currently live food. Hidden samples had zero new frames, no time advancement, and no new emission. Working set figures include runtime/cache effects; three minutes does not establish absence of leaks or a battery/low-end performance guarantee. Visible render rate remains around 20 callbacks/s in this RDP setting rather than a verified 30-fps presentation guarantee.
+
+A read-only per-process GPU companion made 80 observations without a query error, but the Windows provider returned no engine instances for this PID. GPU utilization is therefore **unavailable, not 0%**. WPF callback metrics are available in the local receipt; they measure recent callback timing, not compositor/GPU presentation latency. The hidden state's cached callback statistics are historical and must not be interpreted as hidden rendering.
+
+Evidence: `artifacts/g4-only-20260926/measurement-01/report.json`, `gpu-samples.json`, `tests/g4-only.trx`, `summary.json`.
+
+### Environment gate, not an application failure
+
+Read-only discovery found `Containers-DisposableClientVM` and `Microsoft-Hyper-V-All` in state 2 (Disabled), no WindowsSandbox executable/package, and a Linux Docker Desktop context with no existing Windows guest candidate found. No feature was enabled, no VM was installed, no RDP/console transfer was attempted, and host networking/security policies were not changed. The existing clean-room kit remains prepared but unexecuted.
+
+The required separate Windows test without an SDK and without runtime networking has **not run**. A bundled-runtime test on this SDK-equipped host is not substituted for that requirement. Enabling Windows Sandbox requires an administrator action and may require a restart; obtain owner consent before doing so. G4 remains unchecked until that actual environment test passes. Final review/learning/submission remain later work and are not authorized by this G4-only request.
+
+Official feature-state reference: https://learn.microsoft.com/en-us/windows/win32/cimwin32prov/win32-optionalfeature
+Sandbox installation: https://learn.microsoft.com/en-us/windows/security/application-security/application-isolation/windows-sandbox/windows-sandbox-install
+
+### Measurement-tool changes
+
+The test now preserves requested duration separately from summary variables, refuses to overwrite an existing report, writes its current phase/PID for a bounded GPU sampler, and asserts behavior across all sampled states. Only test tools were changed; the product was not modified. The older owner instance was exited normally using keyboard navigation on its verified active tray menu after a pointer target overlapped a shell region. No unowned window received synthetic input.
+
+
 > Historical runtime-10.0.10 candidate evidence. The newer runtime-10.0.12 preparation pass and its still-pending native/clean-room checks are in `pre-submit-verification.md`. Do not transfer these old runtime test passes to the new package automatically.
 
-## Current status
+## Historical 10.0.10 candidate status
 
 **Partial G4 checkpoint, not a completed release.** G2 live feeding is saved as `d2f35a4`; G3 recovery as `d26b420`. The self-contained candidate is built and tested on the existing RDP host. A genuinely separate no-SDK/offline environment, sustained GPU/frame-time testing and final hands-on review are still outstanding. No repository was published, visibility changed, final license selected, or competition entry submitted.
 
-## Current candidate
+## Historical 10.0.10 candidate
 
 Relative to the project root:
 

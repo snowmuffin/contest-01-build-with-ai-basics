@@ -1,7 +1,7 @@
-"""Controlled native G0 probe. Only temporary test-owned windows receive synthetic input.
-Requires an idle interactive Windows desktop, .NET G0 Release build, and Python stdlib.
-Creates no desktop shortcuts, reads no window titles, and never targets the user's apps.
-The bounded automation is test infrastructure, not an app feature. Human checks remain required.
+"""Finite resource check of the real packaged aquarium, using owned native fixtures.
+Requires an idle interactive Windows desktop; no screen capture or third-party input.
+Sample ordinary, held feeding and hidden states; a failed phase never becomes a pass.
+No runtime dependency is added to the application.
 """
 from __future__ import annotations
 import ctypes as c
@@ -206,7 +206,9 @@ OUT=Path(os.environ.get('AQUARIUM_TEST_OUTPUT',str(ROOT/'artifacts/g4/performanc
 if not OUT.is_relative_to(ROOT/'artifacts'):raise RuntimeError('Measurement output must stay under project artifacts')
 OUT.mkdir(parents=True,exist_ok=True);STATE=OUT/'state.json'
 duration=float(os.environ.get('AQUARIUM_SAMPLE_SECONDS','5'))
+requested_duration=duration
 if not 5<=duration<=150:raise RuntimeError('Choose 5 to 150 seconds per phase')
+if (OUT/'report.json').exists():raise RuntimeError('Use a new output directory; do not overwrite prior evidence')
 report={'kind':'finite same-host Release process sample','checks':[],'samples':[],'requested_phase_seconds':duration}
 api(k,'OpenProcess',w.HANDLE,[w.DWORD,w.BOOL,w.DWORD]);api(k,'CloseHandle',w.BOOL,[w.HANDLE])
 api(k,'GetProcessTimes',w.BOOL,[w.HANDLE,c.POINTER(w.FILETIME),c.POINTER(w.FILETIME),c.POINTER(w.FILETIME),c.POINTER(w.FILETIME)])
@@ -226,10 +228,12 @@ def take(phase):
   if not k.GetProcessTimes(process_handle,c.byref(created),c.byref(exited),c.byref(p_kernel),c.byref(p_user)):raise c.WinError(c.get_last_error())
   mem=MEM();mem.cb=c.sizeof(MEM)
   if not ps.GetProcessMemoryInfo(process_handle,c.byref(mem),mem.cb):raise c.WinError(c.get_last_error())
-  s=state();sample.update(cpu_seconds=(ticks(p_kernel)+ticks(p_user))/1e7,working_set=mem.working_set,private_bytes=mem.private,frames=s['frames'],simulation=s['simulationTime'],food=len(s.get('food') or []),emitted=s['emitted'],consumed=s['consumed'],visible=s['overlayVisible'],render_metrics=s.get('renderMetrics'))
+  s=state();sample.update(cpu_seconds=(ticks(p_kernel)+ticks(p_user))/1e7,working_set=mem.working_set,private_bytes=mem.private,frames=s['frames'],simulation=s['simulationTime'],food=len(s.get('food') or []),emitted=s['emitted'],consumed=s['consumed'],visible=s['overlayVisible'],render_metrics=s.get('renderMetrics'),expired=s['expired'],fish_ids=sorted(x['id'] for x in s['fish']),display=s['display'],transform=s['transform'])
  report['samples'].append(sample)
 
 def sample_phase(name,duration=5,move=None):
+ progress={'phase':name,'pid':app.pid if app else None,'requested_seconds':duration}
+ temp=OUT/'phase.json.tmp';temp.write_text(json.dumps(progress),encoding='utf-8');temp.replace(OUT/'phase.json')
  start=time.monotonic();last_sample=-1;i=0
  while time.monotonic()-start<duration:
   if move:move(i);i+=1
@@ -250,6 +254,10 @@ def open_feeder_over_fixture(exe):
 
 
 try:
+ last=LAST(c.sizeof(LAST),0);u.GetLastInputInfo(c.byref(last))
+ if ((k.GetTickCount()-last.tick)&0xffffffff)/1000<2:raise RuntimeError('Desktop recently active; do not start synthetic input')
+ existing=subprocess.check_output(['powershell.exe','-NoProfile','-Command',"@(Get-Process Aquarium.Windows -ErrorAction SilentlyContinue).Count"],text=True).strip()
+ if existing!='0':raise RuntimeError('Close the existing aquarium normally before measuring a new package')
  sample_phase('no-aquarium baseline',4)
  exe=Path(os.environ.get('AQUARIUM_TEST_EXE',str(ROOT/'artifacts/g4/extracted-r2/DesktopAquarium/app/Aquarium.Windows.exe'))).resolve()
  if not exe.is_relative_to(ROOT) or not exe.is_file():raise RuntimeError('Measurement executable must be an existing project artifact')
@@ -273,6 +281,14 @@ try:
  send(4);wait_until(lambda s:s['feederMode']=='Resting')
  time.sleep(.6);fixture_click();api(u,'AllowSetForegroundWindow',w.BOOL,[w.DWORD])(app.pid);tray_action('Hide');wait_until(lambda s:s['manualHidden'] and not s['overlayVisible'])
  sample_phase('manual hidden',duration)
+ measured=[x for x in report['samples'] if 'cpu_seconds' in x]
+ for phase in ['ordinary habitat','held shaking / feeding','manual hidden']:
+  items=[x for x in measured if x['phase']==phase]
+  check(phase+' completed requested interval',len(items)>1 and items[-1]['wall']-items[0]['wall']>=requested_duration*.98)
+ check('same five fish identities across all samples',all(x['fish_ids']==measured[0]['fish_ids'] and len(x['fish_ids'])==5 for x in measured))
+ check('food cap and conservation hold across all samples',all(0<=x['food']<=64 and x['emitted']==x['consumed']+x['expired']+x['food'] for x in measured))
+ hidden=[x for x in measured if x['phase']=='manual hidden']
+ check('hidden interval stops rendering simulation and emission',all(not x['visible'] and x['frames']==hidden[0]['frames'] and x['simulation']==hidden[0]['simulation'] and x['emitted']==hidden[0]['emitted'] for x in hidden))
  fixture_click();u.AllowSetForegroundWindow(app.pid);tray_action('Show again');wait_until(lambda s:s['overlayVisible'])
  check('restored after sample without held input',state()['feederMode']=='Resting')
  fixture_click();u.AllowSetForegroundWindow(app.pid);tray_action('Exit');app.wait(timeout=5)
@@ -296,7 +312,7 @@ finally:
   if 'cpu_seconds' in a:
    row.update(process_cpu_percent_of_all_logical_processors=round((b['cpu_seconds']-a['cpu_seconds'])/duration/os.cpu_count()*100,4),working_set_mib_end=round(b['working_set']/1048576,2),private_mib_start=round(a['private_bytes']/1048576,2),private_mib_end=round(b['private_bytes']/1048576,2),observed_render_fps=round((b['frames']-a['frames'])/duration,2),max_food=max(s['food'] for s in items),emitted_during=b['emitted']-a['emitted'],consumed_during=b['consumed']-a['consumed'])
   summary.append(row)
- report.update(summary=summary,logical_processors=os.cpu_count(),remote_session=bool(u.GetSystemMetrics(0x1000)),diagnostics_enabled=True,gpu_measured=False,per_frame_latency_measured=False,callback_metrics_available=any(x.get('render_metrics') for x in report['samples']),sustained_run=duration>=60)
+ report.update(summary=summary,logical_processors=os.cpu_count(),remote_session=bool(u.GetSystemMetrics(0x1000)),diagnostics_enabled=True,gpu_measured=False,per_frame_latency_measured=False,callback_metrics_available=any(x.get('render_metrics') for x in report['samples']),sustained_run=bool(report.get('passed')) and requested_duration>=60)
  (OUT/'report.json').write_text(json.dumps(report,indent=2),encoding='utf-8')
  print(json.dumps({k:v for k,v in report.items() if k!='samples'},ensure_ascii=True))
 sys.exit(0 if report.get('passed') else 1)

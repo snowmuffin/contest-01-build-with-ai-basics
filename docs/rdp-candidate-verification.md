@@ -1,5 +1,7 @@
 # Release-candidate verification after RDP reconnection
 
+> Historical RDP-reconnection evidence. A later G4-only run completed all three 60-second resource phases; see `g4-verification.md`. Earlier failed measurement attempts below remain correctly recorded as failures.
+
 ## Current result
 
 The user elected to keep RDP connected rather than transfer to the dummy-display console. Input-desktop access and foreground lookup succeeded. No console-transfer command, elevation, display-setting change, security-policy change or public publishing was performed in this pass. The prior development aquarium was closed through its own tray before testing the actual extracted package.

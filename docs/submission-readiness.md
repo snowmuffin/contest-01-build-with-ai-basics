@@ -52,3 +52,7 @@ The first follow-up should address actual observed issues, not add species/rarit
 ## Latest RDP recheck
 
 Input access is restored. Fresh candidate verification and a real local rehearsal are recorded in `rdp-candidate-verification.md`. No console transfer, owner licensing/naming decision, public posting or final submission occurred. The longer benchmark was partial; do not report all three 60-second phases as passed.
+
+## G4-only update
+
+The latest G4 pass completed ordinary, feeding and hidden measurements for 60 seconds each and normal exit (eight assertions). This supersedes the earlier partial-long benchmark as current evidence; it is not a long-duration certification. GPU counters returned no PID instances and cannot be reported as zero. See `g4-verification.md`. G4 remains open only for the real separate SDK-free/offline environment test among the unfinished mechanical tasks; final user review is a subsequent owner checkpoint. No later submission work was performed.
