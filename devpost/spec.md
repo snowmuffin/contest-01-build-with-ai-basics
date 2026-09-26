@@ -79,7 +79,7 @@ Implements `prd.md > Look and Feel`.
 
 Preserve the user's desktop and applications: no tank border, glass, water tint, replacement wallpaper or decorative underwater scene. Use original pixel-art fish and a compact, visually distinct feeder with a separate X target. Cache/decode sprites once and use nearest-neighbor sampling; quantize drawing coordinates to physical pixels where appropriate without quantizing the simulation itself. Fine sprite dimensions and frame counts are tunable, not promises.
 
-Use a small number of poses for swimming, turning, curiosity and eating; do not introduce species collection or elaborate mood systems. Use ordinary readable native menu text. No audio or extra notifications are added by this proposal. Temporary test sprites must be labelled placeholders and replaced or explicitly identified before a final demo.
+Use a small number of poses for swimming, turning, curiosity and eating; do not introduce species collection or elaborate mood systems. Final-review polish fixes five stable fish identities to four original silhouettes, with directional poses for Left, Right, TowardViewer and AwayFromViewer. Direction is presentation state derived from movement/depth intent; it does not create a second simulation or free 3D coordinate. Use ordinary readable native menu text. No audio or extra notifications are added by this proposal. Temporary test sprites must be labelled placeholders and replaced or explicitly identified before a final demo.
 
 ## Components
 
@@ -174,6 +174,15 @@ A WPF application with explicit shutdown owns the world, windows, event subscrip
 Use one named mutex and pipe scoped to the current user and desktop session, with `PipeOptions.CurrentUserOnly`, bounded input and a small fixed message schema: version 1, command `ShowFeeder`, no arbitrary path, shell command or code. [D5] A second launch retries briefly until the first broker is ready; failure reports an ordinary error and exits instead of creating duplicate habitats. No TCP listener or external service is involved.
 
 Only the explicit shortcut-creation step writes an app-owned launcher into Desktop. It does not enumerate or alter other desktop icons. Logs, if needed for validation, are opt-in/local, bounded and exclude window titles, typed text and file contents.
+
+### Final-review visual-state contract
+
+- Add FishSpecies with four stable visual families. Assign species deterministically from fish identity; never replace a fish merely to change appearance.
+- Add FishFacing with Left, Right, TowardViewer, and AwayFromViewer. Preserve a separate horizontal mouth-side orientation for feeding geometry so front/back presentation cannot break consumption.
+- Keep DepthBand as the authoritative occlusion band. Add a bounded visual-depth value only for perspective interpolation. Nominal render scale is Rear 0.72, Middle 0.86, Front 1.00.
+- When a band change is safe in place, change the logical band using the existing occlusion rule and ease visual depth toward the new band, displaying TowardViewer/AwayFromViewer during the transition. When a covered sprite cannot switch safely, retain the existing edge-leave/switch/re-enter fallback.
+- The sprite atlas contains four distinct silhouettes, four facing directions and two animation frames per direction. Decode/crop once, render nearest-neighbor, and do not add per-fish UI controls.
+- Keep the feeder drag/capture/shake contract unchanged. Make the complete feeder client surface visually opaque and app-owned so normal work content cannot show through the feeder body.
 
 ## Data Model and Lifetime
 

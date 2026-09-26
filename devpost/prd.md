@@ -44,6 +44,11 @@ Source: `scope.md > Inspiration & Identity` and `The POC Boundary`.
 - **Confirmed:** no drawn tank, glass enclosure, tank border, or underwater background is required. The screen itself is the habitat.
 - **Confirmed:** fish can appear in front of, between, and behind ordinary application windows using the bounded three-band behavior below.
 - **Accepted:** use pixel-art fish for the first prototype. Exact sprite size, frame count, species count, and rendering technique will be tuned later. Pixel art is a visual choice, not proof of low resource use.
+- **Final-review refinement:** keep five fish but use at least four visibly different silhouettes/species. Species identity is stable per fish; this is visual diversity, not a collection/rarity system.
+- **Final-review refinement:** fish may visually face left, right, toward the viewer, or away from the viewer. Toward/away poses communicate movement between the existing Rear/Middle/Front depth bands and occasional curiosity; this does not introduce free 3D navigation.
+- **Final-review refinement:** make depth readable with restrained perspective scaling. Front keeps the current visual size; Middle and Rear render smaller while retaining the same logical collision/occlusion rules.
+- **Final-review refinement:** the feeder must read as a solid app-owned pixel object. Its body must not visually reveal the work window behind it; transparency remains only outside the object/window treatment where appropriate.
+
 - Fish should feel autonomous rather than constantly following the pointer. The main interaction should be understandable without developer knowledge.
 - The HTML companion illustrates approved requirements and states; its decorative graphics are not final aquarium artwork or an application demo.
 

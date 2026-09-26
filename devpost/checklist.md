@@ -13,15 +13,11 @@ The first increment is the spec's critical Windows integration gate. Core tests 
 
 ## Current Execution Status
 
-Current instruction: finish G4 only. Do not proceed to Final Review, the learning wrap-up, repository/video publication, or Devpost submission.
+All four build slices G0-G4 are complete. Final kick-the-tires is complete and produced four agreed submission-readiness refinements: solid feeder presentation, at least four fish silhouettes, toward/away directional poses, and restrained Rear/Middle/Front perspective scaling.
 
-G0/G1-G2/G3 remain accepted. The runtime-10.0.12 package-02 candidate remains the product under test. The completed finite resource run covered ordinary, held-feeding and manual-hidden states for 60 seconds each; all eight invariants passed. GPU utilization remains unavailable rather than zero because the per-process provider returned no engine instances.
+This is a Final Review refinement pass, not a reopened product scope. Preserve five fish, existing feeding/fullscreen/hide/instance behavior, three logical depth bands, Windows 11 x64 target and no external runtime service. Do not add rarity, collection, growth, free 3D movement, additional OS targets or multi-monitor scope.
 
-After the owner-authorized Windows Sandbox enablement and manual reboot, the final clean-environment run passed at artifacts/g4-only-20260926/offline-native-05/results/acceptance.json. The Windows 11 x64 guest had no global dotnet, no SDK directories, no default route, no non-loopback address and no enabled network adapter before or after native tests. All 489 package inventory entries matched. The unmodified app initialized five fish before the test-only Python driver was extracted. Package-local hostfxr, hostpolicy and coreclr reported .NET 10.0.12. Feeding passed 18/18 checks and lifecycle passed 25/25; both reported exit code 0, left no resident process/capture, and payload hashes remained unchanged.
-
-Earlier offline-native-01, -02 and -04 attempts are retained as verifier readiness/exit-code race failures, not product passes. Product source and artwork were unchanged. Final host locked restore, Release build and 64 core tests passed again after the successful guest run.
-
-G4 is complete. After the mechanical pass, the learner used the actual package-02 build and reported that it worked well. Diagnostics after that check showed five fish, the feeder resting, nine food items emitted and nine consumed, with the application still alive. Final kick-the-tires and Final Review remain separate later checkpoints and were not started.
+Implement the four unchecked Final Review items, verify them against the actual running/package behavior, commit fixes, and have the learner retry the changed presentation before marking Final Review complete. Do not start the learning wrap-up or submission/publication work yet.
 
 ## Slices
 
@@ -69,11 +65,15 @@ G4 is complete. After the mechanical pass, the learner used the actual package-0
 
 - [x] Early native integration checked after slice 1 - learner reported the running probe appears to work; specific application/session coverage is not inferred.
 - [x] Complete core journey checkpoint accepted after positive review of the live test, verified Desktop installation, and explicit instruction to continue; no unreported detailed manual sequence or environment coverage inferred.
-- [ ] Final kick-the-tires exploration and feedback completed after slice 4.
+- [x] Final kick-the-tires exploration and feedback completed after slice 4 ? learner identified fish silhouette diversity, missing toward/away presentation, weak depth perspective, and feeder visual integration as the main submission-readiness gaps.
 
 ## Final Review
 
-- [ ] Final review complete — feedback resolved, agreed fixes verified/committed/retried, and learner confirms ready to ship.
+- [ ] Feeder visual integration ? make the feeder client surface visually solid/app-owned while preserving drag, close and held-shake behavior; learner retries the actual package.
+- [ ] Fish visual diversity ? five stable fish visibly represent at least four distinct silhouettes/species without adding collection/rarity mechanics.
+- [ ] Four-direction presentation and depth perspective ? Left/Right/TowardViewer/AwayFromViewer poses plus Rear/Middle/Front scale differences work without breaking occlusion, identity or feeding.
+- [ ] Regression and package verification ? core/native/lifecycle/resource/package checks rerun proportionally after the renderer/assets change; clean-environment evidence is refreshed for the new package bytes.
+- [ ] Final review complete ? feedback resolved, agreed fixes verified/committed/retried, and learner confirms ready to ship.
 
 ## Code Tour and App Map
 
@@ -118,3 +118,5 @@ Activity mode: not selected; tie the wrap-up to actual implementation evidence.
 - G4 clean-room: offline-native-05 passed no-SDK/no-network startup, package-local .NET 10.0.12 loading, 489 payload hashes, 18 feeding checks, 25 lifecycle checks, clean exits and post-test payload integrity. Earlier guest attempts are retained as verifier-race failures. Product source was unchanged. The actual-package learner check remains before the outer G4 box is ticked.
 
 - G4 learner check: the owner used the actual package-02 build after the clean-room pass and reported that it worked well. Diagnostics showed five fish, feeder resting, 9 emitted / 9 consumed, and the app remained alive. This completes G4 only; Final kick-the-tires and Final Review remain separate and unchecked.
+
+- Final kick-the-tires feedback: learner requested four presentation refinements before ship readiness ? visibly different fish species/silhouettes, toward/away poses, depth perspective tied to existing bands, and a solid feeder that does not reveal the work window behind its body. These are accepted as bounded Final Review refinements; collection/rarity/free-3D scope remains excluded.
