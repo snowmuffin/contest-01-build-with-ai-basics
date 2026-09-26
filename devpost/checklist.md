@@ -19,6 +19,8 @@ G0/G2/G3 remain accepted. The runtime-10.0.12 candidate has the previously recor
 
 CPU/memory/callback results are recorded in `docs/g4-verification.md`. The GPU counter provider returned no process engine instances in 80 observations, so GPU utilization is unavailable rather than zero. These are finite RDP measurements, not long-duration or local-console certification. Product source and artwork were unchanged.
 
+Repackaged candidate: `artifacts/g4-only-20260926/package-02/DesktopAquarium-win-x64.zip`, source `0f500a5`, with 489 verified inventory entries and fresh 18 feeding / 25 lifecycle / bundled-runtime startup passes. PowerShell archive progress failed on the first attempt; scoped progress suppression fixed publishing without suppressing real errors. App source inputs match the measured build, but revision metadata changed binary hashes, so native tests were rerun.
+
 The remaining G4 mechanical blocker is genuine separate SDK-free/offline Windows execution. Windows Sandbox and Hyper-V features are disabled, no Sandbox executable is available, and Docker is Linux. The prepared WSB kit has not run. Enabling a Windows feature/reboot is not silently authorized; no system/security/network changes were made. Keep G4 unchecked pending real evidence. Final review, app-map wrap-up, licensing/naming/public links/form answers and submission remain unchanged and outside this pass.
 
 ## Slices

@@ -37,6 +37,14 @@ Sandbox installation: https://learn.microsoft.com/en-us/windows/security/applica
 
 Repackaging from checkpoint `3ee50d5` compiled successfully, but Windows PowerShell's `Compress-Archive` failed in `Write-Progress` with `IndexOutOfRangeException` under the noninteractive tool host. `package-01` is an unsuccessful partial artifact, not an accepted ZIP. The publish wrapper now suppresses only archive progress display inside a scoped try/finally; real compression failures still propagate. Retry uses a fresh `package-02` folder and must pass full extraction/hash verification. The previously measured pre-submit-01 candidate is unchanged.
 
+### Rebuilt G4 candidate result
+
+The repaired wrapper successfully produced `artifacts/g4-only-20260926/package-02/DesktopAquarium-win-x64.zip` from clean checkpoint `0f500a5b3e8557edf33b57e8d948eb9ca6ba7e03`. ZIP size: 73839296 bytes; SHA-256: `9D81CE80BD5DE715606C842A88D5D0DA41BF617F00F4C548F5C08F9BE07A52D2`. All 489 inventory entries were verified after extraction into `artifacts/g4-only-20260926/extracted-02/DesktopAquarium/`.
+
+All 26 application source-input hashes match the measured pre-submit-01 source. The rebuilt EXE/DLL/PDB files are not byte-identical; generated assembly informational versions include the newer Git revision. The initial byte-equivalence expectation was rejected, rather than used to transfer test passes. The rebuilt executable was separately tested: 18 actual feeding checks, 25 lifecycle checks, package-local .NET 10.0.12 module loading and normal smoke-test exit passed. A post-publish normal locked restore, Release build and all 64 core tests passed. The resource table above remains a measurement of pre-submit-01, not a fresh performance run on these rebuilt bytes.
+
+A fresh `artifacts/g4-only-20260926/offline-kit/Offline-Aquarium.wsb` targets this rebuilt candidate. Guest networking is disabled; package/script folders are mapped read-only and only the dedicated result folder is writable. Configuration and paths were checked, but Sandbox has not run because the host feature is disabled. This is still the remaining mechanical G4 environment gate.
+
 ### Measurement-tool changes
 
 The test now preserves requested duration separately from summary variables, refuses to overwrite an existing report, writes its current phase/PID for a bounded GPU sampler, and asserts behavior across all sampled states. Only test tools were changed; the product was not modified. The older owner instance was exited normally using keyboard navigation on its verified active tray menu after a pointer target overlapped a shell region. No unowned window received synthetic input.

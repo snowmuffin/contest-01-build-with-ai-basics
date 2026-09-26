@@ -16,7 +16,7 @@ The participant requested preparation up to, but not including, submission; refi
 | Core desktop feeding loop and Windows coexistence | Implemented; earlier G2/G3 evidence is recorded in verification documents |
 | Candidate runtime | 10.0.12 from live official metadata, release date 2026-09-08; host SDK/shared runtime unchanged |
 | Upstream notices | Exact distribution/source-version notice texts and hashes collected under notices/dotnet-10.0.12 |
-| Release candidate | `artifacts/packages/pre-submit-01/DesktopAquarium-win-x64.zip`; 489 hashes match; fresh 18 feeding / 25 lifecycle / 7 browser checks passed in RDP |
+| Release candidate | `artifacts/g4-only-20260926/package-02/DesktopAquarium-win-x64.zip`; 489 inventory entries verified; fresh 18 feeding / 25 lifecycle / package-local runtime checks passed in RDP. Browser evidence for the earlier build remains separately recorded. |
 | Core tests | 64 passing after the candidate diagnostics change; Release build has zero reported warnings/errors |
 | Clean/offline test kit | Prepared; absence of Windows Sandbox on this host means not executed |
 | Screen recording | A 7.95-second cropped local rehearsal recorded; sampled-frame review done, final owner review/recording and upload still pending |

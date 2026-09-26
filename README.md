@@ -35,7 +35,7 @@ Canonical plans are in `devpost/`; generated HTML and the learner profile are lo
 
 Build with `scripts/Publish-Windows.ps1 -RuntimeVersion 10.0.12`; output must be a new folder under `artifacts/`. This wrapper keeps platform-specific publish restore separate from the normal source lockfiles. Verify normal `dotnet restore Aquarium.slnx --locked-mode` after packaging.
 
-Current ZIP: `artifacts/packages/pre-submit-01/DesktopAquarium-win-x64.zip`.
+Current G4 ZIP: `artifacts/g4-only-20260926/package-02/DesktopAquarium-win-x64.zip`. Earlier candidates remain archived.
 Extract the **whole** folder and run its `Start-Aquarium.cmd` or `app/Aquarium.Windows.exe`.
 Close an already-running development aquarium using its tray Exit first, otherwise single-instance forwarding intentionally reuses that existing process. The current Desktop shortcut still targets the development Release folder, not this package. No automatic migration of that shortcut is performed.
 
