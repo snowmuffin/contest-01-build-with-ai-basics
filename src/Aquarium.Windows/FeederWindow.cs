@@ -29,13 +29,14 @@ internal sealed class FeederWindow : Window
     {
         this.state=state;
         Title=probe?"Aquarium G0 feeder":"Aquarium feeder";Width=164;Height=112;WindowStyle=WindowStyle.None;ResizeMode=ResizeMode.NoResize;
-        AllowsTransparency=true;Background=Brushes.Transparent;ShowInTaskbar=false;ShowActivated=false;Topmost=true;
-        var grid=new Grid{Background=Brushes.Transparent};
-        body=new Border{Background=new SolidColorBrush(Color.FromRgb(36,61,65)),BorderBrush=new SolidColorBrush(Color.FromRgb(109,205,175)),BorderThickness=new Thickness(2),Padding=new Thickness(12,22,12,8),Cursor=Cursors.Hand};
+        var panel=new SolidColorBrush(Color.FromRgb(31,52,59));panel.Freeze();
+        AllowsTransparency=false;Background=panel;ShowInTaskbar=false;ShowActivated=false;Topmost=true;
+        var grid=new Grid{Background=panel};
+        body=new Border{Background=new SolidColorBrush(Color.FromRgb(36,61,65)),BorderBrush=new SolidColorBrush(Color.FromRgb(109,205,175)),BorderThickness=new Thickness(3),Padding=new Thickness(11,20,11,8),Cursor=Cursors.Hand};
         var inner=new Grid();
-        var picture=new Image{Source=new BitmapImage(new Uri("pack://application:,,,/Assets/feeder.png")),Width=56,Height=70,HorizontalAlignment=HorizontalAlignment.Left,VerticalAlignment=VerticalAlignment.Center};
+        var picture=new Image{Source=new BitmapImage(new Uri("pack://application:,,,/Assets/feeder.png")),Width=60,Height=72,HorizontalAlignment=HorizontalAlignment.Left,VerticalAlignment=VerticalAlignment.Center};
         RenderOptions.SetBitmapScalingMode(picture,BitmapScalingMode.NearestNeighbor);inner.Children.Add(picture);
-        var stack=new StackPanel{Margin=new Thickness(61,8,0,0)};
+        var stack=new StackPanel{Margin=new Thickness(64,8,0,0)};
         stack.Children.Add(new TextBlock{Text=probe?"G0 TOOL":"FEED FISH",Foreground=Brushes.White,FontSize=11,FontWeight=FontWeights.Bold});
         stateText=new TextBlock{Text="Drag to hold",Foreground=Brushes.White,FontSize=10,Margin=new Thickness(0,8,0,0)};
         stack.Children.Add(stateText);stack.Children.Add(new TextBlock{Text=probe?"Input probe":"Then shake",Foreground=Brushes.LightGray,FontSize=10,Margin=new Thickness(0,5,0,0)});inner.Children.Add(stack);body.Child=inner;grid.Children.Add(body);

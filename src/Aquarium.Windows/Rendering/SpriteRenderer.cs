@@ -11,7 +11,7 @@ namespace Aquarium.Windows.Rendering;
 // A single drawing surface, cached bitmap frames and cached clips; not one UI control per fish/pellet.
 internal sealed class SpriteRenderer : FrameworkElement
 {
-    private readonly BitmapSource[,] sprites=new BitmapSource[3,4];
+    private readonly BitmapSource[,,] sprites=new BitmapSource[4,4,2];
     private readonly Geometry[] clips=new Geometry[3];
     private long clipVersion=long.MinValue;
     private EnvironmentSnapshot? environment;
@@ -23,8 +23,11 @@ internal sealed class SpriteRenderer : FrameworkElement
     {
         var atlas=new BitmapImage();atlas.BeginInit();atlas.CacheOption=BitmapCacheOption.OnLoad;
         atlas.UriSource=new Uri("pack://application:,,,/Assets/fish-atlas.png");atlas.EndInit();atlas.Freeze();
-        for(var palette=0;palette<3;palette++)for(var frame=0;frame<4;frame++)
-        {var bitmap=new CroppedBitmap(atlas,new Int32Rect(frame*40,palette*24,40,24));bitmap.Freeze();sprites[palette,frame]=bitmap;}
+        for(var species=0;species<4;species++)for(var facing=0;facing<4;facing++)for(var frame=0;frame<2;frame++)
+        {
+            var bitmap=new CroppedBitmap(atlas,new Int32Rect((facing*2+frame)*40,species*24,40,24));
+            bitmap.Freeze();sprites[species,facing,frame]=bitmap;
+        }
         RenderOptions.SetBitmapScalingMode(this,BitmapScalingMode.NearestNeighbor);
         SnapsToDevicePixels=true;IsHitTestVisible=false;
         IsVisibleChanged += (_, _) => Metrics.ResetInterval();
@@ -60,16 +63,19 @@ internal sealed class SpriteRenderer : FrameworkElement
             foreach(var f in scene.Fish)
             {
                 if((int)f.Band!=band)continue;
-                var bounds=FishGeometry.Bounds(f.Position,f.Width,f.Height);
+                var scale=DepthScale(f.VisualDepth);
+                var width=f.Width*scale;var height=f.Height*scale;
+                var bounds=FishGeometry.Bounds(f.Position,width,height);
                 if(!environment.Display.Intersects(bounds))continue;
                 var x=Snap(f.Position.X);var y=Snap(f.Position.Y);
                 var speed=Math.Sqrt(f.Velocity.X*f.Velocity.X+f.Velocity.Y*f.Velocity.Y);
-                var index=(int)(scene.Time*(speed>100?11:6)+f.Id)%4;
-                drawing.PushTransform(new ScaleTransform(f.FacingRight?1:-1,1,x,y));
-                drawing.DrawImage(sprites[(f.Id-1)%3,index],new Rect(x-f.Width/2,y-f.Height/2,f.Width,f.Height));
+                var frame=((int)(scene.Time*(speed>100?8:4)+f.Id))&1;
+                drawing.DrawImage(sprites[(int)f.Species,(int)f.Facing,frame],new Rect(x-width/2,y-height/2,width,height));
                 if(f.Activity==FishActivity.Eat)
-                    drawing.DrawRectangle(Spark,null,new Rect(x+f.Width*.34,y-1.5,3,3));
-                drawing.Pop();
+                {
+                    var sparkX=f.Facing==FishFacing.Right?x+width*.34:f.Facing==FishFacing.Left?x-width*.34:x;
+                    drawing.DrawRectangle(Spark,null,new Rect(Snap(sparkX)-1.5,Snap(y)-1.5,3,3));
+                }
             }
             drawing.Pop();
         }
@@ -95,5 +101,6 @@ internal sealed class SpriteRenderer : FrameworkElement
         drawing.Pop();
         Metrics.End(started);
     }
+    private static double DepthScale(double visualDepth) => .72+.14*Math.Clamp(visualDepth,0,2);
     private static Rect Rect(Rect2 r)=>new(r.X,r.Y,r.Width,r.Height);
 }

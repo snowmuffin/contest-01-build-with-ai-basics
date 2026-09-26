@@ -173,7 +173,7 @@ internal sealed class HostController : IDisposable
                 workWindowCount=snapshot?.WorkWindows.Count,protectedRegionCount=snapshot?.ProtectedRegions.Count,
                 shellState=observer.ShellState,eventHooks=observer.HookCount,
                 foodImplemented=!probe,finalArtwork=false,renderMetrics=overlay.RenderMetricSnapshot,
-                fish=scene?.Fish.Select(f=>new{id=f.Id,position=f.Position,velocity=f.Velocity,band=f.Band.ToString(),activity=f.Activity.ToString(),transition=f.Transition.ToString(),facingRight=f.FacingRight,width=f.Width,height=f.Height,visible=snapshot is not null&&Occlusion.VisibleAt(f.Position,f.Band,snapshot)}),
+                fish=scene?.Fish.Select(f=>new{id=f.Id,species=f.Species.ToString(),position=f.Position,velocity=f.Velocity,band=f.Band.ToString(),visualDepth=f.VisualDepth,activity=f.Activity.ToString(),transition=f.Transition.ToString(),facing=f.Facing.ToString(),facingRight=f.FacingRight,width=f.Width,height=f.Height,visible=snapshot is not null&&Occlusion.VisibleAt(f.Position,f.Band,snapshot)}),
                 food=scene?.Food,meals=scene?.RecentMeals,simulationTime=world.Time,
                 emitted=world.TotalEmitted,consumed=world.TotalConsumed,expired=world.TotalExpired,shakes=world.ShakeCount,curiosity=world.CuriosityCount
             };

@@ -78,8 +78,11 @@ public sealed class World
         for(var i=0;i<settings.FishCount;i++)
         {
             var p=ClampCenter(new Point2(area.X+area.Width*(.18+.15*(i%5)),area.Y+area.Height*(.24+.105*(i%5))),area);
-            fish.Add(new FishState{Id=i+1,Position=p,WanderTarget=p,Band=i==0?DepthBand.Front:i%2==0?DepthBand.Rear:DepthBand.Middle,
+            var band=i==0?DepthBand.Front:i%2==0?DepthBand.Rear:DepthBand.Middle;
+            var facingRight=i%2==0;
+            fish.Add(new FishState{Id=i+1,Species=(FishSpecies)(i%4),Position=p,WanderTarget=p,Band=band,
                 HomeBand=i%2==0?DepthBand.Rear:DepthBand.Middle,TargetBand=DepthBand.Front,
+                FacingRight=facingRight,Facing=facingRight?FishFacing.Right:FishFacing.Left,VisualDepth=(int)band,
                 ForegroundUntil=i==0?10:0,NextCuriosity=3+random.NextDouble()*10,NextWander=0});
         }
         previousDisplay=s.Display;
@@ -103,9 +106,11 @@ public sealed class World
         }
         var curious=target is null && Time<f.CuriousUntil;
         var desired=target is not null||curious||Time<f.ForegroundUntil||Time<f.EatingUntil?DepthBand.Front:f.HomeBand;
-        if(DepthTransitions.Advance(f,desired,s,settings,dt))return;
+        var depthTransitionActive=DepthTransitions.Advance(f,desired,s,settings,dt);
+        UpdateVisualDepth(f,dt);
+        if(depthTransitionActive){f.Facing=ResolveFacing(f);return;}
         if(Time<f.EatingUntil)
-        {f.Activity=FishActivity.Eat;f.Velocity=new(f.Velocity.X*.9,f.Velocity.Y*.9);return;}
+        {f.Activity=FishActivity.Eat;f.Velocity=new(f.Velocity.X*.9,f.Velocity.Y*.9);f.Facing=ResolveFacing(f);return;}
         Point2 goal;double speed;
         if(target is not null)
         {
@@ -150,6 +155,23 @@ public sealed class World
                 while(meals.Count>32)meals.Dequeue();
             }
         }
+        f.Facing=ResolveFacing(f);
+    }
+    private static void UpdateVisualDepth(FishState f,double dt)
+    {
+        var target=(double)(int)f.Band;
+        var delta=target-f.VisualDepth;
+        var step=3.2*dt;
+        f.VisualDepth=Math.Abs(delta)<=step?target:f.VisualDepth+Math.Sign(delta)*step;
+        f.VisualDepth=Math.Clamp(f.VisualDepth,0,2);
+    }
+    private static FishFacing ResolveFacing(FishState f)
+    {
+        var delta=(int)f.Band-f.VisualDepth;
+        if(delta>.035)return FishFacing.TowardViewer;
+        if(delta<-.035)return FishFacing.AwayFromViewer;
+        if(f.Activity==FishActivity.Curious && f.Band==DepthBand.Front)return FishFacing.TowardViewer;
+        return f.FacingRight?FishFacing.Right:FishFacing.Left;
     }
     private Point2 ClampCenter(Point2 p,Rect2 area)
     {
@@ -158,6 +180,6 @@ public sealed class World
             Math.Clamp(p.Y,area.Y+my,Math.Max(area.Y+my,area.Bottom-my)));
     }
     public SceneFrame Snapshot() => new(Time,
-        Array.AsReadOnly(fish.Select(f=>new FishPose(f.Id,f.Position,f.Velocity,f.Band,f.Activity,f.FacingRight,settings.FishWidth,settings.FishHeight,f.Phase)).ToArray()),
+        Array.AsReadOnly(fish.Select(f=>new FishPose(f.Id,f.Position,f.Velocity,f.Band,f.Activity,f.FacingRight,settings.FishWidth,settings.FishHeight,f.Phase,f.Species,f.Facing,f.VisualDepth)).ToArray()),
         Array.AsReadOnly(food.Select(p=>new FoodPose(p.Id,p.Position,p.Age)).ToArray()),Array.AsReadOnly(meals.ToArray()));
 }

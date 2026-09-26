@@ -62,8 +62,11 @@ public sealed class ShakeDetector
 
 public enum FishActivity { Wander, Curious, SeekFood, Eat, ChangingDepth }
 public enum DepthPhase { None, Leaving, Entering }
+public enum FishSpecies { Goldfish, Tetra, Angelfish, Guppy }
+public enum FishFacing { Left, Right, TowardViewer, AwayFromViewer }
 public readonly record struct FishPose(int Id, Point2 Position, Point2 Velocity, DepthBand Band,
-    FishActivity Activity, bool FacingRight, double Width, double Height, DepthPhase Transition);
+    FishActivity Activity, bool FacingRight, double Width, double Height, DepthPhase Transition,
+    FishSpecies Species, FishFacing Facing, double VisualDepth);
 public readonly record struct FoodPose(int Id, Point2 Position, double Age);
 public readonly record struct ConsumptionEvent(int FishId, int FoodId, Point2 FishPosition,
     Point2 FoodPosition, double Time, bool Visible, DepthBand Band);
@@ -77,7 +80,10 @@ internal sealed class FishState
     public DepthBand Band, HomeBand, TargetBand;
     public DepthPhase Phase;
     public FishActivity Activity;
+    public FishSpecies Species;
+    public FishFacing Facing = FishFacing.Right;
     public bool FacingRight = true;
+    public double VisualDepth;
     public double NextWander, NextCuriosity, CuriousUntil, ForegroundUntil, EatingUntil;
 }
 internal sealed class FoodState

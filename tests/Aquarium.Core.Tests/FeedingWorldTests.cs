@@ -86,6 +86,33 @@ public sealed class FeedingWorldTests
     {Assert.IsTrue(FishGeometry.CanSwitchWithoutPop(new(-50,200),68,40,DepthBand.Rear,DepthBand.Front,Env(true)));}
     [TestMethod] public void SameInputSeedProducesSameWorld()
     {var a=Make();var b=Make();Feed(a,Env());Feed(b,Env());Run(a,Env(),6);Run(b,Env(),6);CollectionAssert.AreEqual(a.Snapshot().Fish.ToArray(),b.Snapshot().Fish.ToArray());Assert.AreEqual(a.TotalConsumed,b.TotalConsumed);}
+    [TestMethod] public void FiveFishKeepAtLeastFourStableSpecies()
+    {
+        var w=Make();var before=w.Snapshot().Fish.Select(f=>f.Species).ToArray();
+        Assert.IsGreaterThanOrEqualTo(4,before.Distinct().Count());
+        Run(w,Env(),12);
+        CollectionAssert.AreEqual(before,w.Snapshot().Fish.Select(f=>f.Species).ToArray());
+    }
+    [TestMethod] public void DepthPresentationShowsTowardAndAwayWithoutChangingIds()
+    {
+        var w=Make();var ids=w.Snapshot().Fish.Select(f=>f.Id).ToArray();var toward=false;var away=false;
+        Feed(w,Env());
+        for(var i=0;i<180;i++)
+        {
+            w.Advance(1.0/60,Env());var frame=w.Snapshot();
+            toward|=frame.Fish.Any(f=>f.Facing==FishFacing.TowardViewer);
+            Assert.IsTrue(frame.Fish.All(f=>f.VisualDepth>=0&&f.VisualDepth<=2));
+        }
+        w.Feeder.Release();w.ResetFeeding();
+        for(var i=0;i<900;i++)
+        {
+            w.Advance(1.0/60,Env());var frame=w.Snapshot();
+            away|=frame.Fish.Any(f=>f.Facing==FishFacing.AwayFromViewer);
+        }
+        Assert.IsTrue(toward,"At least one fish should visually approach the viewer.");
+        Assert.IsTrue(away,"At least one fish should visually recede from the viewer.");
+        CollectionAssert.AreEqual(ids,w.Snapshot().Fish.Select(f=>f.Id).ToArray());
+    }
     [TestMethod] public void FishMoveWithoutFeeding()
     {var w=Make();var before=w.Snapshot();Run(w,Env(),2);Assert.AreNotEqual(before.Fish[0].Position,w.Snapshot().Fish[0].Position);Assert.AreEqual(0L,w.TotalEmitted);}
     [TestMethod] public void CursorCuriosityIsOccasional()
