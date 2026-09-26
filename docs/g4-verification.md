@@ -1,6 +1,6 @@
 # G4 package candidate verification
 
-> Latest environment update: on the owner's explicit authorization and retry request, Windows Sandbox activation succeeded through normal UAC with `-NoRestart`. The operation reported `Enabled`, `RestartNeeded=true`, exit code `3010`. No reboot was issued; restart approval and actual offline guest execution remain pending. Evidence: `artifacts/g4-only-20260926/sandbox-enable-02/activation-result.json`. Earlier disabled-feature observations below are historical.
+> Latest environment update: on the owner's explicit authorization and retry request, Windows Sandbox activation succeeded through normal UAC with `-NoRestart`. The operation reported `Enabled`, `RestartNeeded=true`, exit code `3010`. No reboot was issued. The owner will restart manually after their other work; this project is saved and paused meanwhile. Actual offline guest execution remains pending, with no automatic continuation or reboot scheduled. Evidence: `artifacts/g4-only-20260926/sandbox-enable-02/activation-result.json`. Earlier disabled-feature observations below are historical.
 
 ## G4-only verification pass ? 2026-09-26
 
