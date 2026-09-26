@@ -16,10 +16,10 @@ The participant requested preparation up to, but not including, submission; refi
 | Core desktop feeding loop and Windows coexistence | Implemented; earlier G2/G3 evidence is recorded in verification documents |
 | Candidate runtime | 10.0.12 from live official metadata, release date 2026-09-08; host SDK/shared runtime unchanged |
 | Upstream notices | Exact distribution/source-version notice texts and hashes collected under notices/dotnet-10.0.12 |
-| Release candidate | `artifacts/packages/pre-submit-01/DesktopAquarium-win-x64.zip`; 489 hashes match, new-runtime native regression pending |
+| Release candidate | `artifacts/packages/pre-submit-01/DesktopAquarium-win-x64.zip`; 489 hashes match; fresh 18 feeding / 25 lifecycle / 7 browser checks passed in RDP |
 | Core tests | 64 passing after the candidate diagnostics change; Release build has zero reported warnings/errors |
 | Clean/offline test kit | Prepared; absence of Windows Sandbox on this host means not executed |
-| Screen recording | Recorder tooling present; new capture blocked by input-desktop access denial, not completed |
+| Screen recording | A 7.95-second cropped local rehearsal recorded; sampled-frame review done, final owner review/recording and upload still pending |
 | Source/history audit | 109 history blobs scanned with zero configured credential-pattern hits; owner metadata review still required |
 | App map | Local-only technical reference, not a claim of completed final review or learning activity |
 
@@ -48,3 +48,7 @@ Separate SDK-free/offline execution, local-console display validation, sustained
 ## Refinements after readiness review
 
 The first follow-up should address actual observed issues, not add species/rarity/growth, other operating systems, or multi-monitor scope. Optional polishing candidates are feeder visual weight, fish turning/eating animation, and measured rendering cost. None is implemented or committed as a new requirement by this document.
+
+## Latest RDP recheck
+
+Input access is restored. Fresh candidate verification and a real local rehearsal are recorded in `rdp-candidate-verification.md`. No console transfer, owner licensing/naming decision, public posting or final submission occurred. The longer benchmark was partial; do not report all three 60-second phases as passed.

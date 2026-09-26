@@ -64,7 +64,7 @@ dotnet test tests/Aquarium.Core.Tests/Aquarium.Core.Tests.csproj -c Release
 dotnet run --project src/Aquarium.Windows/Aquarium.Windows.csproj -- --feed
 
 # Preserves normal source lockfiles while producing self-contained win-x64 artifacts:
-./scripts/Publish-Windows.ps1 -RuntimeVersion 10.0.10
+./scripts/Publish-Windows.ps1 -RuntimeVersion 10.0.12
 ```
 
 Planned packaged use: extract the **whole** published directory, run `Aquarium.Windows.exe`, then run the documented `scripts/Create-FeederShortcut.ps1 -ExePath <absolute-exe-path>` once to create the app-owned desktop shortcut. That script must refuse to overwrite an unrelated shortcut; use the OS's current-user Desktop known-folder location rather than a hardcoded path. The shortcut targets the absolute executable path plus `--feed` and its own bundled icon. No startup registration, background service, administrator elevation or security-policy modification is required by the design.
@@ -347,3 +347,9 @@ Official documentation consulted for technical claims on 2026-09-25. Proposed al
 - [D14 — SetCapture](https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-setcapture)
 - [D15 — SHQueryUserNotificationState](https://learn.microsoft.com/en-us/windows/win32/api/shellapi/nf-shellapi-shqueryusernotificationstate)
 - [D16 — Notification state values](https://learn.microsoft.com/en-us/windows/win32/api/shellapi/ne-shellapi-query_user_notification_state)
+
+## RDP candidate recheck
+
+The user chose RDP rather than console transfer. The unchanged pre-submit-01/runtime-10.0.12 package has fresh 18 feeding, 25 lifecycle, 7 actual Edge F11 and package-local loader passes; 64 source core tests pass. A cropped 7.95-second silent local rehearsal was recorded from actual input, not a simulated aquarium. No upload/final video approval occurred. Sparse fixture coordinates were replaced by verified test-owned activation/placement, without product z-order changes.
+
+Long-run ordinary/feeding measurements have two 60-second phase samples but the full attempt failed in test setup before hidden sampling. A later five-second-per-phase three-state run completed; no GPU or compositor latency guarantee. See `docs/rdp-candidate-verification.md`. Remaining clean/offline, local-console and final owner review requirements are unchanged; earlier input-access-denial statements above are historical, no longer the current blocker.

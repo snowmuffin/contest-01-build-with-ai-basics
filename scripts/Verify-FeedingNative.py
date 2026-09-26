@@ -130,23 +130,50 @@ def click(p,allowed):safe_move(p,allowed);send(2);time.sleep(.10);send(4);time.s
 
 
 def activate_fixture():
- candidates=[(display_w-150,180),(150,340),(display_w-160,display_h-250),(100,display_h//2),(display_w//2,display_h-200)]
- p=next((p for p in candidates if target_root(p)==handles[0]),None)
- if p is None:raise RuntimeError('No unobstructed test-owned point; native check blocked without touching other apps')
- click(p,[handles[0]])
+ # Stage only our temporary fixture. Restore an ordinary (non-topmost) window
+ # before evaluating the aquarium; never resize/minimize the user's windows.
+ bounds=w.RECT();u.GetWindowRect(handles[0],c.byref(bounds))
+ candidates=[(x,y) for y in range(bounds.top+40,bounds.bottom-12,40)
+                    for x in range(bounds.left+14,bounds.right-12,40)]
+ point=next((p for p in candidates if target_root(p)==handles[0]),None)
+ temporary_topmost=False
+ try:
+  if point is None:
+   if not u.SetWindowPos(handles[0],-1,0,0,0,0,0x13):raise RuntimeError('Fixture staging failed')
+   temporary_topmost=True;time.sleep(.2)
+   point=next((p for p in candidates if target_root(p)==handles[0]),None)
+  if point is None:raise RuntimeError('No exposed fixture point; no foreign input sent')
+  click(point,[handles[0]])
+ finally:
+  if temporary_topmost:
+   u.SetWindowPos(handles[0],-2,0,0,0,0,0x13);time.sleep(.25)
+ if u.GetForegroundWindow()!=handles[0]:raise RuntimeError('Fixture did not become foreground')
+
 
 initial_foreground=u.GetForegroundWindow()
 app=None;saved_cursor=w.POINT();u.GetCursorPos(c.byref(saved_cursor));pointer_moved=False
+
+def open_feeder_over_fixture(exe):
+ # Open only after the pointer is on the owned work window, rather than under
+ # a protected shell surface left beneath the user's pre-test pointer.
+ candidates=[(int(display_w*f),int(max(140,display_h*.25))) for f in [.45,.6,.3]]
+ point=next((p for p in candidates if target_root(p)==handles[0]),None)
+ if point is None:raise RuntimeError('No safe fixture point to open the feeder')
+ safe_move(point,[handles[0]]);time.sleep(.2)
+ started=subprocess.run([str(exe),'--feed'],cwd=ROOT,timeout=6)
+ if started.returncode!=0:raise RuntimeError('Feeder launcher failed')
+ return wait_until(lambda s:s['feederVisible'] and s['feederMode']=='Resting')
+
+
 try:
  last=LAST(c.sizeof(LAST),0);u.GetLastInputInfo(c.byref(last));idle=((k.GetTickCount()-last.tick)&0xffffffff)/1000
  if idle<2:raise RuntimeError('Desktop recently active; rerun only while idle')
  if STATE.exists():STATE.unlink()
  exe=Path(os.environ.get('AQUARIUM_TEST_EXE',str(ROOT/'src/Aquarium.Windows/bin/Release/net10.0-windows/Aquarium.Windows.exe'))).resolve()
  if not exe.is_relative_to(ROOT) or not exe.is_file():raise RuntimeError('Test executable must be an existing project artifact')
- app=subprocess.Popen([str(exe),'--feed','--diagnostics',str(STATE),'--probe-seconds','45'],cwd=ROOT)
+ app=subprocess.Popen([str(exe),'--diagnostics',str(STATE),'--probe-seconds','45'],cwd=ROOT)
  time.sleep(1.5);s=wait_until(lambda s:s.get('foodImplemented') and len(s.get('fish') or [])==5)
  check('actual world has five fish, no G0 markers substituted',s['stage'].startswith('G1/G2') and s['foodImplemented'])
- check('feeder opens resting without food',s['feederMode']=='Resting' and s['emitted']==0)
  scale=s['transform']['Scale'];display_w=round(s['display']['Width']);display_h=round(s['display']['Height'])
  boxes=[(20,30,display_w-40,display_h-100),(40,60,210,130)]
  threading.Thread(target=fixture_thread,daemon=True).start();ready.wait(3)
@@ -155,6 +182,8 @@ try:
  u.SetWindowPos(A,None,0,0,0,0,0x13);time.sleep(.3)
  pointer_moved=True;activate_fixture();time.sleep(.5)
  check('actual native fixture is foreground',u.GetForegroundWindow()==A)
+ s=open_feeder_over_fixture(exe)
+ check('feeder opens resting without food',s['feederMode']=='Resting' and s['emitted']==0)
  # Native input goes to the tool only, not to a simulated world entry point.
  s=state();first=s['fish'][0];fp=s['feederPosition'];fh=s['feederHandle']
  point=lambda x,y:(round((x)*scale),round((y)*scale))

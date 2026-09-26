@@ -130,7 +130,7 @@ def click(p,allowed):safe_move(p,allowed);send(2);time.sleep(.10);send(4);time.s
 
 # Isolated-profile Edge test. No existing user tab/profile is opened or controlled.
 import winreg
-OUT=ROOT/'artifacts/g3/browser';OUT.mkdir(parents=True,exist_ok=True);STATE=OUT/'state.json'
+OUT=Path(os.environ.get('AQUARIUM_TEST_OUTPUT',str(ROOT/'artifacts/g3/browser')));OUT.mkdir(parents=True,exist_ok=True);STATE=OUT/'state.json'
 report={'kind':'Actual Edge F11 test with a new workspace-local profile','checks':[]}
 api(u,'GetWindowThreadProcessId',w.DWORD,[w.HWND,c.POINTER(w.DWORD)])
 api(u,'IsWindowVisible',w.BOOL,[w.HWND]);api(u,'IsWindow',w.BOOL,[w.HWND]);api(u,'IsZoomed',w.BOOL,[w.HWND])
@@ -154,7 +154,8 @@ try:
  profile=OUT/'edge-profile';page=OUT/'fixture.html'
  page.write_text('<!doctype html><meta charset="utf-8"><title>Aquarium G3 isolated test</title><style>body{background:#223746;color:#eef6f8;font:30px sans-serif;padding:50px;min-height:400vh}</style><h1>Aquarium G3 native browser test</h1><p>Temporary isolated profile. This local page has no external resources.</p>',encoding='utf-8')
  if STATE.exists():STATE.unlink()
- exe=ROOT/'src/Aquarium.Windows/bin/Release/net10.0-windows/Aquarium.Windows.exe'
+ exe=Path(os.environ.get('AQUARIUM_TEST_EXE',str(ROOT/'src/Aquarium.Windows/bin/Release/net10.0-windows/Aquarium.Windows.exe'))).resolve()
+ if not exe.is_relative_to(ROOT) or not exe.is_file():raise RuntimeError('Expected project-owned test binary')
  app=subprocess.Popen([str(exe),'--feed','--diagnostics',str(STATE),'--probe-seconds','30'],cwd=ROOT)
  wait_until(lambda s:s['alive'] and s['overlayVisible'],5)
  browser=subprocess.Popen([edge,'--user-data-dir='+str(profile),'--no-first-run','--no-default-browser-check','--disable-background-networking','--new-window',page.as_uri()])
@@ -179,8 +180,11 @@ try:
  owned.sort(key=lambda handle:next((m['bounds'][2]-m['bounds'][0])*(m['bounds'][3]-m['bounds'][1]) for m in metadata if m['handle']==handle),reverse=True)
  h=owned[0];u.ShowWindow(h,3);u.SetForegroundWindow(h);time.sleep(.5)
  if u.GetForegroundWindow()!=h:
-  r=w.RECT();u.GetWindowRect(h,c.byref(r));pt=(r.left+150,r.top+250)
-  if target_root(pt)!=h:raise RuntimeError('Isolated browser click would hit a foreign window')
+  r=w.RECT();u.GetWindowRect(h,c.byref(r))
+  candidates=[(x,y) for y in range(max(180,r.top+180),r.bottom-40,48)
+                     for x in range(max(40,r.left+40),r.right-40,48)]
+  pt=next((pt for pt in candidates if target_root(pt)==h),None)
+  if pt is None:raise RuntimeError('No exposed test-owned browser point; no foreign input sent')
   moved=True;u.SetCursorPos(*pt);send(2);time.sleep(.05);send(4);time.sleep(.3)
  check('only test-owned browser gets F11 input',u.GetForegroundWindow()==h)
  s=wait_until(lambda s:s['overlayVisible']);check('normal maximized Edge keeps habitat visible',u.IsZoomed(h) and 'Fullscreen' not in s['suppression'])

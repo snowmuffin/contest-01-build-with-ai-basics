@@ -13,15 +13,15 @@ The first increment is the spec's critical Windows integration gate. Core tests 
 
 ## Current Execution Status
 
-The learner requested a submission-preparation pass first, with optional polish afterward. Freeze the current product scope; do not infer actual submission, public posting, final naming/license choice, or final user approval.
+The user chose to remain on the reconnected RDP session; do not retry console transfer. G0/G2/G3 remain accepted. G4 and the final owner review remain open, without reopening product scope.
 
-G0, G2 and G3 remain committed and accepted as recorded. G4 is still open. The preparation pass adds an updated runtime-10.0.12 candidate, exact upstream notices, reproducible verification/recording helpers, a clean-room kit, and a local technical app-map preview. All 64 core tests and the isolated Release build pass after opt-in bounded rendering diagnostics were added. These diagnostics are not a visual/interaction redesign.
+The actual runtime-10.0.12 `pre-submit-01` candidate (application source `12baa4d`, 489 verified payload hashes) now has fresh 18-check feeding, 25-check lifecycle, 7-check actual Edge F11, and bundled-runtime-loading passes. Current source locked restore/Release build and 64 core tests pass. These are RDP observations, not a clean-machine/offline/local-console claim.
 
-The current tool session has no accessible input desktop: OpenInputDesktop returned access denied (5), and there was no foreground window. An attempted own-tray click was denied. Do not force unlock, disconnect/reconnect, weaken security, or repeat injection through another route. Fresh native regression, screen capture and the longer live-input resource sample await a normal interactive session. Existing native results refer to the earlier runtime/build and are not silently transferred to the new candidate.
+A real 7.95-second local feeding rehearsal exists under `artifacts/pre-submit/demo/`; the recorded feeding run passed 18 checks. The cropped silent video has sampled-frame review only and does not show the Desktop icon. It has not been uploaded or approved as final submission footage.
 
-Windows Sandbox executables are absent on this host. A network-disabled clean-room kit can be generated for a machine where Sandbox is already available, but its existence is NOT an offline/no-SDK pass. Actual separate-environment and final hands-on checks remain pending. The project license, final participant-authored form fields, public repository/demo links and final Submit are intentionally untouched.
+Ordinary and feeding phases each ran for about 60 seconds, but that three-phase test stopped before its hidden phase; the whole attempt is incomplete. A later corrected five-second-per-phase run passed ordinary, feeding, hidden, restore and normal exit. No GPU/compositor-latency or long-duration guarantee is made. See `docs/rdp-candidate-verification.md` for exact evidence and failed setup attempts.
 
-Candidate `pre-submit-01` (runtime 10.0.12, source `12baa4d`) has 489 verified payload hashes. Clean-room kit and source archive/bundle are prepared but not executed/published. Read-only audit found no configured credential-pattern hits in 109 history blobs. See `docs/submission-readiness.md` and `docs/pre-submit-verification.md` for evidence. `devpost/app-map.html` is a local reference preview, not a completed learning activity. Do not mark 5-build final review, 6-ship, or G4 complete yet.
+No product source or candidate binaries changed; only test setup and documentation were corrected. Separate SDK-free/offline execution, final package review and the learning wrap-up remain pending. Naming/license/publication and participant-written fields/survey are not authorized or completed by this technical pass. The local app map remains a reference preview. Do not mark final review, G4 or 6-ship complete.
 
 ## Slices
 
@@ -110,3 +110,5 @@ Activity mode: not selected; tie the wrap-up to actual implementation evidence.
 - G4 partial: packaged and extracted the real app, checked bundle-local runtime loading and reran feeding/lifecycle tests on the package. A bare RID publish changed canonical lockfiles and broke NU1004 locked restore; the publishing wrapper now isolates restore state and verifies source lock hashes. R2 publish followed by locked restore/build/64 tests passed. Clean no-SDK/offline and sustained performance remain unrun, so G4 stays unchecked.
 
 - Pre-submission pass requested: prepare technical deliverables before optional refinements, without publishing/submitting. A live metadata fetch showed runtime 10.0.12 while cached research still showed 10.0.10; new notices and candidate use the live value. Input-desktop denial and missing Sandbox prevent claiming fresh interactive/offline passes.
+
+- RDP resume: input access recovered without console transfer. Real candidate feeding/lifecycle/browser/loader checks and an 8-second local rehearsal now exist; partial 60-second measurements and a completed short run are explicitly separated. Test-only fixture positioning/activation changed for the smaller desktop; no product behavior or user windows were changed.

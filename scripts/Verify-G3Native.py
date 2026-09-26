@@ -161,10 +161,25 @@ def safe_move(p,allowed):
  u.SetCursorPos(round(p[0]),round(p[1]));time.sleep(.10)
 
 def fixture_click():
- points=[(100,300),(display_w-120,250),(100,display_h//2),(display_w-120,display_h-120)]
- p=next((p for p in points if target_root(p)==handles[0]),None)
- if p is None:raise RuntimeError('No unobstructed fixture point')
- click(p,[handles[0]])
+ # Stage only our temporary fixture. Restore an ordinary (non-topmost) window
+ # before evaluating the aquarium; never resize/minimize the user's windows.
+ bounds=w.RECT();u.GetWindowRect(handles[0],c.byref(bounds))
+ candidates=[(x,y) for y in range(bounds.top+40,bounds.bottom-12,40)
+                    for x in range(bounds.left+14,bounds.right-12,40)]
+ point=next((p for p in candidates if target_root(p)==handles[0]),None)
+ temporary_topmost=False
+ try:
+  if point is None:
+   if not u.SetWindowPos(handles[0],-1,0,0,0,0,0x13):raise RuntimeError('Fixture staging failed')
+   temporary_topmost=True;time.sleep(.2)
+   point=next((p for p in candidates if target_root(p)==handles[0]),None)
+  if point is None:raise RuntimeError('No exposed fixture point; no foreign input sent')
+  click(point,[handles[0]])
+ finally:
+  if temporary_topmost:
+   u.SetWindowPos(handles[0],-2,0,0,0,0,0x13);time.sleep(.25)
+ if u.GetForegroundWindow()!=handles[0]:raise RuntimeError('Fixture did not become foreground')
+
 
 def tray_action(label):
  global pointer_moved
@@ -186,14 +201,26 @@ def pick_up():
  pointer_moved=True;safe_move(at,[s['feederHandle']]);send(2)
  return wait_until(lambda s:s['feederMode']=='Held' and s['nativeCaptureOwned']),at
 
+def open_feeder_over_fixture(exe):
+ # Open only after the pointer is on the owned work window, rather than under
+ # a protected shell surface left beneath the user's pre-test pointer.
+ candidates=[(int(display_w*f),int(max(140,display_h*.25))) for f in [.45,.6,.3]]
+ point=next((p for p in candidates if target_root(p)==handles[0]),None)
+ if point is None:raise RuntimeError('No safe fixture point to open the feeder')
+ safe_move(point,[handles[0]]);time.sleep(.2)
+ started=subprocess.run([str(exe),'--feed'],cwd=ROOT,timeout=6)
+ if started.returncode!=0:raise RuntimeError('Feeder launcher failed')
+ return wait_until(lambda s:s['feederVisible'] and s['feederMode']=='Resting')
+
+
 try:
  last=LAST(c.sizeof(LAST),0);u.GetLastInputInfo(c.byref(last))
  if ((k.GetTickCount()-last.tick)&0xffffffff)/1000<2:raise RuntimeError('Desktop is active; rerun while idle')
  if STATE.exists():STATE.unlink()
  exe=Path(os.environ.get('AQUARIUM_TEST_EXE',str(ROOT/'src/Aquarium.Windows/bin/Release/net10.0-windows/Aquarium.Windows.exe'))).resolve()
  if not exe.is_relative_to(ROOT) or not exe.is_file():raise RuntimeError('Test executable must be an existing project artifact')
- app=subprocess.Popen([str(exe),'--feed','--diagnostics',str(STATE),'--probe-seconds','65'],cwd=ROOT)
- s=wait_until(lambda s:s.get('alive') and s['feederVisible'] and len(s.get('fish') or [])==5,6)
+ app=subprocess.Popen([str(exe),'--diagnostics',str(STATE),'--probe-seconds','65'],cwd=ROOT)
+ s=wait_until(lambda s:s.get('alive') and len(s.get('fish') or [])==5,6)
  check('actual feeding host is running',s['foodImplemented'] and s['pid']==app.pid)
  display_w=round(s['display']['Width']);display_h=round(s['display']['Height'])
  boxes=[(0,80,display_w,display_h-160)]
@@ -201,6 +228,7 @@ try:
  check('controlled real work window created',len(handles)==1,error);A=handles[0]
  pointer_moved=True;fixture_click();time.sleep(.3)
  check('work fixture foreground established',u.GetForegroundWindow()==A)
+ s=open_feeder_over_fixture(exe)
  tray_ids=tray_action('Hide');s=wait_until(lambda s:s['manualHidden'] and not s['overlayVisible'])
  check('actual tray Hide removes both surfaces',not s['feederVisible'])
  sim=s['simulationTime'];frames=s['frames'];time.sleep(.8);s=state()

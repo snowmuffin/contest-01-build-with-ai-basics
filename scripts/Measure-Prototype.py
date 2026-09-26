@@ -161,10 +161,25 @@ def safe_move(p,allowed):
  u.SetCursorPos(round(p[0]),round(p[1]));time.sleep(.10)
 
 def fixture_click():
- points=[(100,300),(display_w-120,250),(100,display_h//2),(display_w-120,display_h-120)]
- p=next((p for p in points if target_root(p)==handles[0]),None)
- if p is None:raise RuntimeError('No unobstructed fixture point')
- click(p,[handles[0]])
+ # Stage only our temporary fixture. Restore an ordinary (non-topmost) window
+ # before evaluating the aquarium; never resize/minimize the user's windows.
+ bounds=w.RECT();u.GetWindowRect(handles[0],c.byref(bounds))
+ candidates=[(x,y) for y in range(bounds.top+40,bounds.bottom-12,40)
+                    for x in range(bounds.left+14,bounds.right-12,40)]
+ point=next((p for p in candidates if target_root(p)==handles[0]),None)
+ temporary_topmost=False
+ try:
+  if point is None:
+   if not u.SetWindowPos(handles[0],-1,0,0,0,0,0x13):raise RuntimeError('Fixture staging failed')
+   temporary_topmost=True;time.sleep(.2)
+   point=next((p for p in candidates if target_root(p)==handles[0]),None)
+  if point is None:raise RuntimeError('No exposed fixture point; no foreign input sent')
+  click(point,[handles[0]])
+ finally:
+  if temporary_topmost:
+   u.SetWindowPos(handles[0],-2,0,0,0,0,0x13);time.sleep(.25)
+ if u.GetForegroundWindow()!=handles[0]:raise RuntimeError('Fixture did not become foreground')
+
 
 def tray_action(label):
  global pointer_moved
@@ -222,13 +237,25 @@ def sample_phase(name,duration=5,move=None):
   time.sleep(.05)
  take(name)
 
+def open_feeder_over_fixture(exe):
+ # Open only after the pointer is on the owned work window, rather than under
+ # a protected shell surface left beneath the user's pre-test pointer.
+ candidates=[(int(display_w*f),int(max(140,display_h*.25))) for f in [.45,.6,.3]]
+ point=next((p for p in candidates if target_root(p)==handles[0]),None)
+ if point is None:raise RuntimeError('No safe fixture point to open the feeder')
+ safe_move(point,[handles[0]]);time.sleep(.2)
+ started=subprocess.run([str(exe),'--feed'],cwd=ROOT,timeout=6)
+ if started.returncode!=0:raise RuntimeError('Feeder launcher failed')
+ return wait_until(lambda s:s['feederVisible'] and s['feederMode']=='Resting')
+
+
 try:
  sample_phase('no-aquarium baseline',4)
  exe=Path(os.environ.get('AQUARIUM_TEST_EXE',str(ROOT/'artifacts/g4/extracted-r2/DesktopAquarium/app/Aquarium.Windows.exe'))).resolve()
  if not exe.is_relative_to(ROOT) or not exe.is_file():raise RuntimeError('Measurement executable must be an existing project artifact')
  if STATE.exists():STATE.unlink()
- app=subprocess.Popen([str(exe),'--feed','--diagnostics',str(STATE),'--probe-seconds',str(min(600,int(duration*3+60)))],cwd=ROOT)
- s=wait_until(lambda s:s['feederVisible'] and len(s.get('fish') or [])==5,6)
+ app=subprocess.Popen([str(exe),'--diagnostics',str(STATE),'--probe-seconds',str(min(600,int(duration*3+60)))],cwd=ROOT)
+ s=wait_until(lambda s:s.get('alive') and len(s.get('fish') or [])==5,6)
  process_handle=k.OpenProcess(0x410,False,app.pid)
  if not process_handle:raise c.WinError(c.get_last_error())
  display_w=round(s['display']['Width']);display_h=round(s['display']['Height'])
@@ -236,6 +263,7 @@ try:
  threading.Thread(target=fixture_thread,daemon=True).start();ready.wait(3)
  if len(handles)!=1:raise RuntimeError('No controlled performance window')
  A=handles[0];pointer_moved=True;fixture_click();time.sleep(.7)
+ s=open_feeder_over_fixture(exe)
  sample_phase('ordinary habitat',duration)
  s,at=pick_up()
  def shake(i):
@@ -243,11 +271,11 @@ try:
   u.SetCursorPos(round(at[0]+(55 if i%2 else -55)),round(at[1]))
  sample_phase('held shaking / feeding',duration,shake)
  send(4);wait_until(lambda s:s['feederMode']=='Resting')
- time.sleep(.6);tray_action('Hide');wait_until(lambda s:s['manualHidden'] and not s['overlayVisible'])
+ time.sleep(.6);fixture_click();api(u,'AllowSetForegroundWindow',w.BOOL,[w.DWORD])(app.pid);tray_action('Hide');wait_until(lambda s:s['manualHidden'] and not s['overlayVisible'])
  sample_phase('manual hidden',duration)
- tray_action('Show again');wait_until(lambda s:s['overlayVisible'])
+ fixture_click();u.AllowSetForegroundWindow(app.pid);tray_action('Show again');wait_until(lambda s:s['overlayVisible'])
  check('restored after sample without held input',state()['feederMode']=='Resting')
- tray_action('Exit');app.wait(timeout=5)
+ fixture_click();u.AllowSetForegroundWindow(app.pid);tray_action('Exit');app.wait(timeout=5)
  check('measured package exited normally',app.returncode==0)
  report['passed']=True
 except Exception as ex:

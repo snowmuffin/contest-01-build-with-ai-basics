@@ -43,4 +43,4 @@ Close an already-running development aquarium using its tray Exit first, otherwi
 
 Test-only environment overrides `AQUARIUM_TEST_EXE`, `AQUARIUM_TEST_OUTPUT` and (feeding harness) `AQUARIUM_TEST_SHORTCUT` select a project-local candidate for `Verify-FeedingNative.py`/`Verify-G3Native.py`. They do not alter the product's runtime behavior. `Verify-PackagedStartup.ps1 -PackageDirectory <extracted-folder>` performs a bounded own-process runtime-module check. Native scripts require an idle authorized interactive desktop.
 
-Current preparation and owner-only items: `docs/submission-readiness.md`. New-runtime native/video checks are pending a normally accessible desktop session; earlier candidate passes must not be silently attributed to this newer package.
+Current preparation and owner-only items: `docs/submission-readiness.md`. Fresh native/browser/startup checks on the new-runtime package and a local rehearsal now exist; see `docs/rdp-candidate-verification.md`. The rehearsal is not a final uploaded demo, and separate no-SDK/offline and final user review remain.

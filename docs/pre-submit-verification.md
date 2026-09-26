@@ -65,3 +65,7 @@ those operations complete. Unavailable checks remain open in `devpost/checklist.
 - App-map paths/anchors and no-script/no-network structure are checked. Isolated headless Edge produced a DOM dump containing the map; this is not a completed learner walkthrough or visual acceptance of the actual app.
 
 Remaining: normal interactive session for candidate feeding/lifecycle and recording, separate SDK-free/offline acceptance, final package review, participant-authored fields/survey, project license and public links. Actual submission remains explicitly prohibited in this preparation pass.
+
+## Superseding RDP-reconnection result
+
+The user reconnected RDP and chose to continue there. The access-denial blocker above is resolved. See `rdp-candidate-verification.md` for fresh runtime-10.0.12 package checks, the real local rehearsal and exact short/partial-long resource measurements. Clean-room/final review/publication gates remain. The earlier blocked recording receipt is retained separately; the current recording-status receipt identifies the successful local rehearsal, not an approved/uploaded final demo.
