@@ -23,14 +23,14 @@ Current task boundary (2026-09-28): record the participant's completed submissio
 
 ## Public repository preparation
 
-Optional portable release authorized (2026-09-28): prepare v0.1.0 from the accepted source with complete notices, verify the exact ZIP and Desktop shortcut workflow, then publish it and update download links. This supersedes the earlier preparation-only publishing boundary for this release. Preserve the separate noreply publication history and the existing unfinished atlas/cleaner. No app feature or scope change. Progress: `../docs/release-v0.1.0.md`.
+Optional portable release completed (2026-09-28): v0.1.0 packages the accepted source with complete notices, verifies the exact ZIP and Desktop shortcut workflow, and is publicly downloadable. The separate noreply publication history and existing unfinished atlas/cleaner remain preserved. No app feature or scope change. Results: `../docs/release-v0.1.0.md`.
 
 - [x] Owner selected PolyForm Noncommercial 1.0.0 as the source-available/noncommercial strategy, with separate asset and third-party scopes and retained future commercial-edition rights.
 - [x] Reviewed official Rules: public access required, open-source license recommended; this choice does not satisfy that recommendation. Separate judging/organizer permissions are documented without editing the license text.
 - [x] Final license/notice/link/provenance and source/history publication checks recorded in `../docs/submission-readiness.md`.
 - [x] Public GitHub repository created/pushed and its source URL verified without authentication — owner authorized publication after review. A separate public copy uses GitHub noreply author/committer emails; the 22 original commits retain identical trees, names, dates, messages and parent relationships. Original local history and unfinished work are preserved. Anonymous repository, commit and raw-source access passed on 2026-09-27; see `../docs/submission-readiness.md`.
 - [ ] Archival follow-up: identify the exact submitted commit and create a fixed `v0.1-contest-submission` tag. Submission is already reported complete; no commit is guessed and no tag is created or moved in this documentation update.
-- [ ] Before any public binary release: include all new licensing documents and actual dependency notices; verify the new package. Existing local ZIPs are historical candidates.
+- [x] v0.1.0 portable binary published with complete root/runtime notices: 73 Core tests, 23 feeding and 27 lifecycle native checks, Desktop launcher/shortcut checks, 496 inventory entries and anonymous downloaded ZIP hash verified. Historical local ZIPs remain separate. A future binary version requires its own package verification.
 
 ## Slices
 
@@ -118,6 +118,7 @@ Private exit-survey answers and completion are not visible in the public page an
 The public source requirement and optional binary distribution are separate. No extra feature work is required by this checklist.
 
 ## Revisions
+- 2026-09-28 portable release: owner requested a ready-to-run ZIP and Desktop feeder icon. Updated packaging, notices and download instructions; published v0.1.0 from public source `a38e8194e07fef0b346ffdcd41e4545a80d24080`. SDK-free/offline Sandbox and unchanged native regressions passed, then the anonymously downloaded asset matched the tested ZIP. App source/assets and product scope are unchanged. Devpost's logged-in form was not edited; retain the repository URL and add the release URL as the download link.
 - 2026-09-28 submission confirmation: participant supplied the published project URL and reported submission. Anonymous HTML retrieval confirmed the project title, contest association, repository link and YouTube embed; anonymous oEmbed confirmed video metadata. Recorded completion without claiming full hosted playback, private survey visibility, exact local-video equivalence or a selected submission commit/tag. Documentation only; product scope, code, assets and licensing are unchanged.
 - 2026-09-27 demo refinement: owner requested a 45–60-second silent demonstration with clearer real feeder input and no product changes. Prepared and reviewed take-05 after rejecting takes with remote input interference, snap UI or obscured emission. Same 499-file Release payload; protected code/assets/licensing and unfinished work unchanged. Updated only filming evidence and submission status; no scope expansion, upload, GitHub push or submission.
 - 2026-09-27 Sandbox recording: owner requested filming in a disposable desktop with work windows and a suitable wallpaper. Created an 88.73-second local silent draft from public source `88ed4f6`; no application, existing asset, dependency or scope change. Calculator was absent, so the guest used Explorer with two Edge windows. Filming evidence and the new backdrop's provenance are recorded in `../docs/demo-recording.md`; owner review/upload remain open.
