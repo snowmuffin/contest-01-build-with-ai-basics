@@ -15,6 +15,8 @@ The participant subsequently requested 100% display size. Front now displays the
 
 Publication preparation (2026-09-27): the owner requested a public contest repository with original project code under PolyForm Noncommercial 1.0.0, separate project-asset terms, and unchanged third-party terms. See `../LICENSING.md`, `../ASSET_NOTICE.md` and `../THIRD_PARTY_NOTICES.md`. This is submission preparation, not a product feature or scope expansion. The repository is source-available/noncommercial, not OSI open source. A future proprietary Steam edition remains outside this PoC; only the owner's applicable rights can be separately licensed. No contest-submission tag is created before the final submitted commit is selected.
 
+Current feeder refinement (2026-09-27): at the owner's request, replace the visible feeder panel with the existing opaque canister sprite on a transparent surface. Release lets the object fall vertically to the bottom of the primary work area, above the taskbar, where it remains available for pickup. It can also be caught during a fall. This is an optional refinement of the feeding interaction and an explicitly requested change from staying at the release point; no general physics engine, window collisions or product expansion is added.
+
 ## The Unique Kernel
 
 The aquarium is the user's desktop, not a tank confined to a conventional app window. Opening a real feeder icon makes a virtual food shaker available. The user picks it up by pressing/dragging it: holding is visually apparent, shaking releases food, and the fish approach and eat it. Opening, holding, putting down, and closing are distinct actions.
@@ -29,10 +31,10 @@ Someone who spends long hours working at a computer and wants a small change of 
 
 1. Start the aquarium and see fish swimming autonomously across the desktop/display.
 2. During ordinary use, fish sometimes show interest in the cursor without constantly following it.
-3. Double-click the aquarium's desktop feeder icon to make the resting feeder available.
+3. Double-click the aquarium's desktop feeder icon to make the unheld feeder available; it falls toward the work-area floor.
 4. Press/drag the feeder to hold it, then shake the mouse while holding to release food particles.
 5. Watch fish notice the food, approach it, and eat it.
-6. Release the mouse button to put the feeder down and resume ordinary cursor use, or click its X to close only the feeder. The aquarium continues; a separate small resident-icon menu can hide, show, or exit the aquarium.
+6. Release the mouse button to drop the feeder toward the work-area floor and resume ordinary cursor use, or click its small X to close only the feeder. The aquarium continues; a separate small resident-icon menu can hide, show, or exit the aquarium.
 
 The repeatable experience is a brief, optional interaction with something living on an otherwise familiar work screen.
 
@@ -60,9 +62,9 @@ The same feeding interaction can be repeated locally without an external service
 
 - A habitat spanning the desktop/display rather than an aquarium confined to a conventional app window.
 - Autonomous fish movement with occasional interest in the normal cursor.
-- An app-owned desktop feeder icon/launcher, a resting feeder, and visible feedback when it is held.
+- An app-owned desktop feeder icon/launcher, a pickable falling/resting feeder, and visible feedback when it is held.
 - Shake-to-feed input, food particles, and fish approaching and eating the food.
-- Putting down or closing the feeder restores ordinary interaction; a small resident-icon menu handles aquarium hide/show/exit. Fullscreen work takes priority.
+- Dropping or closing the feeder restores ordinary interaction; a small resident-icon menu handles aquarium hide/show/exit. Fullscreen work takes priority.
 - Non-destructive interaction: fish do not consume desktop files or arbitrary icons, and feeding does not delete, move, or alter the user's files.
 
 ### Constraints and decisions carried forward

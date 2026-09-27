@@ -196,8 +196,8 @@ def tray_action(label):
 
 def pick_up():
  global pointer_moved
- s=wait_until(lambda s:s['feederVisible']);p=s['feederPosition'];sc=s['transform']['Scale']
- at=((p['X']+40)*sc,(p['Y']+55)*sc)
+ s=wait_until(lambda s:s['feederVisible'] and not s.get('feederFalling',False),timeout=6);p=s['feederPosition'];sc=s['transform']['Scale']
+ hit=s.get('feederBodyPoint',{'X':40,'Y':55});at=((p['X']+hit['X'])*sc,(p['Y']+hit['Y'])*sc)
  pointer_moved=True;safe_move(at,[s['feederHandle']]);send(2)
  return wait_until(lambda s:s['feederMode']=='Held' and s['nativeCaptureOwned']),at
 
@@ -229,10 +229,23 @@ try:
  pointer_moved=True;fixture_click();time.sleep(.3)
  check('work fixture foreground established',u.GetForegroundWindow()==A)
  s=open_feeder_over_fixture(exe)
+ if 'feederFalling' in s:
+  s=wait_until(lambda s:s['feederFalling'] and s['feederVisible'])
+  fh=s['feederHandle'];bounds=w.RECT();u.GetWindowRect(fh,c.byref(bounds));hit=s['feederBodyPoint'];sc=s['transform']['Scale']
+  at=(round(bounds.left+hit['X']*sc),round(bounds.top+hit['Y']*sc))
+  # Read the live HWND rather than a delayed diagnostic position. No dwell before pickup.
+  if u.GetForegroundWindow() not in handles+[fh] or target_root(at)!=fh:raise RuntimeError('Falling pickup target is not test-owned')
+  u.SetCursorPos(*at)
+  if target_root(at) not in handles+[fh]:raise RuntimeError('Input target changed before falling pickup')
+  send(2);s=wait_until(lambda s:s['feederMode']=='Held' and s['nativeCaptureOwned'])
+  check('physical pickup catches the falling canister',not s['feederFalling'])
+  caught=s['feederPosition'];emitted=s['emitted'];time.sleep(.35);s=state()
+  check('caught canister stops falling without automatic food',s['feederPosition']==caught and s['emitted']==emitted)
+  send(4);wait_until(lambda s:s['feederMode']=='Resting' and not s['nativeCaptureOwned'])
  tray_ids=tray_action('Hide');s=wait_until(lambda s:s['manualHidden'] and not s['overlayVisible'])
  check('actual tray Hide removes both surfaces',not s['feederVisible'])
- sim=s['simulationTime'];frames=s['frames'];time.sleep(.8);s=state()
- check('manual Hide freezes drawing and simulation',s['frames']==frames and s['simulationTime']==sim,{'frame_before':frames,'frame_after':s['frames'],'time_before':sim,'time_after':s['simulationTime']})
+ sim=s['simulationTime'];frames=s['frames'];feeder_before=s['feederPosition'];time.sleep(.8);s=state()
+ check('manual Hide freezes drawing and simulation',s['frames']==frames and s['simulationTime']==sim and s['feederPosition']==feeder_before,{'frame_before':frames,'frame_after':s['frames'],'time_before':sim,'time_after':s['simulationTime']})
  second=subprocess.run([str(exe),'--feed'],cwd=ROOT,timeout=6);s=state()
  check('feeder launch cannot override manual Hide',second.returncode==0 and s['manualHidden'] and not s['overlayVisible'])
  fixture_click();u.PostMessageW(A,0x8011,0,0);s=wait_until(lambda s:'Fullscreen' in s['suppression'])
@@ -253,15 +266,15 @@ try:
  u.SetForegroundWindow(A);u.PostMessageW(A,0x8011,0,0)
  s=wait_until(lambda s:'Fullscreen' in s['suppression'] and not s['overlayVisible']);send(4)
  check('fullscreen during holding clears capture and tool',s['feederMode']=='Resting' and not s['feederVisible'] and not s['nativeCaptureOwned'])
- sim=s['simulationTime'];frames=s['frames'];time.sleep(.8);s=state()
- check('fullscreen stops simulation, redraw and emission',s['simulationTime']==sim and s['frames']==frames and s['emitted']==before)
+ sim=s['simulationTime'];frames=s['frames'];feeder_before=s['feederPosition'];time.sleep(.8);s=state()
+ check('fullscreen stops simulation, redraw and emission',s['simulationTime']==sim and s['frames']==frames and s['emitted']==before and s['feederPosition']==feeder_before)
  u.PostMessageW(A,0x8012,0,0);s=wait_until(lambda s:s['overlayVisible'] and s['feederVisible'])
  check('fullscreen recovery cannot resume old hold',s['feederMode']=='Resting' and s['emitted']==before)
  s,at=pick_up();u.PostMessageW(s['overlayHandle'],0x007e,32,display_w|(display_h<<16))
  s=wait_until(lambda s:s['feederMode']=='Resting' and not s['nativeCaptureOwned']);send(4)
  check('simulated display-change notification cancels drag',not s['feederCapture'])
  s=wait_until(lambda s:s['overlayVisible']);p=s['feederPosition'];scale=s['transform']['Scale']
- check('display-change recovery leaves feeder inside primary display',p['X']>=0 and p['Y']>=0 and p['X']+164<=display_w/scale+1 and p['Y']+112<=display_h/scale+1)
+ check('display-change recovery leaves feeder inside primary display',p['X']>=0 and p['Y']>=0 and p['X']+s.get('feederSize',{'Width':164})['Width']<=display_w/scale+1 and p['Y']+s.get('feederSize',{'Height':112})['Height']<=display_h/scale+1)
  prior_handle=s['feederHandle'];prior_holds=s['holdCount']
  children=[subprocess.Popen([str(exe),'--feed'],cwd=ROOT) for _ in range(10)]
  codes=[p.wait(timeout=8) for p in children];s=state()

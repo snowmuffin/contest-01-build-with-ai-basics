@@ -14,6 +14,8 @@ Current status (2026-09-27): G0–G4 and the initial package learner check are c
 
 The current source/Release build also implements the requested 100% display size: Front uses one source pixel per DIP, with Middle 86% and Rear 72% retained. Windows display scaling applies. Logical feeding/depth geometry is unchanged. The ZIP below predates this size adjustment.
 
+The latest source refinement removes the rectangular feeder panel. The canister can be picked up, shaken, and dropped; it falls to the primary work-area floor above the taskbar and can be picked up again, including while falling. Transparent pixels pass clicks through, and falling never dispenses food. Existing ZIPs predate this refinement. See `docs/feeder-object-verification.md` for mechanical results and the pending participant review.
+
 ## Run
 
 ```powershell
@@ -25,7 +27,7 @@ dotnet run --project src/Aquarium.Windows/Aquarium.Windows.csproj -c Release -- 
 
 Or double-click `scripts/Start-Aquarium.cmd`. The source launcher requires a development .NET 10 SDK. A separate self-contained candidate is now available for verification as described below. The target is Windows 11 x64 on the primary display; current native test evidence is specifically an RDP session, not general compatibility certification.
 
-Pick up the feeder body, shake left/right while holding, and release to put it down. Ordinary cursor movement never dispenses food. X closes only the feeder. The tray provides Open feeder / Hide / Show again / Exit. Fullscreen protection and manual Hide are distinct. No registration at login, background service, account, model download or external runtime API is added.
+Pick up the feeder body, shake left/right while holding, and release to drop it to the work-area floor. Ordinary cursor movement never dispenses food. X closes only the feeder. The tray provides Open feeder / Hide / Show again / Exit. Fullscreen protection and manual Hide are distinct. No registration at login, background service, account, model download or external runtime API is added.
 
 ## App-owned launcher
 

@@ -13,6 +13,12 @@ Publication target: `https://github.com/snowmuffin/contest-01-build-with-ai-basi
 
 After the owner selects the final submitted version, record its exact commit and create a fixed tag such as `v0.1-contest-submission`; never move that tag to later commercial work. No such tag is created now. Subsequent Steam development may use another branch or private commercial repository, respecting existing grants and third-party rights. This is a handoff plan, not implementation of a Steam edition.
 
+## Current feeder object refinement - 2026-09-27
+
+The owner requested removal of the feeder panel and gravity after release. `FeederWindow.cs` now uses an alpha-transparent 80x112 DIP WPF tool window: the existing 60x72 canister is positioned at (4,40), keeping its nozzle at (34,112), just above the unchanged food origin (34,116). Only sprite pixels and a small X are visible; there is no surrounding panel or permanent label. Transparent pixels pass through native input.
+
+`FeederFall.cs` adds bounded vertical presentation motion to the existing Closed/Resting/Held state: Resting means unheld, which may be falling or landed. It clamps to the current work area, accelerates downward, stops on its floor, resets velocity on pickup/cancellation, and never submits held-motion samples. The existing host fixed-step clock advances it only while allowed/visible, so hidden time cannot accumulate into a jump. Fish movement, feeding calculations, depth and occlusion are unchanged. No external dependency or general physics engine is added. Existing native fixtures use reported object dimensions/hit points and deliberately lift the canister before shaking. Verification: `../docs/feeder-object-verification.md`; final participant acceptance remains open.
+
 ## Current Implementation and Asset Review — 2026-09-27
 
 G0–G4 and the initial package learner check are complete; Final Review remains open. Later evidence sections preserve earlier checkpoints and should not be read as current gate status. The canonical current gate is `checklist.md > Current Execution Status`.
@@ -51,7 +57,7 @@ Implements `prd.md > The Core Journey` and `Features and Behavior`.
 4. **Pick up:** a deliberate press on the feeder body activates that small window as needed and starts a captured drag. The body displays a held pose. Simply opening the feeder does not pick it up.
 5. **Shake:** timestamped movement while held enters the core's shake detector. Qualifying back-and-forth movement releases bounded foreground food particles. A stationary hold or ordinary movement after release does not feed.
 6. **Eat:** responding fish reach the foreground and approach the food; a visible contact consumes a particle once. They subsequently return to autonomous swimming. Existing fish can re-enter from a display edge when a maximized work window hides their route.
-7. **Return to work:** release clears holding and new emission, leaving the feeder resting. Its X closes the feeder only. Tray Hide/Show/Exit controls the aquarium. Fullscreen protection cancels holding and suppresses the habitat without stealing focus; restore never resumes a drag or overrides a manual Hide.
+7. **Return to work:** release clears holding and new emission; the unheld feeder falls to the work-area floor. Its X closes the feeder only. Tray Hide/Show/Exit controls the aquarium. Fullscreen protection cancels holding and suppresses the habitat without stealing focus; restore never resumes a drag or overrides a manual Hide.
 
 ## Stack — Approved Approach
 
@@ -171,9 +177,9 @@ For a maximized ordinary window with no route, advance that existing fish toward
 
 Implements `prd.md > Feeder handling — accepted, MVP value` and `Aquarium controls and feeder activation — accepted, MVP value`.
 
-Use a second small borderless window; only its body/X region accepts interaction. Show it without automatic foreground activation. A **deliberate user press** on its body may activate this tool and obtain normal mouse capture. A permanently nonactivating feeder plus `SetCapture` cannot be assumed to deliver reliable cross-window dragging: the API documents foreground restrictions. [D14] Do not fake unrestricted capture with global input hooks.
+Use a second small borderless, per-pixel transparent window; only its visible canister/X pixels accept interaction. Resting/unheld objects fall to the primary work-area floor and can be picked up in flight or after landing. Show it without automatic foreground activation. A **deliberate user press** on its body may activate this tool and obtain normal mouse capture. A permanently nonactivating feeder plus `SetCapture` cannot be assumed to deliver reliable cross-window dragging: the API documents foreground restrictions. [D14] Do not fake unrestricted capture with global input hooks.
 
-Convert captured movement into core commands and update the feeder's native position without starting an OS title-bar move loop; distinguish its X hit target before any drag. Release/capture loss/deactivation/session interruption must clear holding and pending shake samples. Do not change the system-wide cursor scheme, warp the pointer, or simulate clicks in other apps. Held appearance is local to the feeder/tool interaction.
+Convert captured movement into core commands and update the feeder's native position without starting an OS title-bar move loop; distinguish its X hit target before any drag. Release/capture loss/deactivation/session interruption must clear holding and pending shake samples. Visible unheld objects then fall; suppressed objects pause, with gravity velocity reset and no hidden-time catch-up. Do not change the system-wide cursor scheme, warp the pointer, or simulate clicks in other apps. Held appearance is local to the feeder/tool interaction.
 
 Clamp feeder placement and drag within the active habitat's usable area. Proposed one-monitor behavior: launch near the pointer if it is on the primary display; otherwise use the nearest safe position on the primary display. Reusing an open feeder does not create another or force an unrelated foreground change. Verify capture across other processes in the first gate; failure means revise the input approach, not claim success.
 
@@ -238,6 +244,7 @@ contest-01-build-with-ai-basics/
 │  ├─ Aquarium.Core/                   # net10.0; no Windows or UI references
 │  │  ├─ Aquarium.Core.csproj
 │  │  ├─ World.cs                      # sole behavior-state owner
+│  │  ├─ FeederFall.cs                 # bounded unheld drop and work-area floor
 │  │  ├─ Contracts.cs                  # snapshots, commands, draw records, coordinate units
 │  │  ├─ FishBehavior.cs               # wander, curiosity, seek and eat
 │  │  ├─ Feeding.cs                    # held-only shake recognition and bounded pellets

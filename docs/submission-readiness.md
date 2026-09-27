@@ -6,6 +6,8 @@ Subsequent requested size adjustment: current source/Release displays Front at 1
 
 The participant subsequently selected the noncommercial/source-available licensing strategy and requested public GitHub repository preparation. This supersedes the earlier hold on source licensing/publication only. Do not expand aquarium scope, upload a video, choose the final project name, mark Final Review complete, or submit the Devpost form.
 
+Current feeder refinement: source now removes the visible panel and lets the unheld canister fall to the primary work-area floor, with pickup during falling or at rest. The previous public source and archived ZIPs predate this work; source mechanical checks and participant acceptance are recorded separately in `feeder-object-verification.md`. No final submission readiness is implied.
+
 ## Requirement basis
 
 - Installed official Devpost Learn `6-ship/SKILL.md` and the public curriculum README describe a working demo video, a public GitHub repository, participant-written project name/short description/required form answers, and participant-written exit survey. Deployment/peer feedback are optional there.
@@ -22,7 +24,8 @@ The participant subsequently selected the noncommercial/source-available licensi
 | Candidate runtime | 10.0.12 from live official metadata, release date 2026-09-08; host SDK/shared runtime unchanged |
 | Upstream notices | Original distribution/source-version notice texts preserved under notices/dotnet-10.0.12; exact NuGet runtime-pack notices added with source hashes, plus a 20-package development dependency inventory |
 | Release candidate | `artifacts/fish-runtime/package-01/DesktopAquarium-win-x64.zip`; 489 inventory entries verified at the integration checkpoint. This archive predates 100% display size; refresh pending. Source and historical package evidence are distinguished in `fish-runtime-verification.md`. |
-| Core tests | 66 passing after the 100% source size adjustment; Release build has zero warnings/errors. |
+| Core tests | 73 passing after the feeder-object refinement, including seven new falling/re-pickup cases; Release build has zero warnings/errors. |
+| Feeder object refinement | Panel removed, unheld falling and floor/in-flight pickup implemented; 23 native feeding/transparency checks and 27 lifecycle checks passed. Participant appearance/fall-speed review remains pending; see `feeder-object-verification.md`. |
 | Clean/offline verification | G4 package-02 passed offline-native-05, followed by its learner check. This evidence does not certify future artwork/package changes. |
 | Fish artwork | All 32 extracted PNGs approved by participant; exact RGBA atlas round trips and 73 current WPF checks pass, including native-size visible-pixel equality, clipping and edge culling. No Core/behavior changes. Participant retry of the new size is pending. |
 | Screen recording | A 7.95-second cropped local rehearsal recorded; sampled-frame review done, final owner review/recording and upload still pending |

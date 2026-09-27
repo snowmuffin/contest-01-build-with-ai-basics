@@ -125,6 +125,7 @@ internal sealed class HostController : IDisposable
         var steps=simulationClock.Advance(t,Allowed);
         if(Allowed && snapshot is not null)
         {
+            for(var i=0;i<steps;i++)feeder.Advance(1.0/60);
             if(probe)overlay.UpdateFrame(snapshot,t);
             else
             {
@@ -169,7 +170,9 @@ internal sealed class HostController : IDisposable
                 overlayExtendedStyle=overlay.Handle==0?0:(long)NativeMethods.GetWindowLongPtr(overlay.Handle,NativeMethods.GwlExStyle),
                 foregroundIsAquarium=NativeMethods.IsOwn(NativeMethods.GetForegroundWindow()),
                 display=observer.PhysicalDisplay,transform=observer.Transform,
-                feederPosition=feederState.Position,markers=overlay.MarkerRects,frames=overlay.FrameCount,
+                feederPosition=feederState.Position,feederFalling=feeder.Falling,
+                feederSize=new{feeder.Width,feeder.Height},feederBodyPoint=feeder.BodyPoint,feederClosePoint=feeder.ClosePoint,
+                workArea=snapshot?.WorkArea,markers=overlay.MarkerRects,frames=overlay.FrameCount,
                 workWindowCount=snapshot?.WorkWindows.Count,protectedRegionCount=snapshot?.ProtectedRegions.Count,
                 shellState=observer.ShellState,eventHooks=observer.HookCount,
                 foodImplemented=!probe,finalArtwork=false,renderMetrics=overlay.RenderMetricSnapshot,

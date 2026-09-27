@@ -21,11 +21,11 @@ Source: `scope.md > The Core Loop` and `What "Working" Looks Like`.
 
 1. Start the aquarium. Fish swim across the user's real desktop/display; there is no separate tank container or replacement underwater background.
 2. Continue ordinary work. Fish usually inhabit the middle/rear space and occasionally show interest in the cursor.
-3. Double-click the aquarium's desktop feeder launcher. A small feeder appears near the cursor, inside the visible screen, in a resting state. Opening it does not automatically mean holding it; an already open feeder is reused rather than duplicated.
+3. Double-click the aquarium's desktop feeder launcher. A small unheld feeder appears near the cursor inside the visible screen and falls toward the work-area floor. Opening it does not automatically mean holding it; an already open feeder is reused rather than duplicated.
 4. Press and drag the feeder body to pick it up. The cursor/feeder appearance communicates that it is held.
 5. Shake while holding it. Food is released, responding to the user's movement. Fish approach the foreground food and visibly eat it.
-6. Release the mouse button. The feeder stays where it was put down, the cursor returns to ordinary use, and new food emission stops. Previously released food remains available to fish.
-7. Pick up the feeder again to continue, or click its corner X to close only the feeder. Fish continue their autonomous behavior.
+6. Release the mouse button. The feeder falls vertically to the bottom of the primary work area above the taskbar, the cursor returns to ordinary use, and new food emission stops. Previously released food remains available to fish.
+7. Pick up the feeder again from the floor or catch it while falling, or click its small X to close only the feeder. Fish continue their autonomous behavior.
 
 Steps 3–4 refine the approved scope's earlier shorthand: opening the tool and holding it are now distinct, as explicitly accepted in the PRD interview. The feeding-only prototype boundary has not changed.
 
@@ -35,7 +35,7 @@ Source: `scope.md > Inspiration & Identity` and `The POC Boundary`.
 
 - **Desktop habitat:** the existing display is the aquarium. Existing desktop items and application windows remain the user's work environment.
 - **Desktop feeder launcher:** an app-owned icon/launcher, not a request to read, consume, or alter arbitrary desktop files.
-- **Feeder object:** a small movable object with a draggable body and a separate corner X. Only its own controls respond to direct manipulation; fish do not block normal clicks.
+- **Feeder object:** the existing opaque canister sprite with no surrounding panel, border or permanent instruction text, plus a small separate X. Transparent areas let input reach the underlying application; grabbing the body moves the object and releasing drops it. Only its own controls respond to direct manipulation; fish do not block normal clicks.
 - **Aquarium control menu:** a small menu attached to a resident/status icon offers Hide, Show again, and Exit for the aquarium as a whole. The concrete OS-specific placement belongs in spec.
 - A dashboard, collection screen, or settings suite is not part of the agreed prototype.
 
@@ -48,7 +48,7 @@ Source: `scope.md > Inspiration & Identity` and `The POC Boundary`.
 - **Asset review completed (2026-09-27):** the participant inspected and approved 32 independently extracted PNGs (four visual families, four directions, two frames each) for atlas/metadata construction and integration. Source comparisons and masks remain inspectable. Following the participant's request for 100% display size, Front now shows the frames at their native dimensions, preserving aspect ratio instead of fitting them into the smaller logical fish bounds. Movement, feeding, depth and occlusion rules remain unchanged; final running-package acceptance remains separate.
 - **Final-review refinement:** fish may visually face left, right, toward the viewer, or away from the viewer. Toward/away poses communicate movement between the existing Rear/Middle/Front depth bands and occasional curiosity; this does not introduce free 3D navigation.
 - **Final-review refinement:** make depth readable with restrained perspective scaling. Front displays at 100% of the approved source frame, Middle at 86%, and Rear at 72%, while retaining the same logical collision/occlusion rules. These are logical display sizes; Windows display scaling still applies.
-- **Final-review refinement:** the feeder must read as a solid app-owned pixel object. Its body must not visually reveal the work window behind it; transparency remains only outside the object/window treatment where appropriate.
+- **Final-review refinement:** the feeder must read as a solid app-owned pixel object. Its body must not visually reveal the work window behind it; pixels outside its silhouette are transparent. The owner subsequently requested removal of the visible rectangular panel and gravity after release; the current refinement implements that behavior.
 
 - Fish should feel autonomous rather than constantly following the pointer. The main interaction should be understandable without developer knowledge.
 - The HTML companion illustrates approved requirements and states; its decorative graphics are not final aquarium artwork or an application demo.
@@ -89,13 +89,15 @@ Source: `scope.md > The Core Loop`; approved PRD interview refinement.
 | State | Visible behavior | Transition |
 | --- | --- | --- |
 | Closed | Fish remain; feeder is absent | Launch feeder to make it available |
-| Resting | Feeder remains in place; pointer is ordinary; no new food | Press/drag body to hold; click X to close |
-| Held | Feeder follows manipulation; holding is visually apparent | Shake to dispense; release button to rest |
+| Unheld (core mode: Resting) | Feeder falls vertically, then rests at the work-area floor; ordinary pointer; no new food | Pick up either during a fall or at rest; click X to close |
+| Held | Feeder follows the captured pointer with the holding cursor; gravity stops | Shake to dispense; release button to drop |
 
 Observable criteria:
 - Only shaking while the feeder is held produces new food.
 - Releasing stops new food but does not delete food already released.
-- A resting feeder can be picked up again.
+- A resting or falling feeder can be picked up again. Falling alone never feeds fish, captures input, or steals focus.
+- The floor is the primary display work-area bottom, so the feeder does not cover the taskbar. No bounce, throw momentum or collision with application windows is introduced.
+- Hidden/fullscreen time does not advance falling; restoration is unheld and resumes falling only while visible.
 - Clicking X does not also start dragging or emit food.
 - Closing the feeder does not stop the aquarium or modify desktop files.
 
@@ -107,7 +109,7 @@ Source: `scope.md > The Core Loop` and the five product defaults accepted after 
 
 A small resident/status-icon menu offers Hide, Show again, and Exit. There is no additional dashboard. The aquarium-wide controls are distinct from closing the feeder with X.
 
-When opened for the first time, the feeder appears near the cursor, within the screen, and is not held. If already open, activating its launcher reuses it rather than creating another feeder. These actions do not count as shaking or picking it up.
+When opened for the first time, the feeder appears near the cursor, within the screen, and is not held; it falls to the work-area floor. If already open, activating its launcher reuses it rather than creating another feeder. These actions do not count as shaking or picking it up.
 
 Observable criteria:
 - The aquarium can be hidden and shown again, or exited, without using the feeder X as the aquarium exit.
@@ -149,7 +151,7 @@ Automatic detection, system UI handling, and how this behaves on each supported 
 | First prototype finishes at feeding | Accepted; discovery, settling, and rare fish remain later directions |
 | Display itself is the habitat | Accepted; not a conventional aquarium window |
 | Front/middle/rear bands | Accepted simplification; arbitrary gaps between every window are deferred |
-| Open, hold, shake, release, X-to-close | Accepted; putting down and closing are distinct |
+| Open, hold, shake, drop, X-to-close | Owner-requested refinement: release falls to the work-area floor; dropping and closing remain distinct |
 | Fullscreen task gets priority | Accepted hide/cancel/restore behavior; restore an open feeder resting, not held |
 | Pixel-art fish | Accepted first-prototype appearance; resource use still requires measurement |
 | Aquarium hide/show/exit | Accepted small resident-icon menu; no dashboard |

@@ -150,6 +150,19 @@ def activate_fixture():
  if u.GetForegroundWindow()!=handles[0]:raise RuntimeError('Fixture did not become foreground')
 
 
+def pick_up(lift=0):
+ s=wait_until(lambda s:s['feederVisible'] and s['feederMode']=='Resting' and not s.get('feederFalling',False),timeout=6)
+ fp=s['feederPosition'];sc=s['transform']['Scale'];hit=s.get('feederBodyPoint',{'X':40,'Y':55})
+ at=(round((fp['X']+hit['X'])*sc),round((fp['Y']+hit['Y'])*sc))
+ safe_move(at,[s['feederHandle']]);send(2)
+ s=wait_until(lambda s:s['feederMode']=='Held' and s['nativeCaptureOwned'])
+ if lift:
+  at=(at[0],max(round(100*sc),at[1]-round(lift*sc)))
+  if u.GetForegroundWindow()!=s['feederHandle']:raise RuntimeError('Foreground changed before lifting feeder')
+  u.SetCursorPos(*at);time.sleep(.3);s=state()
+ return s,at
+
+
 initial_foreground=u.GetForegroundWindow()
 app=None;saved_cursor=w.POINT();u.GetCursorPos(c.byref(saved_cursor));pointer_moved=False
 
@@ -162,7 +175,12 @@ def open_feeder_over_fixture(exe):
  safe_move(point,[handles[0]]);time.sleep(.2)
  started=subprocess.run([str(exe),'--feed'],cwd=ROOT,timeout=6)
  if started.returncode!=0:raise RuntimeError('Feeder launcher failed')
- return wait_until(lambda s:s['feederVisible'] and s['feederMode']=='Resting')
+ opened=wait_until(lambda s:s['feederVisible'] and s['feederMode']=='Resting')
+ landed=wait_until(lambda s:not s.get('feederFalling',False),timeout=6)
+ if 'feederFalling' in opened:
+  check('unheld feeder falls and lands above the taskbar',landed['feederPosition']['Y']>opened['feederPosition']['Y'] and abs(landed['feederPosition']['Y']+landed['feederSize']['Height']-landed['workArea']['Bottom'])<1,{'opened':opened['feederPosition'],'landed':landed['feederPosition']})
+  check('falling neither captures input nor emits food',not landed['nativeCaptureOwned'] and landed['emitted']==opened['emitted'])
+ return landed
 
 
 try:
@@ -184,12 +202,17 @@ try:
  check('actual native fixture is foreground',u.GetForegroundWindow()==A)
  s=open_feeder_over_fixture(exe)
  check('feeder opens resting without food',s['feederMode']=='Resting' and s['emitted']==0)
+ if 'feederBodyPoint' in s:
+  fp=s['feederPosition'];corner=(round((fp['X']+2)*scale),round((fp['Y']+15)*scale))
+  check('transparent feeder padding exposes the work fixture',target_root(corner)==A and rgb(corner)==[43,51,61],rgb(corner))
+  old_down=counts.get('down',0);click(corner,[A])
+  check('transparent padding passes real clicks to the work fixture',counts.get('down',0)>old_down and state()['holdCount']==0)
+  hit=s['feederBodyPoint'];body_pixel=(round((fp['X']+hit['X'])*scale),round((fp['Y']+hit['Y'])*scale))
+  check('canister body remains opaque and interactive',target_root(body_pixel)==s['feederHandle'] and rgb(body_pixel)==[91,80,62],rgb(body_pixel))
+
  # Native input goes to the tool only, not to a simulated world entry point.
- s=state();first=s['fish'][0];fp=s['feederPosition'];fh=s['feederHandle']
+ s,body=pick_up();first=s['fish'][0];fp=s['feederPosition'];fh=s['feederHandle']
  point=lambda x,y:(round((x)*scale),round((y)*scale))
- body=point(fp['X']+40,fp['Y']+55)
- safe_move(body,[fh]);send(2);time.sleep(.25)
- s=wait_until(lambda s:s['feederMode']=='Held')
  goal=(min(display_w/scale-220,max(80,first['position']['X']+100)),max(80,first['position']['Y']-150))
  delta=((goal[0]-fp['X'])*scale,(goal[1]-fp['Y'])*scale)
  for i in range(1,10):
@@ -197,8 +220,11 @@ try:
   u.SetCursorPos(round(body[0]+delta[0]*i/9),round(body[1]+delta[1]*i/9));time.sleep(.04)
  send(4);s=wait_until(lambda s:s['feederMode']=='Resting')
  check('one-way relocation does not dispense',s['emitted']==0,s['emitted'])
- fp=s['feederPosition'];body=point(fp['X']+40,fp['Y']+55)
- safe_move(body,[fh]);send(2);time.sleep(.25);wait_until(lambda s:s['feederMode']=='Held')
+ s,body=pick_up(lift=240)
+ if 'feederBodyPoint' in s:
+  fp=s['feederPosition'];x=round(fp['X']*scale)-16;y=round(fp['Y']*scale)-16;sw=round(80*scale)+32;sh=round(112*scale)+32
+  if all(target_root(p)==A for p in [(x,y),(x+sw-1,y),(x,y+sh-1),(x+sw-1,y+sh-1)]):
+   screenshot_fixture((x,y,sw,sh),OUT/'feeder-object.png')
  for i in range(18):
   if u.GetForegroundWindow()!=fh:raise RuntimeError('Foreground changed during shake; aborting')
   u.SetCursorPos(body[0]+(60 if i%2 else -60),body[1]);time.sleep(.05)
@@ -224,7 +250,8 @@ try:
   screenshot_fixture(safe_rect,OUT/'feeding-live.png');report['screenshot']='feeding-live.png (test-owned background only)'
  report['feeding_state']=s
  # Close and re-open through real process activation, still without a direct emission command.
- fp=s['feederPosition'];click(point(fp['X']+151,fp['Y']+14),[fh]);s=wait_until(lambda s:s['feederMode']=='Closed')
+ s=wait_until(lambda s:not s.get('feederFalling',False),timeout=6);fp=s['feederPosition'];hit=s.get('feederClosePoint',{'X':151,'Y':14})
+ click(point(fp['X']+hit['X'],fp['Y']+hit['Y']),[fh]);s=wait_until(lambda s:s['feederMode']=='Closed')
  check('X closes only the tool while fish continue',s['overlayVisible'] and len(s['fish'])==5)
  second=subprocess.run([str(exe),'--feed'],cwd=ROOT,timeout=5);s=wait_until(lambda s:s['feederVisible'])
  check('repeat executable activation reuses resident and feeder',second.returncode==0 and s['pid']==app.pid and s['feederHandle']==fh and s['feederMode']=='Resting')
@@ -232,8 +259,7 @@ try:
  activate_fixture();u.PostMessageW(A,0x8010,0,0);time.sleep(.7)
  s=wait_until(lambda s:s['overlayVisible'] and s['feederVisible'])
  check('maximized ordinary window still permits live aquarium',s['suppression']=='None')
- before=s['consumed'];fp=s['feederPosition'];body=point(fp['X']+40,fp['Y']+55)
- safe_move(body,[fh]);send(2);time.sleep(.25);wait_until(lambda s:s['feederMode']=='Held')
+ before=s['consumed'];s,body=pick_up(lift=240)
  before_emitted=state()['emitted']
  for i in range(16):
   if u.GetForegroundWindow()!=fh:raise RuntimeError('Foreground changed; aborting second shake')

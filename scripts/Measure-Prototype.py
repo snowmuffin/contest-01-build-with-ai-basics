@@ -196,10 +196,13 @@ def tray_action(label):
 
 def pick_up():
  global pointer_moved
- s=wait_until(lambda s:s['feederVisible']);p=s['feederPosition'];sc=s['transform']['Scale']
- at=((p['X']+40)*sc,(p['Y']+55)*sc)
+ s=wait_until(lambda s:s['feederVisible'] and not s.get('feederFalling',False),timeout=6);p=s['feederPosition'];sc=s['transform']['Scale']
+ hit=s.get('feederBodyPoint',{'X':40,'Y':55});at=((p['X']+hit['X'])*sc,(p['Y']+hit['Y'])*sc)
  pointer_moved=True;safe_move(at,[s['feederHandle']]);send(2)
- return wait_until(lambda s:s['feederMode']=='Held' and s['nativeCaptureOwned']),at
+ s=wait_until(lambda s:s['feederMode']=='Held' and s['nativeCaptureOwned'])
+ if u.GetForegroundWindow()!=s['feederHandle']:raise RuntimeError('Foreground changed before controlled feeder lift')
+ at=(round(at[0]),round(max(100*sc,at[1]-240*sc)));u.SetCursorPos(*at);time.sleep(.3)
+ return state(),at
 
 # Short, explicitly non-isolated performance sample. Not a sustained/battery benchmark.
 OUT=Path(os.environ.get('AQUARIUM_TEST_OUTPUT',str(ROOT/'artifacts/g4/performance'))).resolve();
