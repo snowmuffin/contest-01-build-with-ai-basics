@@ -148,16 +148,16 @@ def front_cell(species,frame,away=False):
     c.outline(OUTLINE)
     return c
 
-atlas=Canvas(320,96)
-for species in range(4):
-    for frame in range(2):
-        right=side_cell(species,frame)
-        left=right.mirror_h()
-        toward=front_cell(species,frame,False)
-        away=front_cell(species,frame,True)
-        for facing,cell in enumerate([left,right,toward,away]):
-            atlas.paste(cell,(facing*2+frame)*40,species*24)
-atlas.save(OUT/'fish-atlas.png')
+# The production fish atlas is a reviewed project asset. Do not regenerate or overwrite it here.
+fish_atlas=OUT/'fish-atlas.png'
+if not fish_atlas.exists():
+    raise SystemExit('Missing reviewed production fish-atlas.png; restore it from source control.')
+data=fish_atlas.read_bytes()
+if data[:8] != b'\x89PNG\r\n\x1a\n':
+    raise SystemExit('fish-atlas.png is not a PNG file.')
+w,h=struct.unpack('>II',data[16:24])
+if (w,h)!=(640,192):
+    raise SystemExit(f'Unexpected production fish atlas size: {w}x{h}; expected 640x192.')
 
 # Solid, opaque food canister: no glass/window-through treatment inside the body.
 jar=Canvas(40,48)
@@ -187,4 +187,4 @@ raw=b''.join(bytes((b,g,r,a)) for y in reversed(range(32)) for r,g,b,a in icon.p
 mask=b'\0'*(4*32)
 dib=struct.pack('<IIIHHIIIIII',40,32,64,1,32,0,len(raw),0,0,0,0)+raw+mask
 (OUT/'feeder.ico').write_bytes(struct.pack('<HHH',0,1,1)+struct.pack('<BBBBHHII',32,32,0,0,1,32,len(dib),22)+dib)
-print('Generated fish atlas: 4 species x 4 directions x 2 frames, plus solid feeder assets.')
+print('Validated reviewed production fish atlas; regenerated feeder PNG/ICO only.')

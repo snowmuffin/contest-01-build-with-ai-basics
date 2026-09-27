@@ -25,7 +25,7 @@ internal sealed class SpriteRenderer : FrameworkElement
         atlas.UriSource=new Uri("pack://application:,,,/Assets/fish-atlas.png");atlas.EndInit();atlas.Freeze();
         for(var species=0;species<4;species++)for(var facing=0;facing<4;facing++)for(var frame=0;frame<2;frame++)
         {
-            var bitmap=new CroppedBitmap(atlas,new Int32Rect((facing*2+frame)*40,species*24,40,24));
+            var bitmap=new CroppedBitmap(atlas,new Int32Rect((facing*2+frame)*80,species*48,80,48));
             bitmap.Freeze();sprites[species,facing,frame]=bitmap;
         }
         RenderOptions.SetBitmapScalingMode(this,BitmapScalingMode.NearestNeighbor);
