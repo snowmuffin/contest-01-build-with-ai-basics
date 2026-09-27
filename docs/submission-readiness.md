@@ -8,11 +8,14 @@ The participant selected the noncommercial/source-available licensing strategy, 
 
 The local learning map was refreshed and linked with a brief evidence-based recap of the feeder transparency/input refinement. This records technical guidance tied to the owner's actual feedback and acceptance, not an invented personal reflection or new hands-on code tour.
 
+Subsequent recording request: the owner asked for a demo filmed inside Windows Sandbox with ordinary work windows and a suitable background. An 88.73-second local silent draft now exists; [recording evidence](demo-recording.md) records the actual environment, actions and review limits. The earlier publication pass and this local recording do not authorize uploading or submitting the final entry.
+
 ## Remaining submission checklist
 
 - [x] Current source/Release implementation accepted for the PoC; no further feature refinement requested.
 - [x] Public repository exists with source, assets, instructions and separated licensing terms. This update carries the accepted feeder improvement and synchronized documents through the existing noreply history.
 - [x] Technical final review and evidence recap recorded in `../devpost/checklist.md`; the HTML reference map remains local-only.
+- [x] Local Windows Sandbox demo draft recorded and mechanically reviewed; [recording evidence](demo-recording.md) distinguishes it from the required public video.
 - [ ] Participant chooses the final project name and writes the required description/form answers.
 - [ ] Record the accepted app working end-to-end; upload a publicly visible YouTube/Vimeo demo and verify anonymous access. Under three minutes is recommended. Provide English materials or English translations, including video captions where needed.
 - [ ] Participant completes the actual submission form and exit survey.
@@ -41,7 +44,7 @@ The Rules' submission deadline is October 26, 2026 at 5:00 p.m. Eastern Time (Oc
 | Feeder object refinement | Panel removed, unheld falling and floor/in-flight pickup implemented; 23 native feeding/transparency checks and 27 lifecycle checks passed. Included in participant acceptance of the current source/Release version; see `feeder-object-verification.md`. |
 | Clean/offline verification | G4 package-02 passed offline-native-05, followed by its learner check. This evidence does not certify future artwork/package changes. |
 | Fish artwork | All 32 extracted PNGs approved; exact RGBA atlas round trips and 73 native-size WPF checks passed, including visible-pixel equality, clipping and edge culling. Current presentation accepted for the PoC; logical-geometry limitations remain documented. |
-| Screen recording | A 7.95-second cropped local rehearsal recorded; sampled-frame review done, final owner review/recording and upload still pending |
+| Screen recording | New 88.73-second silent Sandbox draft: two Edge windows and Explorer, generated wallpaper, actual feeding/drop/Hide/Show. Full decode and seven sampled frames checked. Participant full-video review, explanation/translation and public upload remain pending; see [recording evidence](demo-recording.md). The earlier 7.95-second rehearsal remains historical. |
 | Source/history audit | Pre-change scan: 20 commits, 156 tracked files, 278 historical blobs; no configured credential-pattern hits or private learner HTML/profile in history. Final publication scan is recorded below. Git history includes ordinary author metadata; scanning is not proof of absence of every secret. |
 | App map | Local-only reference refreshed against the accepted source; feeder evidence recap recorded. No personal learning claim or new interactive code tour inferred. |
 
@@ -59,7 +62,7 @@ GitHub initially rejected the original history with GH007 email privacy protecti
 
 At the initial publication checkpoint, anonymous access verification passed for repository visibility, all 22 public commit identities, and exact raw bytes of README, LICENSE, scope, PRD and spec. A following publication-status commit brought that public history to 23 commits. The accepted feeder source and this documentation update extend the same history without force-push; the private mapping and current access receipts remain in ignored `artifacts/publication-export/`. This is source publication only: no binary release, video upload, Devpost submission or final contest tag.
 
-Demo video URL: **not uploaded**. Confirm the actual final recording and public access without exposing private desktop contents.
+Demo video URL: **not uploaded**. The local Sandbox draft is `artifacts/sandbox-demo/run-01/results/aquarium-demo-take-01.mp4`; it is not a public link. Participant review and any explanation/translation precede an authorized upload and anonymous-access check.
 
 Exit survey: **participant to complete**.
 

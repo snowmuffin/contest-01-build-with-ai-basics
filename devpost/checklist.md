@@ -19,7 +19,7 @@ This is a Final Review refinement pass, not a reopened product scope. Preserve f
 
 Publication boundaries: PolyForm Noncommercial applies only within the project-owned code scope; assets and third parties retain separate terms. The owner has now authorized final documentation and an update to the existing public GitHub repository. Use the separate noreply copy and preserve the original local history, old uncommitted atlas, `Clean-FishAtlas.py` and unrelated work.
 
-Current task boundary: submission preparation only, with no product scope or runtime change. Finalize technical documents and publish the accepted source improvements. Do not upload a video, author the participant's submission, submit Devpost, create the final contest tag or introduce Steam features. A new self-contained binary release is optional and needs fresh package/notice checks before it can be offered; historical G4 evidence remains valid only for its recorded bytes.
+Current task boundary: submission preparation only, with no product scope or runtime change. Final technical documents and accepted source improvements have been published; the owner subsequently requested local Sandbox demo recording with work windows and a suitable wallpaper. The local draft and verification are recorded below. Do not upload a video, author the participant's submission, submit Devpost, create the final contest tag or introduce Steam features. A new self-contained binary release is optional and needs fresh package/notice checks before it can be offered; historical G4 evidence remains valid only for its recorded bytes.
 
 ## Public repository preparation
 
@@ -105,6 +105,7 @@ Activity mode: focused evidence recap and local map. Reusable practice: turn an 
 
 ## Remaining submission work
 
+- [x] Local Sandbox demo draft recorded from the accepted source: two Edge windows, Explorer, newly generated wallpaper, actual feeding/drop/Hide/Show. Full decode and seven sampled frames checked; see `../docs/demo-recording.md`. This is not participant acceptance or a public video link.
 - [ ] Participant selects the final project name and writes required submission answers.
 - [ ] Record the accepted app working end-to-end; upload a publicly accessible YouTube/Vimeo demo and verify its link. Under three minutes is recommended; provide English content or translation.
 - [ ] Participant completes the actual form's exit survey and required fields.
@@ -113,6 +114,7 @@ Activity mode: focused evidence recap and local map. Reusable practice: turn an 
 The public source requirement and optional binary distribution are separate. No extra feature work is required by this checklist.
 
 ## Revisions
+- 2026-09-27 Sandbox recording: owner requested filming in a disposable desktop with work windows and a suitable wallpaper. Created an 88.73-second local silent draft from public source `88ed4f6`; no application, existing asset, dependency or scope change. Calculator was absent, so the guest used Explorer with two Edge windows. Filming evidence and the new backdrop's provenance are recorded in `../docs/demo-recording.md`; owner review/upload remain open.
 - 2026-09-27 final source acceptance/publication: the owner accepted the current implementation after relaunch and requested final documents plus GitHub synchronization. Closed the source review using that acceptance and existing proportional regressions; separated optional future ZIP/clean-room/notice work without claiming it ran. Refreshed the local map and recorded an evidence recap, not a new hands-on tour. Submission prose/video/survey/tag remain open; no product or license scope changed.
 - 2026-09-27 feeder object/drop request: the owner asked for the canister to behave as a desktop object rather than a visible panel. Updated the stationary-release plan to gravity toward the primary work-area floor; retained held-only shake feeding and all fish behavior. Existing assets and dependency/licensing boundaries are unchanged. Source verification and final participant acceptance are distinguished in `../docs/feeder-object-verification.md`.
 - 2026-09-27 rights/publication preparation: owner explicitly requested a public repository while retaining a future proprietary Steam option. Added unmodified PolyForm Noncommercial source terms with bounded scope, separate project-asset permissions/provenance, and exact third-party notice records. Official Rules distinguish mandatory public access from recommended open-source licensing; no OSI-open-source or guaranteed-eligibility claim is made. Final Review, binary-release work and final submission remain separate. No app code or product scope changes.
