@@ -13,13 +13,13 @@ The first increment is the spec's critical Windows integration gate. Core tests 
 
 ## Current Execution Status
 
-All four build slices G0-G4 are complete. Final kick-the-tires is complete and produced four agreed submission-readiness refinements: solid feeder presentation, at least four fish silhouettes, toward/away directional poses, and restrained Rear/Middle/Front perspective scaling.
+All four build slices G0-G4 and the current source/Release Final Review are complete. The final exploratory feedback led to four fish silhouettes, directional poses, native-size depth perspective and a transparent falling feeder. After the updated app was launched, the owner accepted this implementation level and chose submission preparation on 2026-09-27. This records general PoC acceptance, not unreported individual test actions or wider environment coverage.
 
 This is a Final Review refinement pass, not a reopened product scope. Preserve five fish, existing feeding/fullscreen/hide/instance behavior, three logical depth bands, Windows 11 x64 target and no external runtime service. Do not add rarity, collection, growth, free 3D movement, additional OS targets or multi-monitor scope.
 
-Previous publication task boundary (2026-09-27): the 100% source display adjustment is implemented and mechanically verified; participant retry remains open below. The owner subsequently requested licensing and public GitHub repository preparation. Apply PolyForm Noncommercial only to project-owned code, separate asset/third-party notices, verify Rules and publication contents, and record repository access. This explicit request supersedes the earlier hold on source publication. It does not authorize a final Devpost submission, Steam features, final-review completion or a premature submission tag. Preserve the old uncommitted atlas, `Clean-FishAtlas.py` and unrelated work. No app/build/runtime change belongs to this licensing task.
+Publication boundaries: PolyForm Noncommercial applies only within the project-owned code scope; assets and third parties retain separate terms. The owner has now authorized final documentation and an update to the existing public GitHub repository. Use the separate noreply copy and preserve the original local history, old uncommitted atlas, `Clean-FishAtlas.py` and unrelated work.
 
-Current task boundary: the owner requested a sprite-only feeder that falls to the work-area floor after release and remains pickable. Classification: optional interaction refinement, a bounded owner-requested change to the previous stationary-release behavior. Preserve fish movement, feeding rules, depth and occlusion. Implementation and source regressions belong to this pass; public publication, refreshed binary release and final learner acceptance remain separate.
+Current task boundary: submission preparation only, with no product scope or runtime change. Finalize technical documents and publish the accepted source improvements. Do not upload a video, author the participant's submission, submit Devpost, create the final contest tag or introduce Steam features. A new self-contained binary release is optional and needs fresh package/notice checks before it can be offered; historical G4 evidence remains valid only for its recorded bytes.
 
 ## Public repository preparation
 
@@ -82,28 +82,38 @@ Current task boundary: the owner requested a sprite-only feeder that falls to th
 
 - [x] Independent sprite extraction — 32 source-sized PNGs and 32 reproducible masks prepared from the supplied preview; mechanical pixel/boundary/identity checks pass. This marks preparation only, not artwork acceptance.
 - [x] Participant inspection of all 32 extracted PNGs — participant explicitly confirmed inspection and instructed implementation. `assets/fish/approval.json` pins acceptance to these exact frames; this is artwork approval, not final package acceptance.
-- [x] After frame acceptance: built the variable-rectangle runtime atlas/metadata, replaced fixed crop lookup, and passed source/package feeding and lifecycle checks. New clean-room and final package learner acceptance remain under the separate Final Review items below.
-- [ ] Participant retry of requested 100% display size — source implementation and mechanical verification are recorded in `../docs/fish-runtime-verification.md`; actual size, feeding-mouth alignment and depth-transition appearance still await learner feedback. Front 100%, Middle 86%, Rear 72%; existing simulation bounds remain unchanged.
+- [x] After frame acceptance: built the variable-rectangle runtime atlas/metadata, replaced fixed crop lookup, and passed source/package feeding and lifecycle checks. New binary-release checks are separate from current source acceptance.
+- [x] Requested 100% display size accepted as part of the owner's overall current-implementation review. Front 100%, Middle 86%, Rear 72%; existing simulation bounds remain unchanged. `../docs/fish-runtime-verification.md` retains the visual geometry limitations; no unreported pixel-level manual check is inferred.
 
-- [ ] Feeder object/drop refinement - remove the surrounding panel; keep an opaque sprite and small X; fall to the work-area floor after release; allow pickup at rest or in flight. Source implementation and mechanical verification are recorded in `../docs/feeder-object-verification.md`; participant retry remains pending.
-- [ ] Fish visual diversity ? five stable fish visibly represent at least four distinct silhouettes/species without adding collection/rarity mechanics.
-- [ ] Four-direction presentation and depth perspective ? Left/Right/TowardViewer/AwayFromViewer poses plus Rear/Middle/Front scale differences work without breaking occlusion, identity or feeding.
-- [ ] Regression and package verification ? core/native/lifecycle/resource/package checks rerun proportionally after the renderer/assets change; clean-environment evidence is refreshed for the new package bytes.
-- [ ] Final review complete ? feedback resolved, agreed fixes verified/committed/retried, and learner confirms ready to ship.
+- [x] Feeder object/drop refinement accepted in the owner's overall review after the updated app was launched. Opaque sprite and small X, transparent surroundings, work-area-floor landing and pickup while falling/resting are implemented; mechanical results are in `../docs/feeder-object-verification.md`.
+- [x] Fish visual diversity — five stable fish use four distinct visual families; artwork approval, renderer checks and overall source acceptance recorded. No collection/rarity mechanics added.
+- [x] Four-direction presentation and depth perspective — Left/Right/TowardViewer/AwayFromViewer with Rear/Middle/Front scale differences; implemented, mechanically checked and included in overall source acceptance.
+- [x] Proportional source regression — current Release build, 73 Core tests, 23 native feeding/transparency checks and 27 lifecycle checks passed. The unchanged native-size renderer passed 73 WPF checks at its recorded checkpoint. No new performance or clean-package pass is inferred.
+- [x] Final source/Release review complete — agreed refinements implemented, verified and committed; owner accepted the implementation and requested submission preparation. Optional fresh-ZIP verification remains under Public repository preparation, not silently marked complete.
 
 ## Code Tour and App Map
 
-- [ ] Learning activity complete — use one real desktop overlay/input/OS-integration investigation; count equivalent practice already completed rather than repeat it.
-- [ ] Optional edit and transfer reflection addressed — offered/declined/already covered/not applicable as appropriate.
-- [ ] `devpost/app-map.html` generated from finished code, checked, and shown locally; remains Git-ignored.
+- [x] Evidence-based wrap-up recap — connect the owner's observed rectangular feeder problem to the transparent-object change and the native transparency/input checks. This is a recap of the actual refinement and acceptance, not a new hands-on code tour or a claim of learning mastery.
+- [x] Extra code edit not applicable to this documentation/publication task; no personal reflection or survey answer inferred. An optional reflection is not a completion prerequisite.
+- [x] `devpost/app-map.html` refreshed against the accepted source, statically checked and linked locally as a reference route; remains Git-ignored. No interactive browser review by the participant is claimed.
 
-Activity and evidence: no learner wrap-up activity is claimed. A local static app-map preview has been generated with five checked path/symbol anchors and a headless-browser DOM check; this is reference material pending final review, not proof of completed learning.
-Route and stops: select actual source paths and symbols after they exist.
-Edit outcome: not performed.
-Reflection: not yet offered; personal answer belongs only in the ignored profile.
-Activity mode: not selected; tie the wrap-up to actual implementation evidence.
+Activity and evidence: the owner identified the visible feeder window as unnatural, requested a falling/pickable object, retried the launched build and accepted the implementation. The recap connects that concrete requirement to transparent-corner click-through, opaque-body hit testing and held-only feeding checks in `../docs/feeder-object-verification.md`. It distinguishes observed appearance from automatically tested input behavior.
+Reference route (not an interactive tour): `FeederWindow.Move/HeldMoved` -> `World.SubmitHeldMotion` -> `SpriteRenderer.Update/OnRender`; gravity uses `HostController.Tick` -> `FeederWindow.Advance` -> `FeederFall.Advance`.
+Edit outcome: no additional code edit; no product scope change.
+Reflection: no response requested or invented; any later personal response belongs only in the ignored profile.
+Activity mode: focused evidence recap and local map. Reusable practice: turn an appearance request into separate visible-pixel, input and state-transition checks; broad test-environment claims require separate evidence.
+
+## Remaining submission work
+
+- [ ] Participant selects the final project name and writes required submission answers.
+- [ ] Record the accepted app working end-to-end; upload a publicly accessible YouTube/Vimeo demo and verify its link. Under three minutes is recommended; provide English content or translation.
+- [ ] Participant completes the actual form's exit survey and required fields.
+- [ ] Verify final links and select the exact submission commit/tag, then submit with explicit owner authorization.
+
+The public source requirement and optional binary distribution are separate. No extra feature work is required by this checklist.
 
 ## Revisions
+- 2026-09-27 final source acceptance/publication: the owner accepted the current implementation after relaunch and requested final documents plus GitHub synchronization. Closed the source review using that acceptance and existing proportional regressions; separated optional future ZIP/clean-room/notice work without claiming it ran. Refreshed the local map and recorded an evidence recap, not a new hands-on tour. Submission prose/video/survey/tag remain open; no product or license scope changed.
 - 2026-09-27 feeder object/drop request: the owner asked for the canister to behave as a desktop object rather than a visible panel. Updated the stationary-release plan to gravity toward the primary work-area floor; retained held-only shake feeding and all fish behavior. Existing assets and dependency/licensing boundaries are unchanged. Source verification and final participant acceptance are distinguished in `../docs/feeder-object-verification.md`.
 - 2026-09-27 rights/publication preparation: owner explicitly requested a public repository while retaining a future proprietary Steam option. Added unmodified PolyForm Noncommercial source terms with bounded scope, separate project-asset permissions/provenance, and exact third-party notice records. Official Rules distinguish mandatory public access from recommended open-source licensing; no OSI-open-source or guaranteed-eligibility claim is made. Final Review, binary-release work and final submission remain separate. No app code or product scope changes.
 - 2026-09-27 native display size: the participant explicitly requested 100%. Removed only renderer fit-to-logical-bounds reduction, retained `.72 + .14 * visualDepth`, and based display culling on the actual sprite rectangle. Source PNGs/atlas and all Core behavior remain unchanged. Classification: optional visual refinement, no scope expansion. Verification and current-source versus historical-package status are recorded in `../docs/fish-runtime-verification.md`.

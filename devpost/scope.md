@@ -19,6 +19,8 @@ Current feeder refinement (2026-09-27): at the owner's request, replace the visi
 
 ## The Unique Kernel
 
+Current delivery decision (2026-09-27): after the updated source/Release app was launched for review, the owner accepted this implementation level and requested final documentation and GitHub synchronization. Current visual/interaction refinement is complete; the feeding-only scope is unchanged. The video, participant-authored submission and final submitted commit/tag remain separate. Archived ZIPs do not represent the accepted source version; any new binary release needs its own verification.
+
 The aquarium is the user's desktop, not a tank confined to a conventional app window. Opening a real feeder icon makes a virtual food shaker available. The user picks it up by pressing/dragging it: holding is visually apparent, shaking releases food, and the fish approach and eat it. Opening, holding, putting down, and closing are distinct actions.
 
 Occasional curiosity toward the ordinary cursor supports the feeling that the fish inhabit the same space as the user, rather than playing a repeating wallpaper animation.

@@ -11,7 +11,9 @@ Source: `scope.md > Who It's For`, `The Unique Kernel`, `The Core Loop`, and the
 
 ## Platform and Documentation Decisions
 
-The learner selected Windows for the first prototype. macOS/Linux remain possible future targets, not first-delivery requirements. Windows version, architecture, display coverage, and native integration must be specified and validated before claiming support. No application framework or rendering stack has been selected by this decision.
+The learner selected Windows for the first prototype. macOS/Linux remain possible future targets, not first-delivery requirements. The subsequently approved spec selects C#/.NET 10 with WPF/Win32 and a Windows 11 x64 primary-display target. Actual tested coverage and remaining environment limitations are recorded in `spec.md` and the verification documents; platform selection is not a broad compatibility claim.
+
+Current acceptance (2026-09-27): after the updated app was launched, the owner accepted the present implementation and chose to proceed to submission preparation. This closes the source/Release visual and feeding-interaction review, including native-size fish and the falling feeder. It does not claim a new extracted-ZIP review, exhaustive visual alignment measurements or a submitted Devpost entry.
 
 Keep canonical Markdown documents in the repository. HTML review companions and other generated HTML learning documents under `devpost/` are local-only and Git-ignored. Continue visual reviews locally; this policy does not exclude HTML used as actual application source elsewhere.
 
@@ -190,6 +192,6 @@ Do not eat/delete/move the user's desktop files, use external AI/cloud APIs for 
 
 No product-decision blocker remains from the five reviewed defaults. The learner accepted them without changes; do not ask for another PRD sign-off.
 
-Windows is the selected first-prototype OS. Technical choices remain open, not implicitly approved: exact Windows versions, architectures and display configurations, native integration and rendering approach, permission handling, and validation of the edge re-entry and fullscreen behaviors. If a platform cannot deliver an approved behavior, explain the tradeoff and obtain agreement instead of silently weakening the product.
+Windows is the selected first-prototype OS. The stack and primary-display target are approved in `spec.md`; implementation and test evidence now exist. Other DPI configurations, local-console coverage, games and broader platform compatibility remain unverified as described there. If a supported case cannot deliver an approved behavior, explain the tradeoff rather than silently weakening the product.
 
-During spec/build: establish supported/tested Windows/display configurations and permissions; select feasible fullscreen/depth behavior; tune fish count, curiosity/shake thresholds, food limits/lifetime, and performance from tests rather than invented guarantees. The final project name and submission wording remain learner-authored.
+Five fish, bounded feeding and the three depth bands are implemented and accepted for this PoC. Further tuning is outside the current submission-preparation task. The final project name and submission wording remain learner-authored.

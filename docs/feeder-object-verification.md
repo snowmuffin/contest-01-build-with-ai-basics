@@ -1,6 +1,6 @@
 # Feeder object and falling refinement
 
-Owner-requested optional interaction refinement, 2026-09-27. Source implementation changes the previous stationary release into a vertical drop onto the primary work-area floor above the taskbar. This is part of Final Review, not final participant acceptance.
+Owner-requested optional interaction refinement, 2026-09-27. Source implementation changes the previous stationary release into a vertical drop onto the primary work-area floor above the taskbar. After relaunching the updated app, the owner accepted the current implementation and requested submission preparation; current source/Release Final Review is complete.
 
 The existing opaque canister sprite is rendered in a transparent WPF tool window with a small close button. The panel, border and permanent instruction text are gone. Existing asset pixels are unchanged. Nozzle placement preserves the existing food origin; fish movement, feeding calculations, depth and occlusion code are unchanged.
 
@@ -19,8 +19,8 @@ Changed Python fixtures passed syntax checks. G0 and measurement-helper hit poin
 
 ## Remaining review and distribution
 
-Participant retry is pending: inspect the object appearance and fall speed; catch or pick it up, lift/shake, release, close, and verify it stays clear of the taskbar. Final Review remains unchecked until the participant accepts the affected behavior.
+Participant acceptance is recorded on 2026-09-27 after relaunching the updated app. This is overall acceptance of the current PoC, not a claim that every listed native test was repeated manually or that other display environments were checked.
 
-No new ZIP or public source update is created in this refinement pass. Existing published commits and archived packages keep their earlier feeder behavior. This does not transfer old clean-room/performance results to the changed build. Other DPI/display configurations remain unverified.
+The implementation commit did not itself publish a ZIP or update GitHub. The owner subsequently authorized publication of that source and the final technical documentation. Current publication/submission state is tracked in [submission readiness](submission-readiness.md). Archived ZIPs retain the earlier feeder behavior; no old clean-room/performance result transfers to changed bytes. Other DPI/display configurations remain unverified.
 
 Implementation basis: [WPF AllowsTransparency](https://learn.microsoft.com/dotnet/api/system.windows.window.allowstransparency) and [Win32 layered-window hit testing](https://learn.microsoft.com/en-us/windows/win32/winmsg/window-features). The native checks, rather than documentation alone, establish behavior in the tested session.

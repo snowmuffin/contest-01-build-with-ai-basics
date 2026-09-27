@@ -1,6 +1,6 @@
 # Approved fish runtime integration — 2026-09-27
 
-Status: approved artwork integrated; final running-package learner review remains separate.
+Status: approved artwork integrated; current source/Release presentation accepted by the participant on 2026-09-27 after relaunching the updated app. A future binary package needs separate review and verification.
 Classification: optional visual refinement within the accepted Final Review; no product scope expansion.
 
 ## Current source: requested 100% display size
@@ -19,7 +19,7 @@ The approved PNGs and atlas/metadata were not resized or regenerated. No Core, m
 
 Evidence: `artifacts/fish-native-size/{renderer-report.json,rendered-32.png,renderer-probe/,tests/core.trx,feeding/report.json}`. The WPF probe adapts the existing integration harness; fully transparent RGB is normalized only for render-output comparison because compositing discards invisible color. The actual asset round-trip comparison remains exact RGBA. Native checks used the current RDP session at 100% scaling and only test-owned fixtures/app controls. No new framework or runtime dependency was added. Lifecycle, package, clean-room and other-DPI runs were not repeated for this renderer-only change; the results below describe their earlier checkpoint.
 
-Remaining visual limitation: logical fish bounds are still 68x40, including feeding-mouth offsets and depth-transition concealment checks. Native-size artwork can extend beyond those bounds. Feeding regression passes, but precise visual mouth alignment and depth-switch appearance require participant feedback; do not claim that logical contact tests verify artwork alignment. The current source/Release build includes the size change; the existing `fish-runtime/package-01` ZIP does not. A refreshed package and final learner acceptance remain pending.
+Remaining visual limitation: logical fish bounds are still 68x40, including feeding-mouth offsets and depth-transition concealment checks. Native-size artwork can extend beyond those bounds. Feeding regression passes and the participant accepted the current presentation for the PoC; neither fact establishes pixel-perfect mouth alignment or exhaustive depth-switch appearance checks. The current source/Release build includes the size change and falling feeder; the existing `fish-runtime/package-01` ZIP does not. Refreshing and accepting a package remain optional binary-distribution work.
 
 ## Historical checkpoint: approval and initial integration
 
