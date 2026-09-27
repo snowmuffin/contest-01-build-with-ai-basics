@@ -37,7 +37,7 @@ Final description and required form answers: **participant to write**. No draft 
 
 Project license/publication choice: **selected by participant** — PolyForm Noncommercial 1.0.0 for project-owned code, separate assets and upstream terms. See `../LICENSING.md`; this is not OSI open source.
 
-Public repository URL: **preparing** `https://github.com/snowmuffin/contest-01-build-with-ai-basics` under the authenticated owner's account. Public access must be verified after creation/push before this is marked complete.
+Public repository URL: [snowmuffin/contest-01-build-with-ai-basics](https://github.com/snowmuffin/contest-01-build-with-ai-basics) was created as public, but is **empty**. GitHub rejected the initial push with GH007 because historical commits contain a private email address. No source publication is claimed. The original local history and GitHub privacy protection remain unchanged; owner confirmation is pending for publishing a separate copy with GitHub noreply author/committer email metadata. Code trees and commit dates would be preserved, but public commit IDs would change. No force-push is needed for the empty repository.
 
 Demo video URL: **not uploaded**. Confirm the actual final recording and public access without exposing private desktop contents.
 
@@ -50,6 +50,8 @@ Devpost Submit: **DO NOT EXECUTE** in this preparation pass.
 ## Final submission and later commercial work
 
 Publication document checks on 2026-09-27: official PolyForm text matches its pinned source SHA-256; 30 relative links/anchors resolve; all existing application/script/test/asset-pixel and upstream-notice hashes are unchanged; the 20-package development inventory matches the lockfile. The staged publication contains 165 tracked files, no application code changes, no configured credential-pattern hits and no local profile/HTML/agent/artifact files. The legacy uncommitted atlas and untracked cleaner remain local. Evidence: ignored `artifacts/licensing/{audit-before.json,document-validation.json,index-audit.json}`. These checks do not establish legal title or guarantee detection of every secret.
+
+Before-push history audit at `3478c5b`: 21 commits, 165 tracked files and 298 historical blobs; no configured credential-pattern or private-document findings. The existing audit script's publication/owner-pending fields are static checklist hints, not live GitHub status; the actual GH007 outcome above controls. This task did not disable email protection or rewrite history.
 
 When the owner approves the actual submitted version, record its exact commit, create a fixed tag such as `v0.1-contest-submission`, and preserve it through judging. No tag is created in this pass. Later Steam work may continue on another branch or in a private commercial repository. The owner can separately license only rights the owner holds; existing license grants and upstream obligations remain. Contribution/relicensing policy remains an internal owner consideration, not a CLA system added for this contest.
 
