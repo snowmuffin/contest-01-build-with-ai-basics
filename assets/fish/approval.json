@@ -1,0 +1,8 @@
+{
+  "status": "approved-for-runtime-integration",
+  "date": "2026-09-27",
+  "participant_confirmation": "ㅇㅇ 확인함 이대로 구현 하면 되겠다",
+  "source_sha256": "0d41ac55d8e23f51816d15ef151b08f9e07e23b5b9a8fb6f0d19ad3c1df619e5",
+  "frame_set_sha256": "fc2147469d6a51dd0799af76edf110d79023d62090e811d355df8afca92a7555",
+  "scope": "Approve the reviewed 32 extracted PNGs for atlas/metadata construction and application integration; preserve movement, feeding, depth and occlusion logic. This is not final package or submission acceptance."
+}

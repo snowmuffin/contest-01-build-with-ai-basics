@@ -1,6 +1,6 @@
 # Independent fish-frame extraction — 2026-09-27
 
-Status: **32 PNGs prepared and mechanically verified; participant review pending.**
+Status update: **The participant inspected and approved all 32 PNGs and instructed runtime integration.** `../assets/fish/approval.json` pins the approved frame set. See `fish-runtime-verification.md` for integration evidence. The extraction-time results below are preserved as history; their pending-review wording describes that earlier checkpoint.
 Classification: optional visual polish within accepted Final Review. The feeding PoC scope is unchanged.
 
 ## Source and preserved work

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using Aquarium.Core;
 
 namespace Aquarium.Windows.Rendering;
@@ -11,7 +10,7 @@ namespace Aquarium.Windows.Rendering;
 // A single drawing surface, cached bitmap frames and cached clips; not one UI control per fish/pellet.
 internal sealed class SpriteRenderer : FrameworkElement
 {
-    private readonly BitmapSource[,,] sprites=new BitmapSource[4,4,2];
+    private readonly FishSpriteAtlas sprites=new();
     private readonly Geometry[] clips=new Geometry[3];
     private long clipVersion=long.MinValue;
     private EnvironmentSnapshot? environment;
@@ -21,13 +20,6 @@ internal sealed class SpriteRenderer : FrameworkElement
     private static readonly Brush Pellet=Frozen(249,215,137),PelletShadow=Frozen(81,60,34),Spark=Frozen(253,240,189);
     public SpriteRenderer()
     {
-        var atlas=new BitmapImage();atlas.BeginInit();atlas.CacheOption=BitmapCacheOption.OnLoad;
-        atlas.UriSource=new Uri("pack://application:,,,/Assets/fish-atlas.png");atlas.EndInit();atlas.Freeze();
-        for(var species=0;species<4;species++)for(var facing=0;facing<4;facing++)for(var frame=0;frame<2;frame++)
-        {
-            var bitmap=new CroppedBitmap(atlas,new Int32Rect((facing*2+frame)*80,species*48,80,48));
-            bitmap.Freeze();sprites[species,facing,frame]=bitmap;
-        }
         RenderOptions.SetBitmapScalingMode(this,BitmapScalingMode.NearestNeighbor);
         SnapsToDevicePixels=true;IsHitTestVisible=false;
         IsVisibleChanged += (_, _) => Metrics.ResetInterval();
@@ -70,7 +62,12 @@ internal sealed class SpriteRenderer : FrameworkElement
                 var x=Snap(f.Position.X);var y=Snap(f.Position.Y);
                 var speed=Math.Sqrt(f.Velocity.X*f.Velocity.X+f.Velocity.Y*f.Velocity.Y);
                 var frame=((int)(scene.Time*(speed>100?8:4)+f.Id))&1;
-                drawing.DrawImage(sprites[(int)f.Species,(int)f.Facing,frame],new Rect(x-width/2,y-height/2,width,height));
+                var sprite=sprites[f.Species,f.Facing,frame];
+                var pixelsToWorld=Math.Min(width/sprite.CanvasWidth,height/sprite.CanvasHeight);
+                drawing.DrawImage(sprite.Bitmap,new Rect(
+                    Snap(x+(sprite.OffsetX-sprite.CanvasWidth/2.0)*pixelsToWorld),
+                    Snap(y+(sprite.OffsetY-sprite.CanvasHeight/2.0)*pixelsToWorld),
+                    sprite.Bitmap.PixelWidth*pixelsToWorld,sprite.Bitmap.PixelHeight*pixelsToWorld));
                 if(f.Activity==FishActivity.Eat)
                 {
                     var sparkX=f.Facing==FishFacing.Right?x+width*.34:f.Facing==FishFacing.Left?x-width*.34:x;

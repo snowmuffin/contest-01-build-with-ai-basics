@@ -1,6 +1,6 @@
 # Pre-submission handoff — not a submitted entry
 
-Current state (2026-09-27): G0–G4, the original G4 package learner check and final exploratory feedback are complete. Final Review fixes and participant acceptance remain open. The current pass prepared 32 independently extracted fish PNGs and a local review page only; no replacement runtime atlas/metadata, app integration or new release package was produced. See `fish-sprite-verification.md` and the canonical `../devpost/checklist.md`. Earlier dated checkpoint notes below remain historical evidence.
+Current state (2026-09-27): G0–G4, the original G4 package learner check and final exploratory feedback are complete. The participant approved the 32 independently extracted fish frames, which are now packed with exact metadata and integrated into source and a fresh package candidate. Final running-package acceptance remains open. See `fish-runtime-verification.md` and the canonical `../devpost/checklist.md`. Earlier dated checkpoint notes below remain historical evidence.
 
 The participant requested preparation up to, but not including, submission; refinements follow that checkpoint. Do not expand aquarium scope or infer permission to publish repositories/videos, change visibility, choose the final project name/license, or submit the Devpost form.
 
@@ -18,10 +18,10 @@ The participant requested preparation up to, but not including, submission; refi
 | Core desktop feeding loop and Windows coexistence | Implemented; earlier G2/G3 evidence is recorded in verification documents |
 | Candidate runtime | 10.0.12 from live official metadata, release date 2026-09-08; host SDK/shared runtime unchanged |
 | Upstream notices | Exact distribution/source-version notice texts and hashes collected under notices/dotnet-10.0.12 |
-| Release candidate | `artifacts/g4-only-20260926/package-02/DesktopAquarium-win-x64.zip`; 489 inventory entries verified; fresh 18 feeding / 25 lifecycle / package-local runtime checks passed in RDP. Browser evidence for the earlier build remains separately recorded. |
-| Core tests | Historical G4 candidate: 64 passing; final-review visual-state source report: 66 passing. None rerun for this extraction-only pass. |
+| Release candidate | `artifacts/fish-runtime/package-01/DesktopAquarium-win-x64.zip`; 489 inventory entries verified. Current source/package checks are recorded in `fish-runtime-verification.md`. Earlier G4 package remains archived. |
+| Core tests | 66 passing after integration and again after publish; Release build has zero warnings/errors. |
 | Clean/offline verification | G4 package-02 passed offline-native-05, followed by its learner check. This evidence does not certify future artwork/package changes. |
-| Fish-frame extraction | 32 individual PNGs and masks verified; participant inspection pending. Runtime atlas/metadata and integration deferred until that review. |
+| Fish artwork | All 32 extracted PNGs approved by participant; exact RGBA atlas round trips, metadata mapping and 69 WPF renderer checks pass. Integrated without Core/behavior changes. |
 | Screen recording | A 7.95-second cropped local rehearsal recorded; sampled-frame review done, final owner review/recording and upload still pending |
 | Source/history audit | 109 history blobs scanned with zero configured credential-pattern hits; owner metadata review still required |
 | App map | Local-only technical reference, not a claim of completed final review or learning activity |
@@ -50,7 +50,7 @@ Separate SDK-free/offline execution, local-console display validation, sustained
 
 ## Refinements after readiness review
 
-The approved Final Review includes solid feeder presentation, four stable fish silhouettes, directional poses and restrained depth perspective; see the canonical PRD/checklist. Current work is limited to correct fish-frame extraction and inspection. Do not add rarity/growth, other operating systems or multi-monitor scope. Do not infer new artwork acceptance from existing behavior tests.
+The approved Final Review includes solid feeder presentation, four stable fish silhouettes, directional poses and restrained depth perspective; see the canonical PRD/checklist. The approved artwork is now integrated with proportional regression checks; no rarity/growth, other operating systems or multi-monitor scope was added. Participant frame approval is recorded explicitly; final running-package acceptance must still be supplied by the participant.
 
 ## Latest RDP recheck
 

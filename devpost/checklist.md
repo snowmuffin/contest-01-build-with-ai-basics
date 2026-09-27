@@ -17,7 +17,7 @@ All four build slices G0-G4 are complete. Final kick-the-tires is complete and p
 
 This is a Final Review refinement pass, not a reopened product scope. Preserve five fish, existing feeding/fullscreen/hide/instance behavior, three logical depth bands, Windows 11 x64 target and no external runtime service. Do not add rarity, collection, growth, free 3D movement, additional OS targets or multi-monitor scope.
 
-Current task boundary (2026-09-27): the visual-state implementation already exists, but fish artwork extraction is under renewed review. Independently extract the participant-supplied preview into 32 transparent PNGs, preserve source coordinates/masks, and present them for inspection. Runtime atlas/metadata creation and application integration must wait for participant acceptance of these frames. Preserve the existing uncommitted runtime atlas and `Clean-FishAtlas.py`; no movement, feeding, depth, occlusion or feeder changes belong to this extraction pass. Do not start the learning wrap-up or submission/publication work yet.
+Current task boundary (2026-09-27): participant review of the 32 extracted frames is complete, with explicit instruction to implement them. Build the approved-frame runtime atlas/metadata, replace fixed-cell lookup, and run proportional application/package checks. Preserve the old uncommitted atlas, `Clean-FishAtlas.py`, and unrelated work. No movement, feeding, depth, occlusion or feeder logic changes belong to this integration. Do not start the learning wrap-up or submission/publication work yet.
 
 ## Slices
 
@@ -70,8 +70,8 @@ Current task boundary (2026-09-27): the visual-state implementation already exis
 ## Final Review
 
 - [x] Independent sprite extraction — 32 source-sized PNGs and 32 reproducible masks prepared from the supplied preview; mechanical pixel/boundary/identity checks pass. This marks preparation only, not artwork acceptance.
-- [ ] Participant inspection of all 32 extracted PNGs — use local `devpost/fish-sprite-review.html`; check boundaries, fine fins and light-background edges. No acceptance inferred from automated checks.
-- [ ] After frame acceptance only: build runtime atlas/metadata, replace the fixed crop lookup, and verify the affected application behavior/package.
+- [x] Participant inspection of all 32 extracted PNGs — participant explicitly confirmed inspection and instructed implementation. `assets/fish/approval.json` pins acceptance to these exact frames; this is artwork approval, not final package acceptance.
+- [x] After frame acceptance: built the variable-rectangle runtime atlas/metadata, replaced fixed crop lookup, and passed source/package feeding and lifecycle checks. New clean-room and final package learner acceptance remain under the separate Final Review items below.
 
 - [ ] Feeder visual integration ? make the feeder client surface visually solid/app-owned while preserving drag, close and held-shake behavior; learner retries the actual package.
 - [ ] Fish visual diversity ? five stable fish visibly represent at least four distinct silhouettes/species without adding collection/rarity mechanics.
@@ -92,6 +92,7 @@ Reflection: not yet offered; personal answer belongs only in the ignored profile
 Activity mode: not selected; tie the wrap-up to actual implementation evidence.
 
 ## Revisions
+- 2026-09-27 approved-frame integration: participant explicitly accepted the 32 PNGs. Packed unchanged RGBA pixels into fish-sprites.png/JSON, replaced fixed crop lookup with validated metadata, and fitted a common per-species canvas proportionally inside existing logical bounds. Core/movement/feeding/depth/occlusion are unchanged. Release build, 66 core tests, 69 WPF rendering checks, source and packaged 18 feeding/25 lifecycle checks, 489 package hashes and bundled-runtime startup passed. Current package clean-room and final running-package learner review remain open. Evidence: `../docs/fish-runtime-verification.md`.
 - 2026-09-27 sprite extraction: classified as optional visual polish inside accepted Final Review, with no product scope change. The earlier runtime atlas and cell-based cleaner cannot establish correct separation from the original preview. Added a source-pinned, per-sprite extraction and review path; 32 PNGs/masks, 225,983 retained RGB pixels unchanged, four-pixel transparent padding, unique frame hashes and independent mask reproduction pass. Headless review-page checks pass. Existing runtime source/assets are untouched by this pass; original alpha was flattened and cannot be recovered exactly. Details: `../docs/fish-sprite-verification.md`.
 - G0 checkpoint accepted after general positive learner feedback; commit `b9d361a` preserves the verified probe. Specific local-console/browser/game checks remain unrun, not inferred from that feedback.
 - Default application now runs the feeding world. `--g0` preserves the labelled native-regression probe and does not substitute for the real fish loop.

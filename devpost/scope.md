@@ -9,7 +9,7 @@ A local desktop experience in which the display itself becomes a living aquarium
 
 The learner approved this scope after review and chose an additional visual HTML planning companion. Feeding interaction is the first-prototype boundary. The final project name remains undecided. This document defines approved scope, not implementation completion. Its interaction wording is synchronized with the approved PRD; the feeding-only prototype boundary is unchanged.
 
-Current bounded refinement (2026-09-27): independently extract and review 32 fish-art frames from the participant-supplied preview sheet. This is optional visual polish within the accepted Final Review, with no new product capability or scope expansion. Individual PNG review precedes runtime atlas/metadata creation and application integration; movement, feeding, depth and occlusion remain unchanged. Evidence: `../docs/fish-sprite-verification.md`.
+Current bounded refinement (2026-09-27): the participant approved the 32 independently extracted fish-art frames, which are now integrated through a variable-rectangle runtime atlas and metadata. This is optional visual polish within the accepted Final Review, with no new product capability or scope expansion. The existing movement, feeding, depth and occlusion logic remains unchanged. Artwork approval is not final package acceptance. Evidence: `../docs/fish-sprite-verification.md` and `../docs/fish-runtime-verification.md`.
 
 ## The Unique Kernel
 

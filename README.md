@@ -2,7 +2,7 @@
 
 Working project label, not final competition submission copy. The real Windows prototype now renders five original pixel fish and accepts held mouse shaking to release food. Fish approach and visibly consume food. G0 markers are available only via the explicit `--g0` test flag.
 
-Current status (2026-09-27): G0–G4 and the initial package learner check are complete; Final Review is open. The participant-supplied fish preview has now been independently extracted into 32 review PNGs, with source regions and masks preserved. See `docs/fish-sprite-verification.md`; the local image review is `devpost/fish-sprite-review.html`. These candidates are not applied to the app. Replacement runtime atlas/metadata creation waits for participant frame review. Application movement, feeding, depth and occlusion are unchanged by this extraction.
+Current status (2026-09-27): G0–G4 and the initial package learner check are complete; Final Review is open. The participant inspected and approved the 32 independently extracted fish PNGs. The app now uses their variable-rectangle atlas/metadata and preserves sprite aspect ratios, replacing fixed 80x48 cropping. Source regions/masks remain available in `assets/fish/`; `docs/fish-runtime-verification.md` records integration evidence. Movement, feeding, depth and occlusion logic are unchanged.
 
 ## Run
 
@@ -37,7 +37,7 @@ Canonical plans are in `devpost/`; generated HTML and the learner profile are lo
 
 Build with `scripts/Publish-Windows.ps1 -RuntimeVersion 10.0.12`; output must be a new folder under `artifacts/`. This wrapper keeps platform-specific publish restore separate from the normal source lockfiles. Verify normal `dotnet restore Aquarium.slnx --locked-mode` after packaging.
 
-Current G4 ZIP: `artifacts/g4-only-20260926/package-02/DesktopAquarium-win-x64.zip`. Earlier candidates remain archived.
+Latest artwork candidate: `artifacts/fish-runtime/package-01/DesktopAquarium-win-x64.zip`. This includes the approved sprites and replaces fixed-cell lookup. Its current evidence and remaining clean-room/final user review are in `docs/fish-runtime-verification.md`. The earlier G4 ZIP at `artifacts/g4-only-20260926/package-02/DesktopAquarium-win-x64.zip` remains an archived, separately verified checkpoint.
 Extract the **whole** folder and run its `Start-Aquarium.cmd` or `app/Aquarium.Windows.exe`.
 Close an already-running development aquarium using its tray Exit first, otherwise single-instance forwarding intentionally reuses that existing process. The current Desktop shortcut still targets the development Release folder, not this package. No automatic migration of that shortcut is performed.
 
@@ -51,4 +51,4 @@ Current preparation and owner-only items: `docs/submission-readiness.md`. Native
 
 A full finite ordinary/feeding/hidden measurement (60 seconds each) now passed, with safe restoration and normal exit. See `docs/g4-verification.md` for CPU/memory/callback results and the absence of usable per-process GPU counter values. Reproduce the optional GPU observation with `scripts/Measure-GpuProcess.ps1` against the measurement run directory; this remains a test-only tool.
 
-G4's separate SDK-free/offline run and learner check subsequently completed; earlier unavailable-Sandbox notes describe historical checkpoints. The current task is independent sprite review. No new package, runtime integration, final review completion or submission is claimed for this asset extraction.
+G4's separate SDK-free/offline run and learner check completed; earlier unavailable-Sandbox notes describe historical checkpoints. The approved sprites are now integrated into source and a fresh package candidate. The old clean-room pass is not transferred to the new package, and final user review/submission remain pending.

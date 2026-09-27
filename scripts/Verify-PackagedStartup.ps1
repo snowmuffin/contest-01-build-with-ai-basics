@@ -1,5 +1,5 @@
 [CmdletBinding()]
-param([Parameter(Mandatory=$true)][string]$PackageDirectory)
+param([Parameter(Mandatory=$true)][string]$PackageDirectory, [string]$OutputDirectory)
 $ErrorActionPreference='Stop'
 $root=Split-Path -Parent $PSScriptRoot
 $package=(Resolve-Path -LiteralPath $PackageDirectory).Path
@@ -7,6 +7,13 @@ $exe=Join-Path $package 'app\Aquarium.Windows.exe'
 if (-not (Test-Path $exe)) { throw 'Expected package/app/Aquarium.Windows.exe.' }
 if (@(Get-Process Aquarium.Windows -ErrorAction SilentlyContinue).Count) { throw 'Close the running aquarium using tray Exit before the isolated package smoke test.' }
 $out=Join-Path $root 'artifacts\g4\startup'
+if ($OutputDirectory) {
+    $out=[IO.Path]::GetFullPath($OutputDirectory)
+    $artifactRoot=[IO.Path]::GetFullPath((Join-Path $root 'artifacts'))
+    if (-not $out.StartsWith($artifactRoot+'\',[StringComparison]::OrdinalIgnoreCase) -or (Test-Path -LiteralPath $out)) {
+        throw 'OutputDirectory must be a new folder under this repository artifacts directory.'
+    }
+}
 [IO.Directory]::CreateDirectory($out)|Out-Null
 $state=Join-Path $out 'state.json'
 if (Test-Path $state) { Remove-Item -LiteralPath $state }

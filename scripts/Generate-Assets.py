@@ -1,13 +1,9 @@
-"""Generate the project's original deterministic pixel assets.
-Standard library only; no downloads and no third-party character art.
-
-Fish atlas layout:
-- rows: Goldfish, Tetra, Angelfish, Guppy
-- direction groups: Left, Right, TowardViewer, AwayFromViewer
-- two 40x24 animation cells per direction
+"""Generate the original feeder PNG/ICO and validate the approved fish resources.
+Fish extraction/packing uses development-only Pillow via Pack-FishAtlas.py.
+No downloads, artwork regeneration or runtime dependencies are introduced.
 """
 from pathlib import Path
-import struct, zlib
+import struct, zlib, subprocess, sys
 
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/'src/Aquarium.Windows/Assets'
@@ -148,16 +144,8 @@ def front_cell(species,frame,away=False):
     c.outline(OUTLINE)
     return c
 
-# The production fish atlas is a reviewed project asset. Do not regenerate or overwrite it here.
-fish_atlas=OUT/'fish-atlas.png'
-if not fish_atlas.exists():
-    raise SystemExit('Missing reviewed production fish-atlas.png; restore it from source control.')
-data=fish_atlas.read_bytes()
-if data[:8] != b'\x89PNG\r\n\x1a\n':
-    raise SystemExit('fish-atlas.png is not a PNG file.')
-w,h=struct.unpack('>II',data[16:24])
-if (w,h)!=(640,192):
-    raise SystemExit(f'Unexpected production fish atlas size: {w}x{h}; expected 640x192.')
+# Validate the approved individual-frame packing; never regenerate fish here.
+subprocess.run([sys.executable,str(ROOT/'scripts/Pack-FishAtlas.py'),'--verify'],check=True)
 
 # Solid, opaque food canister: no glass/window-through treatment inside the body.
 jar=Canvas(40,48)

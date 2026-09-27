@@ -10,5 +10,6 @@
   "usage_authorization": "Participant requested extraction and review for this project. No third-party artwork was downloaded or incorporated in this pass.",
   "publication_license": "Not selected; the participant's existing project/publication license decision remains pending.",
   "transformation": "32 individually annotated source regions, deterministic binary background masks, original RGB at native resolution, four-pixel transparent padding. No generated replacement pixels, rescaling, mirroring, atlas packing or runtime integration.",
-  "review_status": "awaiting-participant-review"
+  "review_status": "approved-for-runtime-integration",
+  "approval_record": "assets/fish/approval.json"
 }
