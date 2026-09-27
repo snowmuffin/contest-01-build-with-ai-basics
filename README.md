@@ -2,6 +2,8 @@
 
 Working project label, not final competition submission copy. The real Windows prototype now renders five original pixel fish and accepts held mouse shaking to release food. Fish approach and visibly consume food. G0 markers are available only via the explicit `--g0` test flag.
 
+Current status (2026-09-27): G0–G4 and the initial package learner check are complete; Final Review is open. The participant-supplied fish preview has now been independently extracted into 32 review PNGs, with source regions and masks preserved. See `docs/fish-sprite-verification.md`; the local image review is `devpost/fish-sprite-review.html`. These candidates are not applied to the app. Replacement runtime atlas/metadata creation waits for participant frame review. Application movement, feeding, depth and occlusion are unchanged by this extraction.
+
 ## Run
 
 ```powershell
@@ -31,7 +33,7 @@ Optional local diagnostic state can be enabled using `--diagnostics artifacts/fe
 
 Canonical plans are in `devpost/`; generated HTML and the learner profile are local-only. No public release, final license selection or broad performance claim has been made.
 
-## Local package candidate (G4 still open)
+## Verified G4 package checkpoint (Final Review still open)
 
 Build with `scripts/Publish-Windows.ps1 -RuntimeVersion 10.0.12`; output must be a new folder under `artifacts/`. This wrapper keeps platform-specific publish restore separate from the normal source lockfiles. Verify normal `dotnet restore Aquarium.slnx --locked-mode` after packaging.
 
@@ -39,14 +41,14 @@ Current G4 ZIP: `artifacts/g4-only-20260926/package-02/DesktopAquarium-win-x64.z
 Extract the **whole** folder and run its `Start-Aquarium.cmd` or `app/Aquarium.Windows.exe`.
 Close an already-running development aquarium using its tray Exit first, otherwise single-instance forwarding intentionally reuses that existing process. The current Desktop shortcut still targets the development Release folder, not this package. No automatic migration of that shortcut is performed.
 
-`docs/g4-verification.md` records hashes, packaged tests, loaded runtime paths and short resource samples. The candidate has not passed a separate SDK-free/offline machine or final user review and is not a publicly released artifact. Matching upstream runtime/WPF/WinForms notice files are now bundled with provenance; the project owner's source/publication license decision remains pending.
+`docs/g4-verification.md` records hashes, packaged tests, loaded runtime paths and resource samples. This G4 checkpoint passed separate SDK-free/offline Sandbox verification and its actual-package learner check. Final Review and subsequent artwork acceptance are separate and remain open; the package does not contain the new extraction candidates. Matching upstream runtime/WPF/WinForms notice files are bundled with provenance; the project owner's source/publication license decision remains pending.
 
 Test-only environment overrides `AQUARIUM_TEST_EXE`, `AQUARIUM_TEST_OUTPUT` and (feeding harness) `AQUARIUM_TEST_SHORTCUT` select a project-local candidate for `Verify-FeedingNative.py`/`Verify-G3Native.py`. They do not alter the product's runtime behavior. `Verify-PackagedStartup.ps1 -PackageDirectory <extracted-folder>` performs a bounded own-process runtime-module check. Native scripts require an idle authorized interactive desktop.
 
-Current preparation and owner-only items: `docs/submission-readiness.md`. Fresh native/browser/startup checks on the new-runtime package and a local rehearsal now exist; see `docs/rdp-candidate-verification.md`. The rehearsal is not a final uploaded demo, and separate no-SDK/offline and final user review remain.
+Current preparation and owner-only items: `docs/submission-readiness.md`. Native/browser/startup checks and a local rehearsal are recorded in `docs/rdp-candidate-verification.md`. The rehearsal is not a final uploaded demo. Current final artwork/package review remains distinct from completed G4 evidence.
 
 ## Latest G4 validation
 
 A full finite ordinary/feeding/hidden measurement (60 seconds each) now passed, with safe restoration and normal exit. See `docs/g4-verification.md` for CPU/memory/callback results and the absence of usable per-process GPU counter values. Reproduce the optional GPU observation with `scripts/Measure-GpuProcess.ps1` against the measurement run directory; this remains a test-only tool.
 
-G4 still awaits a separate SDK-free/offline Windows run. Windows Sandbox is disabled on the current host; no feature enablement or restart was performed. The next final-user-review and submission steps are deliberately not started by this G4-only pass.
+G4's separate SDK-free/offline run and learner check subsequently completed; earlier unavailable-Sandbox notes describe historical checkpoints. The current task is independent sprite review. No new package, runtime integration, final review completion or submission is claimed for this asset extraction.

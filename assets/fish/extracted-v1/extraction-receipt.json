@@ -1,0 +1,1069 @@
+{
+  "purpose": "Extraction audit; NOT runtime metadata",
+  "status": "awaiting-human-review",
+  "source": "assets/fish/source/preview-sheet.png",
+  "source_sha256": "0d41ac55d8e23f51816d15ef151b08f9e07e23b5b9a8fb6f0d19ad3c1df619e5",
+  "annotations_sha256": "f569720f5b07d0f7e030acb8b2657772c258fce88922cf7e2741d0b09716bef0",
+  "annotations_digest_encoding": "canonical-json-sort-keys-compact-utf8",
+  "pillow_version": "11.0.0",
+  "alpha_method": "binary background threshold with small enclosed dark-hole filling",
+  "rgb_method": "unaltered source pixels, no resampling",
+  "frames": [
+    {
+      "number": 1,
+      "id": "goldfish-left-01",
+      "source_box": [
+        162,
+        178,
+        320,
+        335
+      ],
+      "source_visible_box": [
+        168,
+        195,
+        314,
+        324
+      ],
+      "source_margin_pixels": [
+        6,
+        17,
+        6,
+        11
+      ],
+      "size": [
+        154,
+        137
+      ],
+      "padding": 4,
+      "visible_pixels": 10391,
+      "filled_dark_hole_pixels": 52,
+      "frame": "frames/goldfish-left-01.png",
+      "mask": "masks/goldfish-left-01.png",
+      "frame_sha256": "ad92b3c2cf6b594cce7f5f2c48774f97e3e3694b6d230d44d9cb798f480f0489",
+      "mask_sha256": "c1a167e554fb7685e2baa8a6c97a47293d211c801277db2ff3dd83ea5287b99d"
+    },
+    {
+      "number": 2,
+      "id": "goldfish-left-02",
+      "source_box": [
+        324,
+        178,
+        479,
+        335
+      ],
+      "source_visible_box": [
+        329,
+        186,
+        471,
+        325
+      ],
+      "source_margin_pixels": [
+        5,
+        8,
+        8,
+        10
+      ],
+      "size": [
+        150,
+        147
+      ],
+      "padding": 4,
+      "visible_pixels": 10057,
+      "filled_dark_hole_pixels": 37,
+      "frame": "frames/goldfish-left-02.png",
+      "mask": "masks/goldfish-left-02.png",
+      "frame_sha256": "ae1ef666a2c0ae9420ab626757abbdc27ca15e50bd4e9779b5f3ce776dccf891",
+      "mask_sha256": "cf09376b97a0e9e87e311996d55da1e7adb62bde3e25cd390ddf59e484c6ba41"
+    },
+    {
+      "number": 3,
+      "id": "goldfish-right-01",
+      "source_box": [
+        499,
+        178,
+        657,
+        335
+      ],
+      "source_visible_box": [
+        504,
+        193,
+        653,
+        325
+      ],
+      "source_margin_pixels": [
+        5,
+        15,
+        4,
+        10
+      ],
+      "size": [
+        157,
+        140
+      ],
+      "padding": 4,
+      "visible_pixels": 10387,
+      "filled_dark_hole_pixels": 48,
+      "frame": "frames/goldfish-right-01.png",
+      "mask": "masks/goldfish-right-01.png",
+      "frame_sha256": "8e09eb66058c79942528c0a46c29c01724e97c3912357a4cfac29eac2c24b633",
+      "mask_sha256": "fc33c53166b4bc433a1ebe92e744db2f3d12bfc11bbae6a91f35808047d01ff0"
+    },
+    {
+      "number": 4,
+      "id": "goldfish-right-02",
+      "source_box": [
+        660,
+        178,
+        815,
+        335
+      ],
+      "source_visible_box": [
+        666,
+        195,
+        808,
+        325
+      ],
+      "source_margin_pixels": [
+        6,
+        17,
+        7,
+        10
+      ],
+      "size": [
+        150,
+        138
+      ],
+      "padding": 4,
+      "visible_pixels": 10231,
+      "filled_dark_hole_pixels": 35,
+      "frame": "frames/goldfish-right-02.png",
+      "mask": "masks/goldfish-right-02.png",
+      "frame_sha256": "29eb68a6bab55d238fddf3f5c3bde71a3dfa9d50e6accfa82118807f27e991b6",
+      "mask_sha256": "f2d51b86bc7c06fa395f26640f3328fa037936b1608c331dba0975ed7190adec"
+    },
+    {
+      "number": 5,
+      "id": "goldfish-front-01",
+      "source_box": [
+        839,
+        178,
+        981,
+        335
+      ],
+      "source_visible_box": [
+        848,
+        185,
+        971,
+        330
+      ],
+      "source_margin_pixels": [
+        9,
+        7,
+        10,
+        5
+      ],
+      "size": [
+        131,
+        153
+      ],
+      "padding": 4,
+      "visible_pixels": 7320,
+      "filled_dark_hole_pixels": 74,
+      "frame": "frames/goldfish-front-01.png",
+      "mask": "masks/goldfish-front-01.png",
+      "frame_sha256": "8c7a63c319ce8ef2364c40e7c18a78f4135e70c7aff06fff4775af53a49d6092",
+      "mask_sha256": "634773e457811a59b31f33608d85b184d1b44446b7d2634f5eb300097773646f"
+    },
+    {
+      "number": 6,
+      "id": "goldfish-front-02",
+      "source_box": [
+        985,
+        178,
+        1106,
+        335
+      ],
+      "source_visible_box": [
+        994,
+        188,
+        1098,
+        330
+      ],
+      "source_margin_pixels": [
+        9,
+        10,
+        8,
+        5
+      ],
+      "size": [
+        112,
+        150
+      ],
+      "padding": 4,
+      "visible_pixels": 6170,
+      "filled_dark_hole_pixels": 65,
+      "frame": "frames/goldfish-front-02.png",
+      "mask": "masks/goldfish-front-02.png",
+      "frame_sha256": "4d6c4c7aa18ea5f7eb847f08b91653017364b33ce5e2ea8b5e9cccc6f240208b",
+      "mask_sha256": "9f70bdcebafc5d2a9dbce7c728ae1c97433f78517da10434f8a44d00a1c2d32a"
+    },
+    {
+      "number": 7,
+      "id": "goldfish-back-01",
+      "source_box": [
+        1154,
+        175,
+        1281,
+        335
+      ],
+      "source_visible_box": [
+        1161,
+        181,
+        1274,
+        329
+      ],
+      "source_margin_pixels": [
+        7,
+        6,
+        7,
+        6
+      ],
+      "size": [
+        121,
+        156
+      ],
+      "padding": 4,
+      "visible_pixels": 7755,
+      "filled_dark_hole_pixels": 16,
+      "frame": "frames/goldfish-back-01.png",
+      "mask": "masks/goldfish-back-01.png",
+      "frame_sha256": "37a917df4de88cd5e4b409a259fbd2aa2c0b1289f123436a7d141acad6d5adb5",
+      "mask_sha256": "a9a31bf085a3429b547dd4566e92748861c44d4164e4a5d3a43da0d0d4c3dc1c"
+    },
+    {
+      "number": 8,
+      "id": "goldfish-back-02",
+      "source_box": [
+        1295,
+        175,
+        1424,
+        335
+      ],
+      "source_visible_box": [
+        1303,
+        181,
+        1417,
+        329
+      ],
+      "source_margin_pixels": [
+        8,
+        6,
+        7,
+        6
+      ],
+      "size": [
+        122,
+        156
+      ],
+      "padding": 4,
+      "visible_pixels": 7823,
+      "filled_dark_hole_pixels": 11,
+      "frame": "frames/goldfish-back-02.png",
+      "mask": "masks/goldfish-back-02.png",
+      "frame_sha256": "be49deb1ba6d7029c47f9e153dd9139b3509718c7c963b35efd05d0871818ee8",
+      "mask_sha256": "ab654e38451f334c42d2778439e10ca41706ac732153fb34324bd99da7bf0e1b"
+    },
+    {
+      "number": 9,
+      "id": "tetra-left-01",
+      "source_box": [
+        167,
+        404,
+        323,
+        512
+      ],
+      "source_visible_box": [
+        174,
+        421,
+        319,
+        497
+      ],
+      "source_margin_pixels": [
+        7,
+        17,
+        4,
+        15
+      ],
+      "size": [
+        153,
+        84
+      ],
+      "padding": 4,
+      "visible_pixels": 5181,
+      "filled_dark_hole_pixels": 36,
+      "frame": "frames/tetra-left-01.png",
+      "mask": "masks/tetra-left-01.png",
+      "frame_sha256": "dcedfb01e4b6dd2efe8b8d6e0c6b5ff7a0b6a4d101565e24a0664b43c5dd0d5c",
+      "mask_sha256": "557ee4b4bf1404ced3340ab2d48ae158c463ec05107c3c04e2016f3df8c9d330"
+    },
+    {
+      "number": 10,
+      "id": "tetra-left-02",
+      "source_box": [
+        326,
+        404,
+        473,
+        512
+      ],
+      "source_visible_box": [
+        335,
+        421,
+        466,
+        497
+      ],
+      "source_margin_pixels": [
+        9,
+        17,
+        7,
+        15
+      ],
+      "size": [
+        139,
+        84
+      ],
+      "padding": 4,
+      "visible_pixels": 4618,
+      "filled_dark_hole_pixels": 34,
+      "frame": "frames/tetra-left-02.png",
+      "mask": "masks/tetra-left-02.png",
+      "frame_sha256": "9384fd6674312d0aad04f69c00d2f900f89040cac30ab29a2e07ff2f33e8e544",
+      "mask_sha256": "bf78f3c97149b50bc7e72a75a45727938d4e3e0b6d472beda8fdbed84474315a"
+    },
+    {
+      "number": 11,
+      "id": "tetra-right-01",
+      "source_box": [
+        502,
+        404,
+        650,
+        512
+      ],
+      "source_visible_box": [
+        509,
+        421,
+        644,
+        497
+      ],
+      "source_margin_pixels": [
+        7,
+        17,
+        6,
+        15
+      ],
+      "size": [
+        143,
+        84
+      ],
+      "padding": 4,
+      "visible_pixels": 4694,
+      "filled_dark_hole_pixels": 28,
+      "frame": "frames/tetra-right-01.png",
+      "mask": "masks/tetra-right-01.png",
+      "frame_sha256": "521c32ad2bd774b46e14718c54d267232d9f7b6be22cfee9b0810ae686d4bf61",
+      "mask_sha256": "f13e423fd7b76d4ba2443873fffdde16d651bc871666342778b143e17217ffff"
+    },
+    {
+      "number": 12,
+      "id": "tetra-right-02",
+      "source_box": [
+        651,
+        404,
+        808,
+        512
+      ],
+      "source_visible_box": [
+        658,
+        422,
+        800,
+        498
+      ],
+      "source_margin_pixels": [
+        7,
+        18,
+        8,
+        14
+      ],
+      "size": [
+        150,
+        84
+      ],
+      "padding": 4,
+      "visible_pixels": 5093,
+      "filled_dark_hole_pixels": 30,
+      "frame": "frames/tetra-right-02.png",
+      "mask": "masks/tetra-right-02.png",
+      "frame_sha256": "beecb08ab8fa601049fa86378a9ea6694a7ab70827cdced160a360c75ee7e8da",
+      "mask_sha256": "b4f3f24875c693089ba41f0aaeb76d13f946c44c0666b8bb4b6dc103ea0dd764"
+    },
+    {
+      "number": 13,
+      "id": "tetra-front-01",
+      "source_box": [
+        875,
+        399,
+        946,
+        519
+      ],
+      "source_visible_box": [
+        887,
+        410,
+        936,
+        505
+      ],
+      "source_margin_pixels": [
+        12,
+        11,
+        10,
+        14
+      ],
+      "size": [
+        57,
+        103
+      ],
+      "padding": 4,
+      "visible_pixels": 2510,
+      "filled_dark_hole_pixels": 86,
+      "frame": "frames/tetra-front-01.png",
+      "mask": "masks/tetra-front-01.png",
+      "frame_sha256": "40085272997d4480173355a88625e4cec2bc653e9504d346eb6d7827de720c7f",
+      "mask_sha256": "1d0eba6adf5669b552a3edce7847418e1645b1dc8c14204ddad801a99b87b759"
+    },
+    {
+      "number": 14,
+      "id": "tetra-front-02",
+      "source_box": [
+        1004,
+        400,
+        1083,
+        519
+      ],
+      "source_visible_box": [
+        1011,
+        412,
+        1076,
+        509
+      ],
+      "source_margin_pixels": [
+        7,
+        12,
+        7,
+        10
+      ],
+      "size": [
+        73,
+        105
+      ],
+      "padding": 4,
+      "visible_pixels": 2283,
+      "filled_dark_hole_pixels": 71,
+      "frame": "frames/tetra-front-02.png",
+      "mask": "masks/tetra-front-02.png",
+      "frame_sha256": "a31e2e7ad26fc96c9473fe5204998d6b1cc9a0bfea9756f42855b2ab20c1534c",
+      "mask_sha256": "e7fa1f3b27dde3da4e2e72d59070ad5ffa740ec2d06f2111099f833495f783b0"
+    },
+    {
+      "number": 15,
+      "id": "tetra-back-01",
+      "source_box": [
+        1187,
+        400,
+        1248,
+        522
+      ],
+      "source_visible_box": [
+        1197,
+        409,
+        1241,
+        516
+      ],
+      "source_margin_pixels": [
+        10,
+        9,
+        7,
+        6
+      ],
+      "size": [
+        52,
+        115
+      ],
+      "padding": 4,
+      "visible_pixels": 2156,
+      "filled_dark_hole_pixels": 33,
+      "frame": "frames/tetra-back-01.png",
+      "mask": "masks/tetra-back-01.png",
+      "frame_sha256": "b9dc023cf9d2f8d207284cbea52a66fb8e0ea080db45e8b6ffcb903a811b7e6b",
+      "mask_sha256": "e10f79c3bb0a8925454bc9832b7d2afe099cd011417077ebb93f38a8b91ae8f6"
+    },
+    {
+      "number": 16,
+      "id": "tetra-back-02",
+      "source_box": [
+        1323,
+        400,
+        1388,
+        522
+      ],
+      "source_visible_box": [
+        1334,
+        410,
+        1376,
+        516
+      ],
+      "source_margin_pixels": [
+        11,
+        10,
+        12,
+        6
+      ],
+      "size": [
+        50,
+        114
+      ],
+      "padding": 4,
+      "visible_pixels": 2144,
+      "filled_dark_hole_pixels": 36,
+      "frame": "frames/tetra-back-02.png",
+      "mask": "masks/tetra-back-02.png",
+      "frame_sha256": "224acfe9389cd0f49bb1c8686305e47507848499c5e7b0ff24d12454b1ca538b",
+      "mask_sha256": "5aff7345086b8ff0cb55322a428112f67545f3a9a46329f40288d8ee8c8763ab"
+    },
+    {
+      "number": 17,
+      "id": "angelfish-left-01",
+      "source_box": [
+        165,
+        566,
+        315,
+        770
+      ],
+      "source_visible_box": [
+        172,
+        573,
+        309,
+        761
+      ],
+      "source_margin_pixels": [
+        7,
+        7,
+        6,
+        9
+      ],
+      "size": [
+        145,
+        196
+      ],
+      "padding": 4,
+      "visible_pixels": 11485,
+      "filled_dark_hole_pixels": 138,
+      "frame": "frames/angelfish-left-01.png",
+      "mask": "masks/angelfish-left-01.png",
+      "frame_sha256": "9c2712e7256f0e44211e26cdaaf2d9d85fcf001152512004ef3400e3757ccb14",
+      "mask_sha256": "f86e5643d1d5fc61abef690cc24b9ff6fa723c9288e980fbac27d1d11f8d910e"
+    },
+    {
+      "number": 18,
+      "id": "angelfish-left-02",
+      "source_box": [
+        316,
+        566,
+        476,
+        770
+      ],
+      "source_visible_box": [
+        324,
+        575,
+        470,
+        757
+      ],
+      "source_margin_pixels": [
+        8,
+        9,
+        6,
+        13
+      ],
+      "size": [
+        154,
+        190
+      ],
+      "padding": 4,
+      "visible_pixels": 11919,
+      "filled_dark_hole_pixels": 253,
+      "frame": "frames/angelfish-left-02.png",
+      "mask": "masks/angelfish-left-02.png",
+      "frame_sha256": "3ca58034b45fe40492c0a5adfecdfdbf9c518b5a3a73b4b7c3d1b385bf3fef20",
+      "mask_sha256": "eaf212730302d2bb74efe051947ff184e03ed6f75583087c496d5a15db25d4a0"
+    },
+    {
+      "number": 19,
+      "id": "angelfish-right-01",
+      "source_box": [
+        500,
+        566,
+        660,
+        770
+      ],
+      "source_visible_box": [
+        510,
+        574,
+        655,
+        762
+      ],
+      "source_margin_pixels": [
+        10,
+        8,
+        5,
+        8
+      ],
+      "size": [
+        153,
+        196
+      ],
+      "padding": 4,
+      "visible_pixels": 11988,
+      "filled_dark_hole_pixels": 217,
+      "frame": "frames/angelfish-right-01.png",
+      "mask": "masks/angelfish-right-01.png",
+      "frame_sha256": "f6aa710d16fa0ba50990072a3a8dc510dd2c3212d352389233c7025f8ded955e",
+      "mask_sha256": "5d5d3587ac515acbc2501d603b40eaf10d685d6597557716ede0194ee3b58d6d"
+    },
+    {
+      "number": 20,
+      "id": "angelfish-right-02",
+      "source_box": [
+        660,
+        566,
+        810,
+        770
+      ],
+      "source_visible_box": [
+        671,
+        574,
+        803,
+        762
+      ],
+      "source_margin_pixels": [
+        11,
+        8,
+        7,
+        8
+      ],
+      "size": [
+        140,
+        196
+      ],
+      "padding": 4,
+      "visible_pixels": 10628,
+      "filled_dark_hole_pixels": 173,
+      "frame": "frames/angelfish-right-02.png",
+      "mask": "masks/angelfish-right-02.png",
+      "frame_sha256": "4f1ea661e2fd16781ff69c397b140612146132394d8035bd38ee0a9373b8e5a6",
+      "mask_sha256": "0af8f346d395d458b87912865687f1078a9d3459d165997d2101abacde0ac9b4"
+    },
+    {
+      "number": 21,
+      "id": "angelfish-front-01",
+      "source_box": [
+        869,
+        566,
+        953,
+        770
+      ],
+      "source_visible_box": [
+        876,
+        573,
+        946,
+        761
+      ],
+      "source_margin_pixels": [
+        7,
+        7,
+        7,
+        9
+      ],
+      "size": [
+        78,
+        196
+      ],
+      "padding": 4,
+      "visible_pixels": 3539,
+      "filled_dark_hole_pixels": 84,
+      "frame": "frames/angelfish-front-01.png",
+      "mask": "masks/angelfish-front-01.png",
+      "frame_sha256": "476c553a322f8cdcdbcd2b06914f5bf6db90f5102223e2862d73826be534129c",
+      "mask_sha256": "6868c525dbebacacb79021c9db6944406f71ed930b4d0fb367d889964c43d615"
+    },
+    {
+      "number": 22,
+      "id": "angelfish-front-02",
+      "source_box": [
+        1004,
+        566,
+        1086,
+        770
+      ],
+      "source_visible_box": [
+        1015,
+        573,
+        1080,
+        761
+      ],
+      "source_margin_pixels": [
+        11,
+        7,
+        6,
+        9
+      ],
+      "size": [
+        73,
+        196
+      ],
+      "padding": 4,
+      "visible_pixels": 3323,
+      "filled_dark_hole_pixels": 60,
+      "frame": "frames/angelfish-front-02.png",
+      "mask": "masks/angelfish-front-02.png",
+      "frame_sha256": "e23b9431dbc615a2c5946edcc2e9763128ad3273db54fe337acd2839325a0302",
+      "mask_sha256": "3671c68aaa13aad3aca4a900d0552d5e57274d3faba787b457668f0f495e10b5"
+    },
+    {
+      "number": 23,
+      "id": "angelfish-back-01",
+      "source_box": [
+        1178,
+        566,
+        1265,
+        772
+      ],
+      "source_visible_box": [
+        1186,
+        572,
+        1254,
+        767
+      ],
+      "source_margin_pixels": [
+        8,
+        6,
+        11,
+        5
+      ],
+      "size": [
+        76,
+        203
+      ],
+      "padding": 4,
+      "visible_pixels": 3630,
+      "filled_dark_hole_pixels": 12,
+      "frame": "frames/angelfish-back-01.png",
+      "mask": "masks/angelfish-back-01.png",
+      "frame_sha256": "1bf4a22923dede0136c578600964e838fac9cead305002c51d7063406a6bc3a4",
+      "mask_sha256": "0f4b22209d227be57af23af8719e6d4334204f18005c0386a34b05e0b9d97854"
+    },
+    {
+      "number": 24,
+      "id": "angelfish-back-02",
+      "source_box": [
+        1302,
+        566,
+        1398,
+        772
+      ],
+      "source_visible_box": [
+        1314,
+        572,
+        1389,
+        766
+      ],
+      "source_margin_pixels": [
+        12,
+        6,
+        9,
+        6
+      ],
+      "size": [
+        83,
+        202
+      ],
+      "padding": 4,
+      "visible_pixels": 4007,
+      "filled_dark_hole_pixels": 23,
+      "frame": "frames/angelfish-back-02.png",
+      "mask": "masks/angelfish-back-02.png",
+      "frame_sha256": "23f9377b9603bb9e2abebf9025ec9614fb821e6c95ba108b61bc864ac575c0b9",
+      "mask_sha256": "49838db3efe7205517aa15eb4bda72226de305c9d315f0d23c013f8fbdfeb52c"
+    },
+    {
+      "number": 25,
+      "id": "guppy-left-01",
+      "source_box": [
+        162,
+        813,
+        322,
+        973
+      ],
+      "source_visible_box": [
+        168,
+        842,
+        318,
+        951
+      ],
+      "source_margin_pixels": [
+        6,
+        29,
+        4,
+        22
+      ],
+      "size": [
+        158,
+        117
+      ],
+      "padding": 4,
+      "visible_pixels": 9136,
+      "filled_dark_hole_pixels": 32,
+      "frame": "frames/guppy-left-01.png",
+      "mask": "masks/guppy-left-01.png",
+      "frame_sha256": "585abcbac52a21bee33dbe62e9df342499f6ab960d1ddc019c53e06a3322e30c",
+      "mask_sha256": "dc4a4be15abe62b06e2e97ee093b8915b6d9dbd86be54042f50d6fa03b5653ce"
+    },
+    {
+      "number": 26,
+      "id": "guppy-left-02",
+      "source_box": [
+        324,
+        813,
+        481,
+        973
+      ],
+      "source_visible_box": [
+        331,
+        839,
+        477,
+        957
+      ],
+      "source_margin_pixels": [
+        7,
+        26,
+        4,
+        16
+      ],
+      "size": [
+        154,
+        126
+      ],
+      "padding": 4,
+      "visible_pixels": 10031,
+      "filled_dark_hole_pixels": 51,
+      "frame": "frames/guppy-left-02.png",
+      "mask": "masks/guppy-left-02.png",
+      "frame_sha256": "35ecd73d43e9b366031b522722684307a38c27aa7de1aa0a0c009573d14439e2",
+      "mask_sha256": "175c36d97637bd2e53e4e3ccdeca23ea7019044a506fcc36e1c84a0b3e4863b7"
+    },
+    {
+      "number": 27,
+      "id": "guppy-right-01",
+      "source_box": [
+        499,
+        813,
+        657,
+        973
+      ],
+      "source_visible_box": [
+        507,
+        843,
+        652,
+        956
+      ],
+      "source_margin_pixels": [
+        8,
+        30,
+        5,
+        17
+      ],
+      "size": [
+        153,
+        121
+      ],
+      "padding": 4,
+      "visible_pixels": 9367,
+      "filled_dark_hole_pixels": 30,
+      "frame": "frames/guppy-right-01.png",
+      "mask": "masks/guppy-right-01.png",
+      "frame_sha256": "59f19481a23177ce3c7d4b380f1234cf11c85f536acbaae636568f1f4b60bfa0",
+      "mask_sha256": "69fe49e3be6d10c21d5072cf340067488f68492f1a536d0341f67311ed0f091c"
+    },
+    {
+      "number": 28,
+      "id": "guppy-right-02",
+      "source_box": [
+        657,
+        813,
+        813,
+        973
+      ],
+      "source_visible_box": [
+        663,
+        844,
+        806,
+        951
+      ],
+      "source_margin_pixels": [
+        6,
+        31,
+        7,
+        22
+      ],
+      "size": [
+        151,
+        115
+      ],
+      "padding": 4,
+      "visible_pixels": 8592,
+      "filled_dark_hole_pixels": 20,
+      "frame": "frames/guppy-right-02.png",
+      "mask": "masks/guppy-right-02.png",
+      "frame_sha256": "9c8ccce46a8ca6eda1180231f11b1dc03a6ea8e3b8478840f0efde1841277ece",
+      "mask_sha256": "88d1479001db2c2d735741be54ba0ed09b8ba332e6b0c551ca7eebed07742316"
+    },
+    {
+      "number": 29,
+      "id": "guppy-front-01",
+      "source_box": [
+        847,
+        812,
+        969,
+        977
+      ],
+      "source_visible_box": [
+        858,
+        823,
+        960,
+        963
+      ],
+      "source_margin_pixels": [
+        11,
+        11,
+        9,
+        14
+      ],
+      "size": [
+        110,
+        148
+      ],
+      "padding": 4,
+      "visible_pixels": 6970,
+      "filled_dark_hole_pixels": 84,
+      "frame": "frames/guppy-front-01.png",
+      "mask": "masks/guppy-front-01.png",
+      "frame_sha256": "09199db7cca96d03a852aae1ff7782989546bd11433c614fb3d0b1439260ab25",
+      "mask_sha256": "fee645d2651644cfc4af3adf0abe6a208fe5f321636a6f39be3e0ab31e2a670b"
+    },
+    {
+      "number": 30,
+      "id": "guppy-front-02",
+      "source_box": [
+        990,
+        812,
+        1099,
+        977
+      ],
+      "source_visible_box": [
+        999,
+        826,
+        1092,
+        962
+      ],
+      "source_margin_pixels": [
+        9,
+        14,
+        7,
+        15
+      ],
+      "size": [
+        101,
+        144
+      ],
+      "padding": 4,
+      "visible_pixels": 6250,
+      "filled_dark_hole_pixels": 100,
+      "frame": "frames/guppy-front-02.png",
+      "mask": "masks/guppy-front-02.png",
+      "frame_sha256": "cc0c95f66cbc598635441462b296bf3c8f74d40818664844decbab205f6c278f",
+      "mask_sha256": "f50b071625757f340fe06e3fa116b293d65d604eaa4a22f1fbe85e87fadf02dc"
+    },
+    {
+      "number": 31,
+      "id": "guppy-back-01",
+      "source_box": [
+        1148,
+        813,
+        1275,
+        977
+      ],
+      "source_visible_box": [
+        1158,
+        827,
+        1265,
+        965
+      ],
+      "source_margin_pixels": [
+        10,
+        14,
+        10,
+        12
+      ],
+      "size": [
+        115,
+        146
+      ],
+      "padding": 4,
+      "visible_pixels": 8144,
+      "filled_dark_hole_pixels": 18,
+      "frame": "frames/guppy-back-01.png",
+      "mask": "masks/guppy-back-01.png",
+      "frame_sha256": "6446096c7140f4a4d93c77fb90cbf2ff0d9bc1c7a85ed600e7e230dd6531f539",
+      "mask_sha256": "2d0faa1a4136af1b70ae79b338a05181edcd16e59081e011e9b7cfcd6e98d61b"
+    },
+    {
+      "number": 32,
+      "id": "guppy-back-02",
+      "source_box": [
+        1302,
+        813,
+        1430,
+        977
+      ],
+      "source_visible_box": [
+        1314,
+        827,
+        1420,
+        965
+      ],
+      "source_margin_pixels": [
+        12,
+        14,
+        10,
+        12
+      ],
+      "size": [
+        114,
+        146
+      ],
+      "padding": 4,
+      "visible_pixels": 8161,
+      "filled_dark_hole_pixels": 35,
+      "frame": "frames/guppy-back-02.png",
+      "mask": "masks/guppy-back-02.png",
+      "frame_sha256": "ca71bd40c87412a7ba8b5a2693ec3cd1ab9b2cd03d37c8439ed1889b4f063ed1",
+      "mask_sha256": "00af2690ccd6650f0c22fbee5e06e596c598c11314ef192282b113c0c52e7280"
+    }
+  ]
+}

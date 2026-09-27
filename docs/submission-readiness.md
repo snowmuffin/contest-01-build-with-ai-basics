@@ -1,5 +1,7 @@
 # Pre-submission handoff — not a submitted entry
 
+Current state (2026-09-27): G0–G4, the original G4 package learner check and final exploratory feedback are complete. Final Review fixes and participant acceptance remain open. The current pass prepared 32 independently extracted fish PNGs and a local review page only; no replacement runtime atlas/metadata, app integration or new release package was produced. See `fish-sprite-verification.md` and the canonical `../devpost/checklist.md`. Earlier dated checkpoint notes below remain historical evidence.
+
 The participant requested preparation up to, but not including, submission; refinements follow that checkpoint. Do not expand aquarium scope or infer permission to publish repositories/videos, change visibility, choose the final project name/license, or submit the Devpost form.
 
 ## Requirement basis
@@ -17,8 +19,9 @@ The participant requested preparation up to, but not including, submission; refi
 | Candidate runtime | 10.0.12 from live official metadata, release date 2026-09-08; host SDK/shared runtime unchanged |
 | Upstream notices | Exact distribution/source-version notice texts and hashes collected under notices/dotnet-10.0.12 |
 | Release candidate | `artifacts/g4-only-20260926/package-02/DesktopAquarium-win-x64.zip`; 489 inventory entries verified; fresh 18 feeding / 25 lifecycle / package-local runtime checks passed in RDP. Browser evidence for the earlier build remains separately recorded. |
-| Core tests | 64 passing after the candidate diagnostics change; Release build has zero reported warnings/errors |
-| Clean/offline test kit | Prepared; absence of Windows Sandbox on this host means not executed |
+| Core tests | Historical G4 candidate: 64 passing; final-review visual-state source report: 66 passing. None rerun for this extraction-only pass. |
+| Clean/offline verification | G4 package-02 passed offline-native-05, followed by its learner check. This evidence does not certify future artwork/package changes. |
+| Fish-frame extraction | 32 individual PNGs and masks verified; participant inspection pending. Runtime atlas/metadata and integration deferred until that review. |
 | Screen recording | A 7.95-second cropped local rehearsal recorded; sampled-frame review done, final owner review/recording and upload still pending |
 | Source/history audit | 109 history blobs scanned with zero configured credential-pattern hits; owner metadata review still required |
 | App map | Local-only technical reference, not a claim of completed final review or learning activity |
@@ -37,7 +40,7 @@ Demo video URL: **not uploaded**. Confirm the actual final recording and public 
 
 Exit survey: **participant to complete**.
 
-Final package use/review: **pending**. Do not reuse acceptance of earlier feeding tests as acceptance of the release package.
+Final package use/review: **pending for the final artwork/release**. The original G4 package learner check is complete; it does not accept the new extracted frames or a future package.
 
 Devpost Submit: **DO NOT EXECUTE** in this preparation pass.
 
@@ -47,7 +50,7 @@ Separate SDK-free/offline execution, local-console display validation, sustained
 
 ## Refinements after readiness review
 
-The first follow-up should address actual observed issues, not add species/rarity/growth, other operating systems, or multi-monitor scope. Optional polishing candidates are feeder visual weight, fish turning/eating animation, and measured rendering cost. None is implemented or committed as a new requirement by this document.
+The approved Final Review includes solid feeder presentation, four stable fish silhouettes, directional poses and restrained depth perspective; see the canonical PRD/checklist. Current work is limited to correct fish-frame extraction and inspection. Do not add rarity/growth, other operating systems or multi-monitor scope. Do not infer new artwork acceptance from existing behavior tests.
 
 ## Latest RDP recheck
 

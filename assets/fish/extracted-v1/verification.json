@@ -1,0 +1,14 @@
+{
+  "passed": true,
+  "frames": 32,
+  "masks": 32,
+  "unique_frame_hashes": 32,
+  "visible_pixels": 225983,
+  "visible_rgb_changed_pixels": 0,
+  "source_regions_non_overlapping": true,
+  "source_boundary_contact": false,
+  "mask_reproduction": true,
+  "minimum_transparent_padding": 4,
+  "runtime_atlas_created": false,
+  "human_review": "pending"
+}

@@ -9,6 +9,8 @@ A local desktop experience in which the display itself becomes a living aquarium
 
 The learner approved this scope after review and chose an additional visual HTML planning companion. Feeding interaction is the first-prototype boundary. The final project name remains undecided. This document defines approved scope, not implementation completion. Its interaction wording is synchronized with the approved PRD; the feeding-only prototype boundary is unchanged.
 
+Current bounded refinement (2026-09-27): independently extract and review 32 fish-art frames from the participant-supplied preview sheet. This is optional visual polish within the accepted Final Review, with no new product capability or scope expansion. Individual PNG review precedes runtime atlas/metadata creation and application integration; movement, feeding, depth and occlusion remain unchanged. Evidence: `../docs/fish-sprite-verification.md`.
+
 ## The Unique Kernel
 
 The aquarium is the user's desktop, not a tank confined to a conventional app window. Opening a real feeder icon makes a virtual food shaker available. The user picks it up by pressing/dragging it: holding is visually apparent, shaking releases food, and the fish approach and eat it. Opening, holding, putting down, and closing are distinct actions.
