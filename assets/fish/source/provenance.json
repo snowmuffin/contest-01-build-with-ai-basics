@@ -6,10 +6,19 @@
   "sha256": "0d41ac55d8e23f51816d15ef151b08f9e07e23b5b9a8fb6f0d19ad3c1df619e5",
   "dimensions": [1448, 1086],
   "format": "RGBA8 PNG; all source alpha values are 255",
-  "origin_evidence": "Supplied directly by the participant through a local file path in this task; filename identifies a ChatGPT image export. No embedded generation metadata is present.",
+  "origin_evidence": "Supplied directly by the participant through a local file path in this task; filename identifies a ChatGPT image export. No embedded generation metadata is present. The participant subsequently declared the generation circumstances recorded below; these are not independently established by image metadata.",
+  "creator_declaration_date": "2026-09-27",
+  "creator_declaration": {
+    "tool": "ChatGPT, using the developer's own account",
+    "created_for": "This project during the competition Submission Period",
+    "external_reference_image_supplied": false,
+    "specific_character_work_or_brand_requested": false,
+    "prompt_subject": "General fish species and requested directions/visual expressions, described in text",
+    "scope": "Current preview-sheet.png; does not establish copyrightability or exclusive rights"
+  },
   "usage_authorization": "Participant requested extraction and review for this project. No third-party artwork was downloaded or incorporated in this pass.",
-  "publication_license": "Not selected; the participant's existing project/publication license decision remains pending.",
-  "transformation": "32 individually annotated source regions, deterministic binary background masks, original RGB at native resolution, four-pixel transparent padding. No generated replacement pixels, rescaling, mirroring, atlas packing or runtime integration.",
+  "publication_license": "Separate project-asset terms in ASSET_NOTICE.md; excluded from the PolyForm code license. Third-party commercial reuse is not offered without separate owner permission, to the extent applicable rights exist.",
+  "transformation": "32 individually annotated source regions, deterministic binary background masks, original RGB at native resolution, four-pixel transparent padding. No generated replacement pixels, rescaling or mirroring. After participant approval, unchanged frames were packed into fish-sprites.png with explicit metadata and integrated into the runtime.",
   "review_status": "approved-for-runtime-integration",
   "approval_record": "assets/fish/approval.json"
 }

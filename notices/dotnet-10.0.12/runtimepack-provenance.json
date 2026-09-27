@@ -1,0 +1,58 @@
+{
+  "checked_date": "2026-09-27",
+  "runtime_version": "10.0.12",
+  "scope": "Exact notices from the NuGet runtime packs used by dotnet publish; separate from the existing downloaded runtime ZIP provenance. Live NuGet package bytes match restored cache; listed sample files match archived publish output. This is not a binary release approval.",
+  "packages": [
+    {
+      "package": "Microsoft.NETCore.App.Runtime.win-x64",
+      "version": "10.0.12",
+      "source_url": "https://api.nuget.org/v3-flatcontainer/microsoft.netcore.app.runtime.win-x64/10.0.12/microsoft.netcore.app.runtime.win-x64.10.0.12.nupkg",
+      "official_page": "https://www.nuget.org/packages/Microsoft.NETCore.App.Runtime.win-x64/10.0.12",
+      "live_package_matches_restored_cache": true,
+      "package_sha512_base64": "Oa/LIiAy6r6+LH+lGjfEkcaw9FZ5ateIhDGXG47vT2icruVFQmA5jOD/r+SRxWWJGzXnOvxnWFo+TEvemVcQ7g==",
+      "license_expression": "MIT",
+      "notices": [
+        {
+          "package_path": "LICENSE.TXT",
+          "path": "notices/dotnet-10.0.12/nuget-core-LICENSE.TXT",
+          "sha256": "d7a68596ab69b06f51ca278a6545148e4269a9381c26d597c13df5d88e08cf5b",
+          "bytes": 1139
+        },
+        {
+          "package_path": "THIRD-PARTY-NOTICES.TXT",
+          "path": "notices/dotnet-10.0.12/nuget-core-THIRD-PARTY-NOTICES.TXT",
+          "sha256": "6d15e10a101c6bfff2ab4429ed061bf76c456fc4b23ad6b03e0d0f8377148a21",
+          "bytes": 78041
+        }
+      ],
+      "archived_publish_sample_files_exact": [
+        "coreclr.dll",
+        "hostfxr.dll",
+        "System.Private.CoreLib.dll"
+      ]
+    },
+    {
+      "package": "Microsoft.WindowsDesktop.App.Runtime.win-x64",
+      "version": "10.0.12",
+      "source_url": "https://api.nuget.org/v3-flatcontainer/microsoft.windowsdesktop.app.runtime.win-x64/10.0.12/microsoft.windowsdesktop.app.runtime.win-x64.10.0.12.nupkg",
+      "official_page": "https://www.nuget.org/packages/Microsoft.WindowsDesktop.App.Runtime.win-x64/10.0.12",
+      "live_package_matches_restored_cache": true,
+      "package_sha512_base64": "BeGI/KTBBca4pduu1nff61VvZAwlzVwqNmo+eVqT26ltsAJsQsF//DCPJssw+fXpARq+FQ7pVKiQed5igv8KYQ==",
+      "license_expression": "MIT",
+      "notices": [
+        {
+          "package_path": "LICENSE",
+          "path": "notices/dotnet-10.0.12/nuget-desktop-LICENSE",
+          "sha256": "a89886665765362eb77e0f8e26602c924520041d1711b2eedc136434fe4d01ab",
+          "bytes": 1137
+        }
+      ],
+      "archived_publish_sample_files_exact": [
+        "PresentationFramework.dll",
+        "WindowsBase.dll",
+        "System.Windows.Forms.dll",
+        "D3DCompiler_47_cor3.dll"
+      ]
+    }
+  ]
+}

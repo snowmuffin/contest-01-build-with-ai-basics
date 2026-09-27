@@ -13,6 +13,8 @@ Current bounded refinement (2026-09-27): the participant approved the 32 indepen
 
 The participant subsequently requested 100% display size. Front now displays the approved frames at one source pixel per logical display unit, with the existing Middle 86% and Rear 72% perspective retained. This is a renderer-only size adjustment within the same optional refinement; simulation geometry and product scope are unchanged.
 
+Publication preparation (2026-09-27): the owner requested a public contest repository with original project code under PolyForm Noncommercial 1.0.0, separate project-asset terms, and unchanged third-party terms. See `../LICENSING.md`, `../ASSET_NOTICE.md` and `../THIRD_PARTY_NOTICES.md`. This is submission preparation, not a product feature or scope expansion. The repository is source-available/noncommercial, not OSI open source. A future proprietary Steam edition remains outside this PoC; only the owner's applicable rights can be separately licensed. No contest-submission tag is created before the final submitted commit is selected.
+
 ## The Unique Kernel
 
 The aquarium is the user's desktop, not a tank confined to a conventional app window. Opening a real feeder icon makes a virtual food shaker available. The user picks it up by pressing/dragging it: holding is visually apparent, shaking releases food, and the fish approach and eat it. Opening, holding, putting down, and closing are distinct actions.

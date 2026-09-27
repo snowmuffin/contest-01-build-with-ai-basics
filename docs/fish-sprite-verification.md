@@ -3,6 +3,8 @@
 Status update: **The participant inspected and approved all 32 PNGs and instructed runtime integration.** `../assets/fish/approval.json` pins the approved frame set. See `fish-runtime-verification.md` for integration evidence. The extraction-time results below are preserved as history; their pending-review wording describes that earlier checkpoint.
 Classification: optional visual polish within accepted Final Review. The feeding PoC scope is unchanged.
 
+Publication update (2026-09-27): the owner's later ChatGPT provenance declaration and separate asset reuse terms are recorded in `../assets/fish/source/provenance.json` and `../ASSET_NOTICE.md`. Earlier pending-license wording below describes the extraction checkpoint, not the current publication policy. No sprite pixels or extraction masks changed during licensing preparation.
+
 ## Source and preserved work
 
 The participant supplied `ChatGPT Image Sep 27, 2026, 04_41_16 PM.png` for this task. Its unchanged repository copy is `assets/fish/source/preview-sheet.png`, 1448x1086 RGBA8, SHA-256 `0d41ac55d8e23f51816d15ef151b08f9e07e23b5b9a8fb6f0d19ad3c1df619e5`. Source/usage details are in `assets/fish/source/provenance.json`. The preview contains a background, headings, dividing rules and frame numbers. Every original alpha value is 255; it is not a transparent sprite atlas.

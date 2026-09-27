@@ -5,6 +5,14 @@ status: approved
 
 # Desktop Aquarium — Technical Spec (working label)
 
+## Public-source licensing preparation — 2026-09-27
+
+The owner authorized public-repository preparation with PolyForm Noncommercial 1.0.0 for project-owned source, tests and build scripts/configuration. `../LICENSE` preserves the official text unchanged; `../LICENSING.md` defines scope and separate contest permissions. `../ASSET_NOTICE.md` governs project-created assets with AI-output rights limitations. Dependencies and curriculum retain their own terms in `../THIRD_PARTY_NOTICES.md`; runtime-pack notices are now distinguished from the earlier runtime ZIP notices. This is source-available/noncommercial, not OSI-approved open source. It does not satisfy the Rules' open-source recommendation; no automatic eligibility approval is claimed.
+
+Publication target: `https://github.com/snowmuffin/contest-01-build-with-ai-basics`; actual public access is recorded in `../docs/submission-readiness.md`. Keep source publication separate from binary distribution. Existing ZIPs predate the new licensing documents; before a public binary release, carry the new root licensing documents and matching dependency notices into the package and verify its inventory. The current publish script has not been changed in this task. No application behavior, dependencies or build output are changed.
+
+After the owner selects the final submitted version, record its exact commit and create a fixed tag such as `v0.1-contest-submission`; never move that tag to later commercial work. No such tag is created now. Subsequent Steam development may use another branch or private commercial repository, respecting existing grants and third-party rights. This is a handoff plan, not implementation of a Steam edition.
+
 ## Current Implementation and Asset Review — 2026-09-27
 
 G0–G4 and the initial package learner check are complete; Final Review remains open. Later evidence sections preserve earlier checkpoints and should not be read as current gate status. The canonical current gate is `checklist.md > Current Execution Status`.
@@ -222,8 +230,10 @@ contest-01-build-with-ai-basics/
 ├─ Directory.Build.props               # nullable, warnings and common defaults
 ├─ .gitignore                          # preserve /devpost/*.html and private profile rules
 ├─ README.md                           # run/demo/limits; not invented final submission copy
-├─ LICENSE                             # choose/confirm a suitable open-source license before publishing
-├─ THIRD_PARTY_NOTICES.md               # dependencies, original/third-party asset provenance
+├─ LICENSE                             # unmodified PolyForm Noncommercial 1.0.0 text
+├─ LICENSING.md                        # scope, source-available status and contest permissions
+├─ ASSET_NOTICE.md                     # separate project-asset terms and provenance
+├─ THIRD_PARTY_NOTICES.md               # upstream terms; never covered by the project code license
 ├─ src/
 │  ├─ Aquarium.Core/                   # net10.0; no Windows or UI references
 │  │  ├─ Aquarium.Core.csproj

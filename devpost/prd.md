@@ -168,6 +168,8 @@ One local, repeatable feeding experience: a display habitat, autonomous fish wit
 
 The public repository, official planning documents, demo, and other contest submission materials are separate submission work, not extra aquarium features.
 
+For the owner-authorized public repository, original project code uses PolyForm Noncommercial 1.0.0 within `../LICENSING.md`'s scope; project assets and third-party components have separate terms. Public access is not an OSI-open-source claim. The contest's open-source recommendation is not fulfilled by this noncommercial choice. The owner may separately license owner-controlled material for a later commercial edition; Steam functionality is not part of this PRD. App behavior and acceptance criteria are unchanged by this documentation task.
+
 ## Deferred From the POC
 
 Visiting fish, visitor-to-resident interaction, rarity, growth, a large species collection, window collision/avoidance, elaborate water effects, day/night systems, and advanced multi-monitor-specific behavior remain later work. None is required to demonstrate the selected feeding milestone.

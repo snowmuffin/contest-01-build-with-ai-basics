@@ -2,6 +2,14 @@
 
 Working project label, not final competition submission copy. The real Windows prototype now renders five original pixel fish and accepts held mouse shaking to release food. Fish approach and visibly consume food. G0 markers are available only via the explicit `--g0` test flag.
 
+## Licensing
+
+Original project source code is made publicly available under the [PolyForm Noncommercial License 1.0.0](LICENSE), within the scope defined in [LICENSING.md](LICENSING.md). This is a **source-available / noncommercial** project, not OSI-approved open source. Third-party commercial use outside the license's permitted purposes requires separate permission from the project owner.
+
+Project assets and third-party components have separate terms: see [ASSET_NOTICE.md](ASSET_NOTICE.md) and [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). The project owner may distribute the public contest version and a future commercial edition under different terms for rights the owner holds. Contest testing/organizer permissions and the unmet open-source recommendation are explained in [LICENSING.md](LICENSING.md#contest-access-and-rights).
+
+## Project status
+
 Current status (2026-09-27): G0–G4 and the initial package learner check are complete; Final Review is open. The participant inspected and approved the 32 independently extracted fish PNGs. The app now uses their variable-rectangle atlas/metadata and preserves sprite aspect ratios, replacing fixed 80x48 cropping. Source regions/masks remain available in `assets/fish/`; `docs/fish-runtime-verification.md` records integration evidence. Movement, feeding, depth and occlusion logic are unchanged.
 
 The current source/Release build also implements the requested 100% display size: Front uses one source pixel per DIP, with Middle 86% and Rear 72% retained. Windows display scaling applies. Logical feeding/depth geometry is unchanged. The ZIP below predates this size adjustment.
@@ -33,7 +41,7 @@ The current development machine's Desktop grant is now active and its real `Feed
 
 Optional local diagnostic state can be enabled using `--diagnostics artifacts/feeding/state.json`; it is an overwritten local report, never telemetry. `--probe-seconds 45` is a bounded test-run exit, not a feeding animation.
 
-Canonical plans are in `devpost/`; generated HTML and the learner profile are local-only. No public release, final license selection or broad performance claim has been made.
+Canonical plans are in `devpost/`; generated HTML and the learner profile are local-only. Source licensing is recorded above. A public source repository is separate from a verified binary release, final contest submission and broad performance claims.
 
 ## Verified G4 package checkpoint (Final Review still open)
 
@@ -43,7 +51,7 @@ Archived artwork integration candidate: `artifacts/fish-runtime/package-01/Deskt
 Extract the **whole** folder and run its `Start-Aquarium.cmd` or `app/Aquarium.Windows.exe`.
 Close an already-running development aquarium using its tray Exit first, otherwise single-instance forwarding intentionally reuses that existing process. The current Desktop shortcut still targets the development Release folder, not this package. No automatic migration of that shortcut is performed.
 
-`docs/g4-verification.md` records hashes, packaged tests, loaded runtime paths and resource samples. This G4 checkpoint passed separate SDK-free/offline Sandbox verification and its actual-package learner check. Final Review and subsequent artwork acceptance are separate and remain open; the package does not contain the new extraction candidates. Matching upstream runtime/WPF/WinForms notice files are bundled with provenance; the project owner's source/publication license decision remains pending.
+`docs/g4-verification.md` records hashes, packaged tests, loaded runtime paths and resource samples. This G4 checkpoint passed separate SDK-free/offline Sandbox verification and its actual-package learner check. Final Review and subsequent artwork acceptance are separate and remain open; the package does not contain the new extraction candidates. Existing ZIPs also predate the current licensing documents. Before any public binary release, complete the [notice-packaging plan](THIRD_PARTY_NOTICES.md#binary-distribution-plan--separate-from-public-source).
 
 Test-only environment overrides `AQUARIUM_TEST_EXE`, `AQUARIUM_TEST_OUTPUT` and (feeding harness) `AQUARIUM_TEST_SHORTCUT` select a project-local candidate for `Verify-FeedingNative.py`/`Verify-G3Native.py`. They do not alter the product's runtime behavior. `Verify-PackagedStartup.ps1 -PackageDirectory <extracted-folder>` performs a bounded own-process runtime-module check. Native scripts require an idle authorized interactive desktop.
 

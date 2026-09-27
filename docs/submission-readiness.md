@@ -4,12 +4,13 @@ Current state (2026-09-27): G0–G4, the original G4 package learner check and f
 
 Subsequent requested size adjustment: current source/Release displays Front at 100% native size, Middle at 86% and Rear at 72%, preserving simulation rules. The existing artwork ZIP predates this change; package refresh and participant visual retry are pending.
 
-The participant requested preparation up to, but not including, submission; refinements follow that checkpoint. Do not expand aquarium scope or infer permission to publish repositories/videos, change visibility, choose the final project name/license, or submit the Devpost form.
+The participant subsequently selected the noncommercial/source-available licensing strategy and requested public GitHub repository preparation. This supersedes the earlier hold on source licensing/publication only. Do not expand aquarium scope, upload a video, choose the final project name, mark Final Review complete, or submit the Devpost form.
 
 ## Requirement basis
 
 - Installed official Devpost Learn `6-ship/SKILL.md` and the public curriculum README describe a working demo video, a public GitHub repository, participant-written project name/short description/required form answers, and participant-written exit survey. Deployment/peer feedback are optional there.
-- The official Rules URL was requested again during this task. The web fetch was unavailable and the direct public request returned HTTP 403. Therefore exact current form fields, video constraints, deadline and any change to Rules were **not reverified** here. Do not replace them with guessed limits. Recheck the current Rules/form in the participant's browser before actual submission.
+- The [official Rules](https://learn-ai-basics.devpost.com/rules) were readable through web retrieval on 2026-09-27, although subsequent direct requests were challenged/HTTP 403. Section 4 requires a public repository with necessary source, assets and instructions, while recommending an open-source license; these are different requirements. PolyForm Noncommercial is source-available and does not meet the open-source recommendation. Separate testing access and section 7 organizer rights are addressed in `../LICENSING.md`. No organizer ruling on this project's eligibility has been obtained.
+- The Rules require a publicly accessible YouTube/Vimeo demo and recommend a video under three minutes; a self-contained ZIP is not established as mandatory. Source publication does not finish the demo, participant-authored form, ownership or other eligibility requirements. Recheck the live Rules/form before actual submission.
 - Public curriculum: https://github.com/challengepost/learn-ai-basics
 - Rules to recheck: https://learn-ai-basics.devpost.com/rules
 
@@ -19,13 +20,13 @@ The participant requested preparation up to, but not including, submission; refi
 | --- | --- |
 | Core desktop feeding loop and Windows coexistence | Implemented; earlier G2/G3 evidence is recorded in verification documents |
 | Candidate runtime | 10.0.12 from live official metadata, release date 2026-09-08; host SDK/shared runtime unchanged |
-| Upstream notices | Exact distribution/source-version notice texts and hashes collected under notices/dotnet-10.0.12 |
+| Upstream notices | Original distribution/source-version notice texts preserved under notices/dotnet-10.0.12; exact NuGet runtime-pack notices added with source hashes, plus a 20-package development dependency inventory |
 | Release candidate | `artifacts/fish-runtime/package-01/DesktopAquarium-win-x64.zip`; 489 inventory entries verified at the integration checkpoint. This archive predates 100% display size; refresh pending. Source and historical package evidence are distinguished in `fish-runtime-verification.md`. |
 | Core tests | 66 passing after the 100% source size adjustment; Release build has zero warnings/errors. |
 | Clean/offline verification | G4 package-02 passed offline-native-05, followed by its learner check. This evidence does not certify future artwork/package changes. |
 | Fish artwork | All 32 extracted PNGs approved by participant; exact RGBA atlas round trips and 73 current WPF checks pass, including native-size visible-pixel equality, clipping and edge culling. No Core/behavior changes. Participant retry of the new size is pending. |
 | Screen recording | A 7.95-second cropped local rehearsal recorded; sampled-frame review done, final owner review/recording and upload still pending |
-| Source/history audit | 109 history blobs scanned with zero configured credential-pattern hits; owner metadata review still required |
+| Source/history audit | Pre-change scan: 20 commits, 156 tracked files, 278 historical blobs; no configured credential-pattern hits or private learner HTML/profile in history. Final publication scan is recorded below. Git history includes ordinary author metadata; scanning is not proof of absence of every secret. |
 | App map | Local-only technical reference, not a claim of completed final review or learning activity |
 
 ## Owner items intentionally left blank
@@ -34,9 +35,9 @@ Final project name: **participant to provide**. “Desktop Aquarium” remains a
 
 Final description and required form answers: **participant to write**. No draft submission or narration is generated here.
 
-Project license/publication choice: **participant decision pending**. Dependency notices do not license the new application.
+Project license/publication choice: **selected by participant** — PolyForm Noncommercial 1.0.0 for project-owned code, separate assets and upstream terms. See `../LICENSING.md`; this is not OSI open source.
 
-Public repository URL: **not published**. Public visibility and push require explicit authorization.
+Public repository URL: **preparing** `https://github.com/snowmuffin/contest-01-build-with-ai-basics` under the authenticated owner's account. Public access must be verified after creation/push before this is marked complete.
 
 Demo video URL: **not uploaded**. Confirm the actual final recording and public access without exposing private desktop contents.
 
@@ -45,6 +46,14 @@ Exit survey: **participant to complete**.
 Final package use/review: **pending for the final artwork/release**. The original G4 package learner check is complete; it does not accept the new extracted frames or a future package.
 
 Devpost Submit: **DO NOT EXECUTE** in this preparation pass.
+
+## Final submission and later commercial work
+
+Publication document checks on 2026-09-27: official PolyForm text matches its pinned source SHA-256; 30 relative links/anchors resolve; all existing application/script/test/asset-pixel and upstream-notice hashes are unchanged; the 20-package development inventory matches the lockfile. The staged publication contains 165 tracked files, no application code changes, no configured credential-pattern hits and no local profile/HTML/agent/artifact files. The legacy uncommitted atlas and untracked cleaner remain local. Evidence: ignored `artifacts/licensing/{audit-before.json,document-validation.json,index-audit.json}`. These checks do not establish legal title or guarantee detection of every secret.
+
+When the owner approves the actual submitted version, record its exact commit, create a fixed tag such as `v0.1-contest-submission`, and preserve it through judging. No tag is created in this pass. Later Steam work may continue on another branch or in a private commercial repository. The owner can separately license only rights the owner holds; existing license grants and upstream obligations remain. Contribution/relicensing policy remains an internal owner consideration, not a CLA system added for this contest.
+
+The current source publication does not publish a binary ZIP. `../THIRD_PARTY_NOTICES.md` records the remaining package notice-copy/inventory work. This documentation-only task does not rerun builds or native input tests; application source/assets are checked for unchanged bytes instead.
 
 ## Internal quality gates, not extra contest rules
 

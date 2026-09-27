@@ -1,0 +1,209 @@
+{
+  "checked_date": "2026-09-27",
+  "lockfile": "tests/Aquarium.Core.Tests/packages.lock.json",
+  "basis": "Resolved lockfile and corresponding restored NuGet nuspec metadata. Dependencies are not relicensed.",
+  "packages": [
+    {
+      "package": "MSTest",
+      "version": "4.0.2",
+      "license_type": "expression",
+      "license": "MIT",
+      "official_page": "https://www.nuget.org/packages/MSTest/4.0.2",
+      "content_hash_from_lockfile": "8kSG2Rad6oFJQvqlw8eubMNFCLsB7dNq/z5wHHWDhibz30ajGBS+td2IzCAfN/1zS+SFOOjO7Wda0VM+qUTeWA==",
+      "nuspec_sha256": "109f49ef1c97f3d8bdb415eca84da617d24f71e1a74d82cead32f4e8bda5d34d",
+      "role": "development/test only; not in application package"
+    },
+    {
+      "package": "Microsoft.ApplicationInsights",
+      "version": "2.23.0",
+      "license_type": "expression",
+      "license": "MIT",
+      "official_page": "https://www.nuget.org/packages/Microsoft.ApplicationInsights/2.23.0",
+      "content_hash_from_lockfile": "nWArUZTdU7iqZLycLKWe0TDms48KKGE6pONH2terYNa8REXiqixrMOkf1sk5DHGMaUTqONU2YkS4SAXBhLStgw==",
+      "nuspec_sha256": "184c649613d487d2b11466882ad83e375bf94f6aa228afae78dd4005bb0bb2a0",
+      "role": "development/test only; not in application package"
+    },
+    {
+      "package": "Microsoft.CodeCoverage",
+      "version": "18.0.1",
+      "license_type": "expression",
+      "license": "MIT",
+      "official_page": "https://www.nuget.org/packages/Microsoft.CodeCoverage/18.0.1",
+      "content_hash_from_lockfile": "O+utSr97NAJowIQT/OVp3Lh9QgW/wALVTP4RG1m2AfFP4IyJmJz0ZBmFJUsRQiAPgq6IRC0t8AAzsiPIsaUDEA==",
+      "nuspec_sha256": "74de7a528b43919fc9bb6825ffe804e78fcdb5ce3f43e11d00a6ed7b92fbd662",
+      "role": "development/test only; not in application package"
+    },
+    {
+      "package": "Microsoft.DiaSymReader",
+      "version": "2.0.0",
+      "license_type": "expression",
+      "license": "MIT",
+      "official_page": "https://www.nuget.org/packages/Microsoft.DiaSymReader/2.0.0",
+      "content_hash_from_lockfile": "QcZrCETsBJqy/vQpFtJc+jSXQ0K5sucQ6NUFbTNVHD4vfZZOwjZ/3sBzczkC4DityhD3AVO/+K/+9ioLs1AgRA==",
+      "nuspec_sha256": "37dcb9019867dac0b8f6aaf7c07108327cec0945a135d7009abbb9905e3f2db5",
+      "role": "development/test only; not in application package"
+    },
+    {
+      "package": "Microsoft.Extensions.DependencyModel",
+      "version": "6.0.2",
+      "license_type": "expression",
+      "license": "MIT",
+      "official_page": "https://www.nuget.org/packages/Microsoft.Extensions.DependencyModel/6.0.2",
+      "content_hash_from_lockfile": "HS5YsudCGSVoCVdsYJ5FAO9vx0z04qSAXgVzpDJSQ1/w/X9q8hrQVGU2p+Yfui+2KcXLL+Zjc0SX3yJWtBmYiw==",
+      "nuspec_sha256": "728879034083fc9258cffdc962a54ced026eccec17e597e10e620267c8e58198",
+      "role": "development/test only; not in application package"
+    },
+    {
+      "package": "Microsoft.NET.Test.Sdk",
+      "version": "18.0.1",
+      "license_type": "expression",
+      "license": "MIT",
+      "official_page": "https://www.nuget.org/packages/Microsoft.NET.Test.Sdk/18.0.1",
+      "content_hash_from_lockfile": "WNpu6vI2rA0pXY4r7NKxCN16XRWl5uHu6qjuyVLoDo6oYEggIQefrMjkRuibQHm/NslIUNCcKftvoWAN80MSAg==",
+      "nuspec_sha256": "2dd29606329ec4f855d243329f56fad96b71cd315897a1f721eeb57f38f85290",
+      "role": "development/test only; not in application package"
+    },
+    {
+      "package": "Microsoft.Testing.Extensions.CodeCoverage",
+      "version": "18.1.0",
+      "license_type": "file",
+      "license": "License.txt",
+      "official_page": "https://www.nuget.org/packages/Microsoft.Testing.Extensions.CodeCoverage/18.1.0",
+      "content_hash_from_lockfile": "FJUCocHSPSjbeoGE/OojOhVUXwDng3VdNlwqzif9hMS2eFcG0f8RdjLM537aBsjP7zLHvGnWXbnUnc61v/EFCA==",
+      "nuspec_sha256": "cd68800271f2cf66afd88cd1619707c0159c209c87c5f7ed7573b0a2467d11ef",
+      "role": "development/test only; not in application package",
+      "notice_path": "notices/development/Microsoft.Testing.Extensions.CodeCoverage-18.1.0-LICENSE.txt",
+      "notice_sha256": "b2a6b8b349a2b87d5b05ed687c4618f46052b90090352354b11bacb24f9bcb72"
+    },
+    {
+      "package": "Microsoft.Testing.Extensions.Telemetry",
+      "version": "2.0.2",
+      "license_type": "expression",
+      "license": "MIT",
+      "official_page": "https://www.nuget.org/packages/Microsoft.Testing.Extensions.Telemetry/2.0.2",
+      "content_hash_from_lockfile": "H580BvHyuADoWzlH9zRk5fqVyGucm6mhph+k40CQc9O4ie+Buxa4Pk9Q92BEClqIICqi25J7fuMII9qFYYgKtw==",
+      "nuspec_sha256": "c3f80331d63b757f6480bc4818e36947c599f6a41bc3ddf34a8b8a7712049381",
+      "role": "development/test only; not in application package"
+    },
+    {
+      "package": "Microsoft.Testing.Extensions.TrxReport",
+      "version": "2.0.2",
+      "license_type": "expression",
+      "license": "MIT",
+      "official_page": "https://www.nuget.org/packages/Microsoft.Testing.Extensions.TrxReport/2.0.2",
+      "content_hash_from_lockfile": "6Tz2wZTNH/3hiskarOM5X9JaHV0QpIdIvEiLv6BJeJvtPS6AY+S47rg4K+czGSjQTkIgu5kT9SgZOwbfdhDD9Q==",
+      "nuspec_sha256": "b181cf890b7f62ebda207a6f77eeb552d1a8c655566a31a432717e61934f84b5",
+      "role": "development/test only; not in application package"
+    },
+    {
+      "package": "Microsoft.Testing.Extensions.TrxReport.Abstractions",
+      "version": "2.0.2",
+      "license_type": "expression",
+      "license": "MIT",
+      "official_page": "https://www.nuget.org/packages/Microsoft.Testing.Extensions.TrxReport.Abstractions/2.0.2",
+      "content_hash_from_lockfile": "MrHYdPZ1CiyYp5bfjzNSghfVwl/I9osMazcZMAbwZY0BhR32i70YLf4zSXECvU2qt2PvDdrjYpGRgBscFbjDpw==",
+      "nuspec_sha256": "f2857cbfe1988a8526a7ca862cbb66f9488f5144aab624720ffa8d422a75427f",
+      "role": "development/test only; not in application package"
+    },
+    {
+      "package": "Microsoft.Testing.Extensions.VSTestBridge",
+      "version": "2.0.2",
+      "license_type": "expression",
+      "license": "MIT",
+      "official_page": "https://www.nuget.org/packages/Microsoft.Testing.Extensions.VSTestBridge/2.0.2",
+      "content_hash_from_lockfile": "6WSUZyv71NmF1bhFWpNht2bskVWL/5Lcu9qxDUnnboYRiujh9w4swn/cPSbVCSGXwyMq9uKRlI9zZ+ReBO8e+Q==",
+      "nuspec_sha256": "fbf5a3f58525c79fb713bf112afbe30f60e29fb718c9a3b2c4dbc49c5176905a",
+      "role": "development/test only; not in application package"
+    },
+    {
+      "package": "Microsoft.Testing.Platform",
+      "version": "2.0.2",
+      "license_type": "expression",
+      "license": "MIT",
+      "official_page": "https://www.nuget.org/packages/Microsoft.Testing.Platform/2.0.2",
+      "content_hash_from_lockfile": "43NCOTEENtdc9fmlzX9KHQR14AZEYek5r4jOJlWPhTyV1+aYAQYl4x773nYXU5TKxV6+rMuniJ7wcj9C9qrP1A==",
+      "nuspec_sha256": "a7751e74ab591e4c2ffc03e975b12a4160f9ee679965d5fde6b9bdd9c03ad944",
+      "role": "development/test only; not in application package"
+    },
+    {
+      "package": "Microsoft.Testing.Platform.MSBuild",
+      "version": "2.0.2",
+      "license_type": "expression",
+      "license": "MIT",
+      "official_page": "https://www.nuget.org/packages/Microsoft.Testing.Platform.MSBuild/2.0.2",
+      "content_hash_from_lockfile": "2zKkQKaUoaKgb/3AekboWOdLMh4upCo1nLWQnjGzp8r9YjiNOZRrzTsJQ3A4U03AcbH0evlIvFDKYSUqmTVuug==",
+      "nuspec_sha256": "aac99652780c07e1b74c5a12db82a7f427865bcb285418c9b0186628d43b35c1",
+      "role": "development/test only; not in application package"
+    },
+    {
+      "package": "Microsoft.TestPlatform.AdapterUtilities",
+      "version": "18.0.1",
+      "license_type": "expression",
+      "license": "MIT",
+      "official_page": "https://www.nuget.org/packages/Microsoft.TestPlatform.AdapterUtilities/18.0.1",
+      "content_hash_from_lockfile": "gXIugDKnACB8p93+9dFnMdE7vvs0ZrjjDltdGC4VylbKK7gPegWYASGjryVkIDvFr56Ulx4UDIKsB71qYHJBWg==",
+      "nuspec_sha256": "ffbb74b5382a56d9d89747a439280cd5c9192a1994f27fa2f32a59b831292fad",
+      "role": "development/test only; not in application package"
+    },
+    {
+      "package": "Microsoft.TestPlatform.ObjectModel",
+      "version": "18.0.1",
+      "license_type": "expression",
+      "license": "MIT",
+      "official_page": "https://www.nuget.org/packages/Microsoft.TestPlatform.ObjectModel/18.0.1",
+      "content_hash_from_lockfile": "qT/mwMcLF9BieRkzOBPL2qCopl8hQu6A1P7JWAoj/FMu5i9vds/7cjbJ/LLtaiwWevWLAeD5v5wjQJ/l6jvhWQ==",
+      "nuspec_sha256": "7e1022c4905b928b562395bd14a8a1c042c199efb6746715a2acf100a6604acc",
+      "role": "development/test only; not in application package"
+    },
+    {
+      "package": "Microsoft.TestPlatform.TestHost",
+      "version": "18.0.1",
+      "license_type": "expression",
+      "license": "MIT",
+      "official_page": "https://www.nuget.org/packages/Microsoft.TestPlatform.TestHost/18.0.1",
+      "content_hash_from_lockfile": "uDJKAEjFTaa2wHdWlfo6ektyoh+WD4/Eesrwb4FpBFKsLGehhACVnwwTI4qD3FrIlIEPlxdXg3SyrYRIcO+RRQ==",
+      "nuspec_sha256": "57c5be863cc4a2c19a0a597c9ded5a474ddefb9fccdc1253e8fd6f01899e8165",
+      "role": "development/test only; not in application package"
+    },
+    {
+      "package": "MSTest.Analyzers",
+      "version": "4.0.2",
+      "license_type": "expression",
+      "license": "MIT",
+      "official_page": "https://www.nuget.org/packages/MSTest.Analyzers/4.0.2",
+      "content_hash_from_lockfile": "83PHm/97WR6XuciUicakLXSPDFubMsphUHxQHgkUfHcF8rOjpnlKSjRazhuvcGeqy2co8ZudUNbTM+u5e5Ujow==",
+      "nuspec_sha256": "6d9cdfed91c09469c57f861cac5daff82716f8af80deebe32ad76d761be0b3df",
+      "role": "development/test only; not in application package"
+    },
+    {
+      "package": "MSTest.TestAdapter",
+      "version": "4.0.2",
+      "license_type": "expression",
+      "license": "MIT",
+      "official_page": "https://www.nuget.org/packages/MSTest.TestAdapter/4.0.2",
+      "content_hash_from_lockfile": "AHyUqtL2GUB5Of0LRvYtz1DvNHIP7KBItI1uX4Cfvgv3Vbdc1ZaCGCN2Zac/bz0S8pQpmnf7xn5K4zrL25NERg==",
+      "nuspec_sha256": "87275c0c7e4226c4e8104e533463f298dd8607183118c269b6760ea3f014ec76",
+      "role": "development/test only; not in application package"
+    },
+    {
+      "package": "MSTest.TestFramework",
+      "version": "4.0.2",
+      "license_type": "expression",
+      "license": "MIT",
+      "official_page": "https://www.nuget.org/packages/MSTest.TestFramework/4.0.2",
+      "content_hash_from_lockfile": "ANLNvVh13tfi4ou0Xu0bZ5J83brlLufxMVVp1feUm99cWtfEn8i8PH4kskD0HSp1bFl8goZiHoCwd+fu/0L2hA==",
+      "nuspec_sha256": "e7da5bc78971d9751578d637e8b0c7616109970c588c1e866141857ab14b24c2",
+      "role": "development/test only; not in application package"
+    },
+    {
+      "package": "Newtonsoft.Json",
+      "version": "13.0.3",
+      "license_type": "expression",
+      "license": "MIT",
+      "official_page": "https://www.nuget.org/packages/Newtonsoft.Json/13.0.3",
+      "content_hash_from_lockfile": "HrC5BXdl00IP9zeV+0Z848QWPAoCr9P3bDEZguI+gkLcBKAOxix/tLEAAHC+UvDNPv4a2d18lOReHMOagPa+zQ==",
+      "nuspec_sha256": "64aeffca22289eeb3bd32cbe72722ac878d2eadcee9f8885f17daa2e8357c518",
+      "role": "development/test only; not in application package"
+    }
+  ]
+}
