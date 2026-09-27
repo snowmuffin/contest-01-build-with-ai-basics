@@ -24,7 +24,7 @@ Current task boundary (2026-09-27): the 100% source display adjustment is implem
 - [x] Owner selected PolyForm Noncommercial 1.0.0 as the source-available/noncommercial strategy, with separate asset and third-party scopes and retained future commercial-edition rights.
 - [x] Reviewed official Rules: public access required, open-source license recommended; this choice does not satisfy that recommendation. Separate judging/organizer permissions are documented without editing the license text.
 - [x] Final license/notice/link/provenance and source/history publication checks recorded in `../docs/submission-readiness.md`.
-- [ ] Public GitHub repository created/pushed and its source URL verified without authentication — public repository created, but source push rejected by GitHub GH007 email privacy protection; awaiting owner decision on a separate noreply-metadata publication copy.
+- [x] Public GitHub repository created/pushed and its source URL verified without authentication — owner authorized publication after review. A separate public copy uses GitHub noreply author/committer emails; the 22 original commits retain identical trees, names, dates, messages and parent relationships. Original local history and unfinished work are preserved. Anonymous repository, commit and raw-source access passed on 2026-09-27; see `../docs/submission-readiness.md`.
 - [ ] When final submission is approved: record exact submitted commit and create a fixed `v0.1-contest-submission` tag. Do not create or move it during this preparation pass.
 - [ ] Before any public binary release: include all new licensing documents and actual dependency notices; verify the new package. Existing local ZIPs are historical candidates.
 
