@@ -4,6 +4,8 @@ Working project label, not final competition submission copy. The real Windows p
 
 Current status (2026-09-27): G0–G4 and the initial package learner check are complete; Final Review is open. The participant inspected and approved the 32 independently extracted fish PNGs. The app now uses their variable-rectangle atlas/metadata and preserves sprite aspect ratios, replacing fixed 80x48 cropping. Source regions/masks remain available in `assets/fish/`; `docs/fish-runtime-verification.md` records integration evidence. Movement, feeding, depth and occlusion logic are unchanged.
 
+The current source/Release build also implements the requested 100% display size: Front uses one source pixel per DIP, with Middle 86% and Rear 72% retained. Windows display scaling applies. Logical feeding/depth geometry is unchanged. The ZIP below predates this size adjustment.
+
 ## Run
 
 ```powershell
@@ -37,7 +39,7 @@ Canonical plans are in `devpost/`; generated HTML and the learner profile are lo
 
 Build with `scripts/Publish-Windows.ps1 -RuntimeVersion 10.0.12`; output must be a new folder under `artifacts/`. This wrapper keeps platform-specific publish restore separate from the normal source lockfiles. Verify normal `dotnet restore Aquarium.slnx --locked-mode` after packaging.
 
-Latest artwork candidate: `artifacts/fish-runtime/package-01/DesktopAquarium-win-x64.zip`. This includes the approved sprites and replaces fixed-cell lookup. Its current evidence and remaining clean-room/final user review are in `docs/fish-runtime-verification.md`. The earlier G4 ZIP at `artifacts/g4-only-20260926/package-02/DesktopAquarium-win-x64.zip` remains an archived, separately verified checkpoint.
+Archived artwork integration candidate: `artifacts/fish-runtime/package-01/DesktopAquarium-win-x64.zip`. This includes the approved sprites and replaces fixed-cell lookup, but retains the earlier smaller display size. Use the current source launcher to inspect the requested 100% size; a refreshed package remains pending. Evidence and remaining clean-room/final user review are in `docs/fish-runtime-verification.md`. The earlier G4 ZIP at `artifacts/g4-only-20260926/package-02/DesktopAquarium-win-x64.zip` remains an archived, separately verified checkpoint.
 Extract the **whole** folder and run its `Start-Aquarium.cmd` or `app/Aquarium.Windows.exe`.
 Close an already-running development aquarium using its tray Exit first, otherwise single-instance forwarding intentionally reuses that existing process. The current Desktop shortcut still targets the development Release folder, not this package. No automatic migration of that shortcut is performed.
 

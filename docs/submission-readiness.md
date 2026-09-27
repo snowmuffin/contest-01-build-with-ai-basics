@@ -2,6 +2,8 @@
 
 Current state (2026-09-27): G0–G4, the original G4 package learner check and final exploratory feedback are complete. The participant approved the 32 independently extracted fish frames, which are now packed with exact metadata and integrated into source and a fresh package candidate. Final running-package acceptance remains open. See `fish-runtime-verification.md` and the canonical `../devpost/checklist.md`. Earlier dated checkpoint notes below remain historical evidence.
 
+Subsequent requested size adjustment: current source/Release displays Front at 100% native size, Middle at 86% and Rear at 72%, preserving simulation rules. The existing artwork ZIP predates this change; package refresh and participant visual retry are pending.
+
 The participant requested preparation up to, but not including, submission; refinements follow that checkpoint. Do not expand aquarium scope or infer permission to publish repositories/videos, change visibility, choose the final project name/license, or submit the Devpost form.
 
 ## Requirement basis
@@ -18,10 +20,10 @@ The participant requested preparation up to, but not including, submission; refi
 | Core desktop feeding loop and Windows coexistence | Implemented; earlier G2/G3 evidence is recorded in verification documents |
 | Candidate runtime | 10.0.12 from live official metadata, release date 2026-09-08; host SDK/shared runtime unchanged |
 | Upstream notices | Exact distribution/source-version notice texts and hashes collected under notices/dotnet-10.0.12 |
-| Release candidate | `artifacts/fish-runtime/package-01/DesktopAquarium-win-x64.zip`; 489 inventory entries verified. Current source/package checks are recorded in `fish-runtime-verification.md`. Earlier G4 package remains archived. |
-| Core tests | 66 passing after integration and again after publish; Release build has zero warnings/errors. |
+| Release candidate | `artifacts/fish-runtime/package-01/DesktopAquarium-win-x64.zip`; 489 inventory entries verified at the integration checkpoint. This archive predates 100% display size; refresh pending. Source and historical package evidence are distinguished in `fish-runtime-verification.md`. |
+| Core tests | 66 passing after the 100% source size adjustment; Release build has zero warnings/errors. |
 | Clean/offline verification | G4 package-02 passed offline-native-05, followed by its learner check. This evidence does not certify future artwork/package changes. |
-| Fish artwork | All 32 extracted PNGs approved by participant; exact RGBA atlas round trips, metadata mapping and 69 WPF renderer checks pass. Integrated without Core/behavior changes. |
+| Fish artwork | All 32 extracted PNGs approved by participant; exact RGBA atlas round trips and 73 current WPF checks pass, including native-size visible-pixel equality, clipping and edge culling. No Core/behavior changes. Participant retry of the new size is pending. |
 | Screen recording | A 7.95-second cropped local rehearsal recorded; sampled-frame review done, final owner review/recording and upload still pending |
 | Source/history audit | 109 history blobs scanned with zero configured credential-pattern hits; owner metadata review still required |
 | App map | Local-only technical reference, not a claim of completed final review or learning activity |

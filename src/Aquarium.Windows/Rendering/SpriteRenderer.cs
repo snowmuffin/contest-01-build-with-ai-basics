@@ -56,20 +56,21 @@ internal sealed class SpriteRenderer : FrameworkElement
             {
                 if((int)f.Band!=band)continue;
                 var scale=DepthScale(f.VisualDepth);
-                var width=f.Width*scale;var height=f.Height*scale;
-                var bounds=FishGeometry.Bounds(f.Position,width,height);
-                if(!environment.Display.Intersects(bounds))continue;
                 var x=Snap(f.Position.X);var y=Snap(f.Position.Y);
                 var speed=Math.Sqrt(f.Velocity.X*f.Velocity.X+f.Velocity.Y*f.Velocity.Y);
                 var frame=((int)(scene.Time*(speed>100?8:4)+f.Id))&1;
                 var sprite=sprites[f.Species,f.Facing,frame];
-                var pixelsToWorld=Math.Min(width/sprite.CanvasWidth,height/sprite.CanvasHeight);
-                drawing.DrawImage(sprite.Bitmap,new Rect(
+                // Front is 100%: one source pixel per DIP. Preserve the existing depth perspective.
+                var pixelsToWorld=scale;
+                var bounds=new Rect(
                     Snap(x+(sprite.OffsetX-sprite.CanvasWidth/2.0)*pixelsToWorld),
                     Snap(y+(sprite.OffsetY-sprite.CanvasHeight/2.0)*pixelsToWorld),
-                    sprite.Bitmap.PixelWidth*pixelsToWorld,sprite.Bitmap.PixelHeight*pixelsToWorld));
+                    sprite.Bitmap.PixelWidth*pixelsToWorld,sprite.Bitmap.PixelHeight*pixelsToWorld);
+                if(!Rect(environment.Display).IntersectsWith(bounds))continue;
+                drawing.DrawImage(sprite.Bitmap,bounds);
                 if(f.Activity==FishActivity.Eat)
                 {
+                    var width=f.Width*scale;
                     var sparkX=f.Facing==FishFacing.Right?x+width*.34:f.Facing==FishFacing.Left?x-width*.34:x;
                     drawing.DrawRectangle(Spark,null,new Rect(Snap(sparkX)-1.5,Snap(y)-1.5,3,3));
                 }

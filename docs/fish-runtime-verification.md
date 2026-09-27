@@ -3,7 +3,25 @@
 Status: approved artwork integrated; final running-package learner review remains separate.
 Classification: optional visual refinement within the accepted Final Review; no product scope expansion.
 
-## Approval and implementation
+## Current source: requested 100% display size
+
+After reviewing the smaller rendering, the participant requested 100% display size. `SpriteRenderer.cs` now uses the existing depth multiplier directly as source pixels per DIP: Front 1.00, Middle 0.86, Rear 0.72. The previous `Min(logicalWidth / canvasWidth, logicalHeight / canvasHeight)` reduction is removed. At 100% Windows scaling, a Front source pixel maps to one physical display pixel; other Windows DPI settings still scale logical units normally. Centered metadata offsets and nearest-neighbour sampling are retained. Display culling now uses the actual drawn rectangle so larger fish remain visible at the screen edge.
+
+The approved PNGs and atlas/metadata were not resized or regenerated. No Core, movement, feeding/contact, depth-transition or occlusion-mask logic changed. The common per-species canvas sizes at Front are Goldfish 157x156, Tetra 153x115, Angelfish 154x203 and Guppy 158x148 DIP; individual frame rectangles retain their own native dimensions within those centered canvases.
+
+| Current size-change check | Actual result |
+| --- | --- |
+| Approved atlas verification | All 32 RGBA round trips exact; approval, padding and gutters unchanged |
+| Locked restore / Release build | Pass; final build zero warnings/errors after normal exit of the old resident that initially locked the output |
+| Existing Core suite | 66 passed |
+| WPF renderer probe | 73 passed: 32 resource crops exact, all 32 Front renders match original visible RGB and alpha at 1:1, four clipping checks, depth perspective, three partially offscreen cases and fully offscreen culling |
+| Existing native feeding harness | 18 passed against the updated normal Release build, including physical held shaking, consumption, release/X, shortcut reuse and ordinary maximize; process exited normally |
+
+Evidence: `artifacts/fish-native-size/{renderer-report.json,rendered-32.png,renderer-probe/,tests/core.trx,feeding/report.json}`. The WPF probe adapts the existing integration harness; fully transparent RGB is normalized only for render-output comparison because compositing discards invisible color. The actual asset round-trip comparison remains exact RGBA. Native checks used the current RDP session at 100% scaling and only test-owned fixtures/app controls. No new framework or runtime dependency was added. Lifecycle, package, clean-room and other-DPI runs were not repeated for this renderer-only change; the results below describe their earlier checkpoint.
+
+Remaining visual limitation: logical fish bounds are still 68x40, including feeding-mouth offsets and depth-transition concealment checks. Native-size artwork can extend beyond those bounds. Feeding regression passes, but precise visual mouth alignment and depth-switch appearance require participant feedback; do not claim that logical contact tests verify artwork alignment. The current source/Release build includes the size change; the existing `fish-runtime/package-01` ZIP does not. A refreshed package and final learner acceptance remain pending.
+
+## Historical checkpoint: approval and initial integration
 
 The participant confirmed inspecting the 32 independent PNGs and instructed implementation. `assets/fish/approval.json` pins the original source and frame-set SHA-256. The exact approved frame-set fingerprint is `fc2147469d6a51dd0799af76edf110d79023d62090e811d355df8afca92a7555`. Earlier extraction receipts deliberately retain their preparation-time state.
 
@@ -13,7 +31,7 @@ The participant confirmed inspecting the 32 independent PNGs and instructed impl
 
 No changes were made to `Aquarium.Core`, movement, feeding/contact geometry, depth transitions, occlusion masks, fullscreen/visibility logic, feeder controls, instance handling or animation cadence. The logical 68x40 fish bounds and Rear/Middle/Front scale remain unchanged. Proportional sprites can occupy less of that box than the previous stretched image; the logical box is intentionally unchanged. Runtime dependencies remain the existing .NET desktop framework only.
 
-## Executed verification
+## Historical integration verification (before 100% display size)
 
 | Check | Actual result |
 | --- | --- |
@@ -37,7 +55,7 @@ WPF evidence: `artifacts/fish-runtime/renderer-report.json`, `rendered-32.png` a
 
 The existing package-startup helper gained an optional `-OutputDirectory` confined to a fresh repository `artifacts/` folder. This preserves earlier G4 test evidence; default callers retain their existing behavior. No new testing framework was introduced.
 
-## New package candidate
+## Archived integration package (before 100% display size)
 
 - ZIP: `artifacts/fish-runtime/package-01/DesktopAquarium-win-x64.zip`.
 - Size: 74,831,474 bytes.

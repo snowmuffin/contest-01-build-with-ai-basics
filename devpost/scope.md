@@ -11,6 +11,8 @@ The learner approved this scope after review and chose an additional visual HTML
 
 Current bounded refinement (2026-09-27): the participant approved the 32 independently extracted fish-art frames, which are now integrated through a variable-rectangle runtime atlas and metadata. This is optional visual polish within the accepted Final Review, with no new product capability or scope expansion. The existing movement, feeding, depth and occlusion logic remains unchanged. Artwork approval is not final package acceptance. Evidence: `../docs/fish-sprite-verification.md` and `../docs/fish-runtime-verification.md`.
 
+The participant subsequently requested 100% display size. Front now displays the approved frames at one source pixel per logical display unit, with the existing Middle 86% and Rear 72% perspective retained. This is a renderer-only size adjustment within the same optional refinement; simulation geometry and product scope are unchanged.
+
 ## The Unique Kernel
 
 The aquarium is the user's desktop, not a tank confined to a conventional app window. Opening a real feeder icon makes a virtual food shaker available. The user picks it up by pressing/dragging it: holding is visually apparent, shaking releases food, and the fish approach and eat it. Opening, holding, putting down, and closing are distinct actions.
