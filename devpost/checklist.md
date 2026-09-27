@@ -19,15 +19,17 @@ This is a Final Review refinement pass, not a reopened product scope. Preserve f
 
 Publication boundaries: PolyForm Noncommercial applies only within the project-owned code scope; assets and third parties retain separate terms. The owner has now authorized final documentation and an update to the existing public GitHub repository. Use the separate noreply copy and preserve the original local history, old uncommitted atlas, `Clean-FishAtlas.py` and unrelated work.
 
-Current task boundary: submission preparation only, with no product scope or runtime change. Final technical documents and accepted source improvements have been published; the owner subsequently requested local Sandbox demo recording with work windows and a suitable wallpaper. The local draft and verification are recorded below. Do not upload a video, author the participant's submission, submit Devpost, create the final contest tag or introduce Steam features. A new self-contained binary release is optional and needs fresh package/notice checks before it can be offered; historical G4 evidence remains valid only for its recorded bytes.
+Current task boundary (2026-09-28): record the participant's completed submission, with no product scope or runtime change. The public [Desktop Aquarium entry](https://devpost.com/software/desktop-aquarium) lists Build With AI: Basics under “Submitted to” and includes the repository and YouTube demo links. The participant handled the submission; the agent did not author the public copy or submit the form. The private exit survey and exact submitted commit/tag are not independently established. A new self-contained binary release is optional and needs fresh package/notice checks before it can be offered; historical G4 evidence remains valid only for its recorded bytes.
 
 ## Public repository preparation
+
+Optional portable release authorized (2026-09-28): prepare v0.1.0 from the accepted source with complete notices, verify the exact ZIP and Desktop shortcut workflow, then publish it and update download links. This supersedes the earlier preparation-only publishing boundary for this release. Preserve the separate noreply publication history and the existing unfinished atlas/cleaner. No app feature or scope change. Progress: `../docs/release-v0.1.0.md`.
 
 - [x] Owner selected PolyForm Noncommercial 1.0.0 as the source-available/noncommercial strategy, with separate asset and third-party scopes and retained future commercial-edition rights.
 - [x] Reviewed official Rules: public access required, open-source license recommended; this choice does not satisfy that recommendation. Separate judging/organizer permissions are documented without editing the license text.
 - [x] Final license/notice/link/provenance and source/history publication checks recorded in `../docs/submission-readiness.md`.
 - [x] Public GitHub repository created/pushed and its source URL verified without authentication — owner authorized publication after review. A separate public copy uses GitHub noreply author/committer emails; the 22 original commits retain identical trees, names, dates, messages and parent relationships. Original local history and unfinished work are preserved. Anonymous repository, commit and raw-source access passed on 2026-09-27; see `../docs/submission-readiness.md`.
-- [ ] When final submission is approved: record exact submitted commit and create a fixed `v0.1-contest-submission` tag. Do not create or move it during this preparation pass.
+- [ ] Archival follow-up: identify the exact submitted commit and create a fixed `v0.1-contest-submission` tag. Submission is already reported complete; no commit is guessed and no tag is created or moved in this documentation update.
 - [ ] Before any public binary release: include all new licensing documents and actual dependency notices; verify the new package. Existing local ZIPs are historical candidates.
 
 ## Slices
@@ -103,17 +105,20 @@ Edit outcome: no additional code edit; no product scope change.
 Reflection: no response requested or invented; any later personal response belongs only in the ignored profile.
 Activity mode: focused evidence recap and local map. Reusable practice: turn an appearance request into separate visible-pixel, input and state-transition checks; broad test-environment claims require separate evidence.
 
-## Remaining submission work
+## Submission status — 2026-09-28
 
-- [x] Local Sandbox demo candidate reviewed after take-01 feedback: take-05 is 47.50 seconds, 1192×718 at 30 fps, with two actual Edge windows, real desktop shortcut/pickup/two-second shake/food response/drop/close and ordinary page interaction. Full decode, chronological whole-timeline frame review and denser feeding/consumption inspection passed; same Release payload and wallpaper. Earlier takes are preserved with rejection reasons. See `../docs/demo-recording.md` for each PASS and its limits. Participant selection and a public video link remain pending.
-- [ ] Participant selects the final project name and writes required submission answers.
-- [ ] Record the accepted app working end-to-end; upload a publicly accessible YouTube/Vimeo demo and verify its link. Under three minutes is recommended; provide English content or translation.
-- [ ] Participant completes the actual form's exit survey and required fields.
-- [ ] Verify final links and select the exact submission commit/tag, then submit with explicit owner authorization.
+- [x] Local Sandbox demo candidate reviewed after take-01 feedback: take-05 is 47.50 seconds, 1192×718 at 30 fps, with two actual Edge windows, real desktop shortcut/pickup/two-second shake/food response/drop/close and ordinary page interaction. Full decode, chronological whole-timeline frame review and denser feeding/consumption inspection passed; same Release payload and wallpaper. Earlier takes are preserved with rejection reasons. See `../docs/demo-recording.md` for each PASS and its limits. The hosted video's exact equivalence to this local candidate has not been independently checked.
+- [x] Participant completed the submission themselves and provided its URL. The public project name is Desktop Aquarium; the agent did not write or rewrite the submission answers.
+- [x] Public project page anonymously retrieved with its GitHub repository link and embedded [YouTube demo](https://www.youtube.com/watch?v=KZNpCvBXBvw); anonymous YouTube oEmbed metadata also returned successfully. Full hosted playback was not re-reviewed.
+- [x] Devpost submission reported by the participant and supported by the public page's “Submitted to: Build With AI: Basics” association on 2026-09-28.
+- [ ] Archival follow-up: pin the exact submission commit/tag; see Public repository preparation above.
+
+Private exit-survey answers and completion are not visible in the public page and are not independently certified by this record. No additional survey or learning activity is requested.
 
 The public source requirement and optional binary distribution are separate. No extra feature work is required by this checklist.
 
 ## Revisions
+- 2026-09-28 submission confirmation: participant supplied the published project URL and reported submission. Anonymous HTML retrieval confirmed the project title, contest association, repository link and YouTube embed; anonymous oEmbed confirmed video metadata. Recorded completion without claiming full hosted playback, private survey visibility, exact local-video equivalence or a selected submission commit/tag. Documentation only; product scope, code, assets and licensing are unchanged.
 - 2026-09-27 demo refinement: owner requested a 45–60-second silent demonstration with clearer real feeder input and no product changes. Prepared and reviewed take-05 after rejecting takes with remote input interference, snap UI or obscured emission. Same 499-file Release payload; protected code/assets/licensing and unfinished work unchanged. Updated only filming evidence and submission status; no scope expansion, upload, GitHub push or submission.
 - 2026-09-27 Sandbox recording: owner requested filming in a disposable desktop with work windows and a suitable wallpaper. Created an 88.73-second local silent draft from public source `88ed4f6`; no application, existing asset, dependency or scope change. Calculator was absent, so the guest used Explorer with two Edge windows. Filming evidence and the new backdrop's provenance are recorded in `../docs/demo-recording.md`; owner review/upload remain open.
 - 2026-09-27 final source acceptance/publication: the owner accepted the current implementation after relaunch and requested final documents plus GitHub synchronization. Closed the source review using that acceptance and existing proportional regressions; separated optional future ZIP/clean-room/notice work without claiming it ran. Refreshed the local map and recorded an evidence recap, not a new hands-on tour. Submission prose/video/survey/tag remain open; no product or license scope changed.

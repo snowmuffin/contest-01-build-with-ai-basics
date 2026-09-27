@@ -1,8 +1,9 @@
 [CmdletBinding()]
 param(
-    # Pinned candidate version, rechecked against live official metadata on 2026-09-26.
+    # Pinned runtime, rechecked against live official metadata on 2026-09-28.
     # Recheck servicing before public distribution; this does not update the machine's SDK/runtime.
     [ValidatePattern('^10\.0\.\d+$')][string]$RuntimeVersion = '10.0.12',
+    [ValidatePattern('^\d+\.\d+\.\d+(?:-[A-Za-z0-9.-]+)?$')][string]$PackageVersion = '0.1.0',
     [string]$OutputDirectory
 )
 $ErrorActionPreference = 'Stop'
@@ -29,7 +30,7 @@ try {
     foreach ($path in $sourceLockFiles) { $lockHashes[$path] = (Get-FileHash -LiteralPath $path -Algorithm SHA256).Hash }
     $publishLockPath = Join-Path $output 'unused-publish.lock.json'
     & dotnet publish src/Aquarium.Windows/Aquarium.Windows.csproj -c Release -r win-x64 --self-contained true `
-        -p:PublishSingleFile=false -p:PublishTrimmed=false "-p:RuntimeFrameworkVersion=$RuntimeVersion" `
+        -p:PublishSingleFile=false -p:PublishTrimmed=false -p:DebugSymbols=false -p:DebugType=None "-p:RuntimeFrameworkVersion=$RuntimeVersion" `
         -p:RestorePackagesWithLockFile=false -p:RestoreLockedMode=false "-p:NuGetLockFilePath=$publishLockPath" -o $app
     if ($LASTEXITCODE -ne 0) { throw 'Self-contained publish failed; partial output remains for inspection.' }
     foreach ($path in $sourceLockFiles) {
@@ -45,17 +46,33 @@ try {
     if (-not $runtime.runtimeOptions.includedFrameworks -or $runtime.runtimeOptions.frameworks) { throw 'Publish is not a verified self-contained runtime layout.' }
     [IO.Directory]::CreateDirectory((Join-Path $package 'scripts')) | Out-Null
     Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'Create-FeederShortcut.ps1') -Destination (Join-Path $package 'scripts')
-    Copy-Item -LiteralPath (Join-Path $root 'THIRD_PARTY_NOTICES.md') -Destination $package
+    foreach ($name in @('LICENSE','LICENSING.md','ASSET_NOTICE.md','THIRD_PARTY_NOTICES.md')) {
+        Copy-Item -LiteralPath (Join-Path $root $name) -Destination $package
+    }
     $noticeSource = Join-Path $root ("notices\dotnet-" + $RuntimeVersion)
     if (-not (Test-Path (Join-Path $noticeSource 'provenance.json'))) { throw 'Matching runtime notices are missing. Run Collect-RuntimeNotices.py before packaging.' }
     $provenance = Get-Content (Join-Path $noticeSource 'provenance.json') -Raw | ConvertFrom-Json
     if ($provenance.runtime_version -ne $RuntimeVersion) { throw 'Notice version does not match package runtime.' }
     [IO.Directory]::CreateDirectory((Join-Path $package 'notices')) | Out-Null
     Copy-Item -LiteralPath $noticeSource -Destination (Join-Path $package 'notices') -Recurse
+    Copy-Item -LiteralPath (Join-Path $root 'notices\development-dependencies.json') -Destination (Join-Path $package 'notices')
+    Copy-Item -LiteralPath (Join-Path $root 'notices\development') -Destination (Join-Path $package 'notices') -Recurse
     foreach($record in $provenance.archives) {
         foreach($notice in $record.notices) {
             $sourceNotice = Join-Path $root $notice.path
             if((Get-FileHash $sourceNotice -Algorithm SHA256).Hash -ine $notice.sha256) { throw 'Notice content differs from the verified distribution.' }
+        }
+    }
+    # The NuGet runtime packs are the actual publish inputs; their exact notices
+    # are distinct from the historical standalone-runtime distribution notices.
+    $runtimePacks = Get-Content (Join-Path $noticeSource 'runtimepack-provenance.json') -Raw | ConvertFrom-Json
+    if ($runtimePacks.runtime_version -ne $RuntimeVersion) { throw 'Runtime-pack notice version does not match package runtime.' }
+    foreach ($runtimePack in $runtimePacks.packages) {
+        foreach ($notice in $runtimePack.notices) {
+            $sourceNotice = Join-Path $root $notice.path
+            if ((Get-FileHash -LiteralPath $sourceNotice -Algorithm SHA256).Hash -ine $notice.sha256) {
+                throw 'Runtime-pack notice differs from the verified NuGet package.'
+            }
         }
     }
 
@@ -63,7 +80,9 @@ try {
     [IO.File]::WriteAllText((Join-Path $package 'Start-Aquarium.cmd'), $start, [Text.Encoding]::ASCII)
     $setup = @'
 @echo off
-powershell.exe -NoLogo -NoProfile -File "%~dp0scripts\Create-FeederShortcut.ps1" -ExePath "%~dp0app\Aquarium.Windows.exe"
+setlocal
+set "AQUARIUM_PACKAGED_EXE=%~dp0app\Aquarium.Windows.exe"
+powershell.exe -NoLogo -NoProfile -Command "$ErrorActionPreference='Stop'; $exe=(Resolve-Path -LiteralPath $env:AQUARIUM_PACKAGED_EXE).Path; $icon=Join-Path (Split-Path -Parent $exe) 'Assets\feeder.ico'; if (-not (Test-Path -LiteralPath $icon)) { throw 'Bundled feeder icon is missing.' }; $desktop=[Environment]::GetFolderPath([Environment+SpecialFolder]::DesktopDirectory); $path=Join-Path $desktop 'Feed Fish.lnk'; $shell=New-Object -ComObject WScript.Shell; $link=$null; try { $link=$shell.CreateShortcut($path); if (Test-Path -LiteralPath $path) { if ($link.TargetPath -ine $exe -or $link.Arguments -ne '--feed') { throw 'Feed Fish already points to another app copy. Existing shortcut was preserved.' } } else { $link.TargetPath=$exe; $link.Arguments='--feed'; $link.WorkingDirectory=Split-Path -Parent $exe; $link.IconLocation=$icon+',0'; $link.Description='Open Desktop Aquarium and its feeder'; $link.Save() }; Write-Output 'Feed Fish is ready on your Desktop.' } finally { if ($null -ne $link) { [void][Runtime.InteropServices.Marshal]::FinalReleaseComObject($link) }; [void][Runtime.InteropServices.Marshal]::FinalReleaseComObject($shell) }"
 if errorlevel 1 (
   echo Setup did not finish. Existing unrelated shortcuts and security settings were not changed.
   pause
@@ -74,30 +93,46 @@ pause
 '@
     [IO.File]::WriteAllText((Join-Path $package 'Setup-FeederShortcut.cmd'), ($setup -replace "`r?`n", "`r`n"), [Text.Encoding]::ASCII)
     $readme = @'
-Desktop Aquarium - local validation candidate, not a public release
+Desktop Aquarium - portable Windows 11 x64 prototype
 
-Extract the entire ZIP into a stable folder, then run Start-Aquarium.cmd or
-app\Aquarium.Windows.exe. Keep all bundled DLLs and Assets together.
+1. Extract the entire ZIP, for example onto your Desktop.
+2. Open the DesktopAquarium folder and double-click Start-Aquarium.cmd.
+3. Pick up the feeder, shake left/right while holding, and watch the fish eat.
+Keep the entire folder together. Do not run from inside the ZIP or move only
+the EXE. The .NET runtime is included; no separate .NET installation is needed.
 
-Open the feeder, hold its body and shake left/right, then release to put it down.
-X closes only the feeder. The notification-area icon provides Hide, Show again,
+Release the feeder to drop it to the floor above the taskbar. X closes only the
+feeder. The notification-area icon provides Hide, Show again,
 Open feeder and Exit. The intended first target is Windows 11 x64, primary monitor.
 
 Setup-FeederShortcut.cmd optionally creates Feed Fish on the current user's Desktop.
 An existing shortcut pointing to a different executable is NOT overwritten. In
 particular, a development shortcut must be deliberately replaced by its owner
 before setting up this packaged copy. The package does not change startup, security
-policy, or system cursor settings. Do not disable SmartScreen or antivirus to run it.
+policy, or system cursor settings. The optional shortcut helper uses Windows
+PowerShell's normal command interface and does not change execution policy.
+This prototype is unsigned and Windows may show a reputation warning. Do not
+disable SmartScreen or antivirus to run it. Source-build instructions are also available.
 
 The runtime is bundled. No account, model download or external service is required
-by the application. A real no-SDK/offline clean-machine run and final user review
-remain required before release claims. RDP tests do not certify other configurations.
-See BUILD.json for the source checkpoint/runtime and notices/ for bundled dependency notices. Source license and final public
-submission materials are still being reviewed; no public publishing is performed.
+by the application. No administrator installation or startup registration is performed.
+To remove it, use the tray's Exit, then delete this folder and any shortcut you created.
+See the release page for checks performed and remaining environment limitations.
+BUILD.json records the source checkpoint and bundled runtime; FILES.json lists hashes.
+
+Original project code: PolyForm Noncommercial 1.0.0, within LICENSING.md's scope.
+Project assets: ASSET_NOTICE.md. Microsoft runtimes and other third-party material
+retain their original terms in THIRD_PARTY_NOTICES.md and notices/.
+These project terms do not relicense the bundled .NET runtime.
+
+Download and verification: https://github.com/snowmuffin/contest-01-build-with-ai-basics/releases
+Full source and provenance (repository-relative links in notices refer here):
+https://github.com/snowmuffin/contest-01-build-with-ai-basics
 '@
     [IO.File]::WriteAllText((Join-Path $package 'README.txt'), $readme, [Text.UTF8Encoding]::new($false))
     $metadata = [ordered]@{
-        stage='G4 local candidate; clean environment and final review pending'
+        stage='portable package; verification and publication recorded separately'
+        package_version=$PackageVersion
         source_commit=$revision
         runtime_version=$RuntimeVersion
         included_frameworks=$runtime.runtimeOptions.includedFrameworks
@@ -108,7 +143,7 @@ submission materials are still being reviewed; no public publishing is performed
         architecture='win-x64'
         self_contained=$true
         trimmed=$false
-        public_release=$false
+        published_by_this_script=$false
     }
     $metadata | ConvertTo-Json -Depth 8 | Set-Content (Join-Path $package 'BUILD.json') -Encoding UTF8
     $inventory = @(Get-ChildItem -LiteralPath $package -Recurse -File | Sort-Object FullName | ForEach-Object {

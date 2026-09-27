@@ -1,6 +1,8 @@
 # Windows Sandbox demo recording — 2026-09-27
 
-Status: take-05 is the reviewed local final-submission candidate, pending the participant's selection. It supersedes take-01 for the current recommendation; earlier footage is retained. Nothing has been uploaded or submitted. This is a technical recording receipt, not submission copy or narration.
+Recording checkpoint (2026-09-27): take-05 was the reviewed local final-submission candidate, pending the participant's selection. It superseded take-01 for the recommendation; earlier footage was retained. No upload or submission occurred during the recording task. This is a technical recording receipt, not submission copy or narration.
+
+Submission update (2026-09-28): the participant reported submission at [Desktop Aquarium on Devpost](https://devpost.com/software/desktop-aquarium). The public entry embeds [this YouTube demo](https://www.youtube.com/watch?v=KZNpCvBXBvw). Anonymous page access and video oEmbed metadata were confirmed; full hosted playback and exact equivalence to the local take-05 file below were not independently verified. See [submission record](submission-readiness.md).
 
 ## Current candidate: shorter silent demonstration
 

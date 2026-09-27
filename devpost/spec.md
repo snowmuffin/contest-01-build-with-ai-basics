@@ -3,9 +3,15 @@ doc: spec
 status: approved
 ---
 
-# Desktop Aquarium — Technical Spec (working label)
+# Desktop Aquarium — Technical Spec
+
+## Submission record — 2026-09-28
+
+The participant reported submission of [Desktop Aquarium](https://devpost.com/software/desktop-aquarium). Anonymous retrieval confirmed the project title, “Submitted to” association with Build With AI: Basics, the existing public GitHub URL and the embedded [YouTube demo](https://www.youtube.com/watch?v=KZNpCvBXBvw). YouTube's anonymous oEmbed endpoint returned video metadata. Full hosted-video playback, exact equivalence to local take-05 and the private exit survey were not independently checked. Submission is complete as reported by the participant and supported by the public contest association; the exact submitted commit/tag remains an archival follow-up. No product scope, runtime or licensing change accompanies this status update. Historical preparation notes below describe their dated checkpoints; current status is in `checklist.md` and `../docs/submission-readiness.md`.
 
 ## Public-source licensing preparation — 2026-09-27
+
+Subsequent portable release work (2026-09-28): owner-authorized v0.1.0 distribution packages unchanged application source for Windows 11 x64 with .NET 10.0.12. `Publish-Windows.ps1` now copies all four root licensing documents, matching runtime-pack/distribution notices and development-dependency notice records, verifies both runtime notice manifests, excludes PDBs, and generates a direct launcher plus an optional Desktop feeder shortcut command. The shortcut command preserves existing unrelated shortcuts and execution policy. Release verification is tracked in `../docs/release-v0.1.0.md`; the dated limitations below describe earlier packages. The release tag is distinct from a retroactively inferred contest-submission tag.
 
 The owner authorized public-repository preparation with PolyForm Noncommercial 1.0.0 for project-owned source, tests and build scripts/configuration. `../LICENSE` preserves the official text unchanged; `../LICENSING.md` defines scope and separate contest permissions. `../ASSET_NOTICE.md` governs project-created assets with AI-output rights limitations. Dependencies and curriculum retain their own terms in `../THIRD_PARTY_NOTICES.md`; runtime-pack notices are now distinguished from the earlier runtime ZIP notices. This is source-available/noncommercial, not OSI-approved open source. It does not satisfy the Rules' open-source recommendation; no automatic eligibility approval is claimed.
 
@@ -105,7 +111,7 @@ Planned packaged use: extract the **whole** published directory, run `Aquarium.W
 
 Build/restore can use package servers; the packaged core interaction must work after networking is disconnected. Documentation URLs are research references, not runtime requests. Do not disable antivirus/SmartScreen or ask users to weaken security to run an unsigned test build. If distribution warnings occur, document them honestly and offer source-build instructions.
 
-A real desktop feeding recording and a public repository remain submission work. A browser diagram or local HTML review cannot replace that recording. Final project naming and submission prose remain the learner's decisions.
+The participant's submitted page now links a real demo and the public repository; see the submission record above. A browser diagram or local HTML review cannot replace the required demonstration. Project naming and submission prose were left to the participant.
 
 ## Look and Feel
 

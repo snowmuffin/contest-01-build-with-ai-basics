@@ -1,28 +1,34 @@
-# Pre-submission handoff — not a submitted entry
+# Submission record and technical handoff
 
-Current state (2026-09-27): G0–G4, the original G4 package learner check and the current source/Release Final Review are complete. After the updated app was launched, the participant accepted this implementation level and requested final documentation and GitHub synchronization. The accepted source includes the 32 approved fish frames, 100% Front display size and transparent falling/pickable feeder. See [fish verification](fish-runtime-verification.md), [feeder verification](feeder-object-verification.md) and the canonical [checklist](../devpost/checklist.md).
+Portable release follow-up (2026-09-28): the owner requested publishing a ready-to-run ZIP and download link. Work is authorized for v0.1.0, with complete source/asset/runtime notices and a fresh check of the exact archive in Windows Sandbox, including Desktop extraction and the **Feed Fish** shortcut. See [release verification](release-v0.1.0.md). This is optional distribution of the accepted app, not a change to contest scope or a replacement for the required source-repository URL.
+
+Submission confirmed (2026-09-28): the participant reported completing the submission and supplied [Desktop Aquarium on Devpost](https://devpost.com/software/desktop-aquarium). Anonymous HTML retrieval returned HTTP 200, the title Desktop Aquarium, the “Submitted to” association with Build With AI: Basics, the public GitHub URL and the [YouTube demo](https://www.youtube.com/watch?v=KZNpCvBXBvw). YouTube's anonymous oEmbed endpoint returned the title “Desktop Aquarium — Build With AI: Basics Demo” and type `video`. This establishes the public links and contest association, not an organizer eligibility ruling or a fresh review of full hosted-video playback. The participant completed the form; no submission copy or personal survey answers were authored by the agent. Exact submitted commit/tag, hosted-video equivalence to local take-05 and private exit-survey completion are not independently established.
+
+The dated preparation and verification notes below remain historical evidence. This update records submission status only; no runtime, asset, license, package or product scope change is made.
+
+Implementation checkpoint (2026-09-27): G0–G4, the original G4 package learner check and the current source/Release Final Review are complete. After the updated app was launched, the participant accepted this implementation level and requested final documentation and GitHub synchronization. The accepted source includes the 32 approved fish frames, 100% Front display size and transparent falling/pickable feeder. See [fish verification](fish-runtime-verification.md), [feeder verification](feeder-object-verification.md) and the canonical [checklist](../devpost/checklist.md).
 
 The current source displays Front at 100%, Middle at 86% and Rear at 72%, preserving simulation rules. Existing ZIPs predate the final size/feeder changes and are historical candidates. They are not the accepted current source and are not published release downloads.
 
-The participant selected the noncommercial/source-available licensing strategy, authorized the original public repository and now authorized updating it. This pass changes technical documents and publishes already verified implementation; it does not add features, change licensing, publish a binary, upload a video, choose the final project name, create the contest tag or submit the Devpost form.
+Historical publication pass (2026-09-27): the participant selected the noncommercial/source-available licensing strategy, authorized the original public repository and authorized updating it. That pass changed technical documents and published already verified implementation; it did not add features, change licensing, publish a binary, upload a video, choose the final project name, create the contest tag or submit the Devpost form.
 
 The local learning map was refreshed and linked with a brief evidence-based recap of the feeder transparency/input refinement. This records technical guidance tied to the owner's actual feedback and acceptance, not an invented personal reflection or new hands-on code tour.
 
-Subsequent recording work: the owner requested a Windows Sandbox demo, then a shorter and clearer silent retake without product changes. The current local candidate is take-05, 47.50 seconds at 1192×718 / 30 fps, using the unchanged Release payload and recording wallpaper. It shows a real desktop shortcut, pickup, two-second shake, food response/consumption, release, ordinary window interaction and feeder close. [Recording evidence](demo-recording.md) records all requested checks, rejected takes and review limits. Participant selection remains pending; uploading and submission are not authorized by this filming task.
+Subsequent recording work: the owner requested a Windows Sandbox demo, then a shorter and clearer silent retake without product changes. The reviewed local candidate is take-05, 47.50 seconds at 1192×718 / 30 fps, using the unchanged Release payload and recording wallpaper. It shows a real desktop shortcut, pickup, two-second shake, food response/consumption, release, ordinary window interaction and feeder close. [Recording evidence](demo-recording.md) records all requested checks, rejected takes and review limits. Uploading and submission were outside that filming task; the participant's later submitted page and hosted link are recorded above.
 
-## Remaining submission checklist
+## Submission checklist and archival follow-up
 
 - [x] Current source/Release implementation accepted for the PoC; no further feature refinement requested.
 - [x] Public repository exists with source, assets, instructions and separated licensing terms. This update carries the accepted feeder improvement and synchronized documents through the existing noreply history.
 - [x] Technical final review and evidence recap recorded in `../devpost/checklist.md`; the HTML reference map remains local-only.
 - [x] Local Windows Sandbox demo draft recorded and mechanically reviewed; [recording evidence](demo-recording.md) distinguishes it from the required public video.
-- [ ] Participant chooses the final project name and writes the required description/form answers.
-- [ ] Record the accepted app working end-to-end; upload a publicly visible YouTube/Vimeo demo and verify anonymous access. Under three minutes is recommended. Provide English materials or English translations, including video captions where needed.
-- [ ] Participant completes the actual submission form and exit survey.
-- [ ] Select the final submission commit, create a fixed `v0.1-contest-submission` tag, check final links, then submit with explicit owner authorization.
+- [x] Participant completed their submission; the public page uses Desktop Aquarium as its project name. The agent did not author or rewrite the submission answers.
+- [x] Public project page contains the YouTube demo and GitHub repository links; anonymous project-page access and YouTube oEmbed metadata checked on 2026-09-28. Full hosted playback and exact equivalence to the local recording have not been independently verified.
+- [x] Participant reported submission; the public page associates the entry with Build With AI: Basics under “Submitted to”. Private exit-survey completion is not independently visible.
+- [ ] Archival follow-up: identify the exact submitted commit and create a fixed `v0.1-contest-submission` tag. No such commit is guessed or tag created by this status update.
 - [ ] Optional binary distribution only: refresh the ZIP, include root licensing and matching third-party notices, verify the exact package in the intended environment and obtain package acceptance before publishing it.
 
-The Rules' submission deadline is October 26, 2026 at 5:00 p.m. Eastern Time (October 27 at 06:00 Korea Standard Time). Recheck the actual form before submission. No video URL, final submission or tag is claimed here.
+The previously verified Rules' submission deadline is October 26, 2026 at 5:00 p.m. Eastern Time (October 27 at 06:00 Korea Standard Time). Submission and video links are now recorded above; no final contest tag is claimed.
 
 ## Requirement basis
 
@@ -44,15 +50,15 @@ The Rules' submission deadline is October 26, 2026 at 5:00 p.m. Eastern Time (Oc
 | Feeder object refinement | Panel removed, unheld falling and floor/in-flight pickup implemented; 23 native feeding/transparency checks and 27 lifecycle checks passed. Included in participant acceptance of the current source/Release version; see `feeder-object-verification.md`. |
 | Clean/offline verification | G4 package-02 passed offline-native-05, followed by its learner check. This evidence does not certify future artwork/package changes. |
 | Fish artwork | All 32 extracted PNGs approved; exact RGBA atlas round trips and 73 native-size WPF checks passed, including visible-pixel equality, clipping and edge culling. Current presentation accepted for the PoC; logical-geometry limitations remain documented. |
-| Screen recording | Current candidate: silent take-05, 47.50 seconds, 1192×718 / 30 fps, real shortcut/feeding/window interaction/close, same Release payload and wallpaper. Full decode, chronological whole-timeline frame review and dense feeding inspection passed; 12 emitted / 12 consumed / zero expired. Participant selection, any explanation/translation and authorized public upload remain pending; see [recording evidence](demo-recording.md). Earlier takes/rehearsals remain historical. |
+| Screen recording | Reviewed local take-05: 47.50 seconds, 1192×718 / 30 fps, real shortcut/feeding/window interaction/close, same Release payload and wallpaper. Full decode, chronological whole-timeline frame review and dense feeding inspection passed; 12 emitted / 12 consumed / zero expired. The participant's public entry now embeds a YouTube demo; exact equivalence to this local recording is not independently established. See [recording evidence](demo-recording.md). Earlier takes/rehearsals remain historical. |
 | Source/history audit | Pre-change scan: 20 commits, 156 tracked files, 278 historical blobs; no configured credential-pattern hits or private learner HTML/profile in history. Final publication scan is recorded below. Git history includes ordinary author metadata; scanning is not proof of absence of every secret. |
 | App map | Local-only reference refreshed against the accepted source; feeder evidence recap recorded. No personal learning claim or new interactive code tour inferred. |
 
 ## Participant-owned submission items and repository access
 
-Final project name: **participant to provide**. “Desktop Aquarium” remains a working label.
+Final project name: **Desktop Aquarium**, as shown on the participant's submitted public page.
 
-Final description and required form answers: **participant to write**. No draft submission or narration is generated here.
+Final description and required form answers: **completed by the participant as part of their reported submission**. No draft submission or narration was generated here; private form answers are not independently inspected.
 
 Project license/publication choice: **selected by participant** — PolyForm Noncommercial 1.0.0 for project-owned code, separate assets and upstream terms. See `../LICENSING.md`; this is not OSI open source.
 
@@ -62,13 +68,13 @@ GitHub initially rejected the original history with GH007 email privacy protecti
 
 At the initial publication checkpoint, anonymous access verification passed for repository visibility, all 22 public commit identities, and exact raw bytes of README, LICENSE, scope, PRD and spec. A following publication-status commit brought that public history to 23 commits. The accepted feeder source and this documentation update extend the same history without force-push; the private mapping and current access receipts remain in ignored `artifacts/publication-export/`. This is source publication only: no binary release, video upload, Devpost submission or final contest tag.
 
-Demo video URL: **not uploaded**. The current local candidate is `artifacts/sandbox-demo/run-02/results/take-05/aquarium-demo-take-05.mp4`; it is not a public link. Participant selection and any explanation/translation precede a separately authorized upload and anonymous-access check. Take-01 and rejected retakes are retained locally.
+Demo video URL: [YouTube demo](https://www.youtube.com/watch?v=KZNpCvBXBvw), embedded in the public entry. Anonymous oEmbed metadata returned successfully on 2026-09-28; full hosted playback was not re-reviewed. The reviewed local candidate is `artifacts/sandbox-demo/run-02/results/take-05/aquarium-demo-take-05.mp4`; exact equivalence to the hosted version is not claimed. Take-01 and rejected retakes remain local.
 
-Exit survey: **participant to complete**.
+Exit survey: **participant-owned; completion is not independently visible**. No answer or completion is inferred from the public project page.
 
 Final package use/review: **only needed before a new binary release**. The original G4 package learner check and current source/Release acceptance are complete; neither certifies a future package.
 
-Devpost Submit: **DO NOT EXECUTE** in this preparation pass.
+Devpost Submit: **completed by the participant**, confirmed by their report and the public contest association. The agent did not submit or edit the entry.
 
 ## Final submission and later commercial work
 

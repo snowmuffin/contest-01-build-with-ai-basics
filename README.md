@@ -1,6 +1,19 @@
 # Desktop Aquarium - feeding prototype
 
-Working project label, not final competition submission copy. The real Windows prototype now renders five original pixel fish and accepts held mouse shaking to release food. Fish approach and visibly consume food. G0 markers are available only via the explicit `--g0` test flag.
+The real Windows prototype renders five original pixel fish and accepts held mouse shaking to release food. Fish approach and visibly consume food. G0 markers are available only via the explicit `--g0` test flag.
+
+## Download and try
+
+[Windows x64 portable release — v0.1.0](https://github.com/snowmuffin/contest-01-build-with-ai-basics/releases/tag/v0.1.0)
+
+1. Download `DesktopAquarium-v0.1.0-win-x64.zip` from the release's **Assets** section.
+2. Extract the whole ZIP, for example onto your Desktop, and open `DesktopAquarium`.
+3. Double-click `Start-Aquarium.cmd`. The fish and feeder appear; no separate .NET installation is needed.
+4. Optionally run `Setup-FeederShortcut.cmd` once to create **Feed Fish** on your Desktop. Double-click that icon to open the aquarium and feeder again. Existing shortcuts pointing to another app copy are preserved.
+
+Keep the entire extracted folder together. Hold the feeder and shake left/right to feed; release to drop it above the taskbar. X closes only the feeder; use the notification-area icon's **Exit** to stop the aquarium. Exit before deleting the folder to remove the portable app; remove any shortcut you created separately.
+
+Windows 11 x64, primary display. This prototype is unsigned; Windows may show a reputation warning. Do not disable antivirus or SmartScreen. Source-build instructions remain below. See the release notes and [release verification](docs/release-v0.1.0.md) for the exact checks and known limits.
 
 ## Licensing
 
@@ -10,13 +23,13 @@ Project assets and third-party components have separate terms: see [ASSET_NOTICE
 
 ## Project status
 
-Current status (2026-09-27): G0–G4 and the current source/Release Final Review are complete. After trying the updated app, the participant accepted the implementation and chose to proceed to submission preparation. This repository contains the accepted fish rendering and falling-feeder refinement; the demo video, participant-written submission and final submission tag remain pending. See the [submission checklist](docs/submission-readiness.md).
+Current status (2026-09-28): the participant submitted [Desktop Aquarium on Devpost](https://devpost.com/software/desktop-aquarium). The anonymously accessible project page lists Build With AI: Basics under “Submitted to” and links this repository and a [YouTube demo](https://www.youtube.com/watch?v=KZNpCvBXBvw). G0–G4 and the current source/Release Final Review are complete. The final submission commit/tag has not been pinned. See the [submission record](docs/submission-readiness.md) for verification limits and archival follow-up.
 
 The participant inspected and approved the 32 independently extracted fish PNGs. The app uses their variable-rectangle atlas/metadata and preserves sprite aspect ratios, replacing fixed 80x48 cropping. Source regions/masks remain available in `assets/fish/`; [fish verification](docs/fish-runtime-verification.md) records integration evidence. Movement, feeding, depth and occlusion logic are unchanged by these visual refinements.
 
-The current source/Release build also implements the requested 100% display size: Front uses one source pixel per DIP, with Middle 86% and Rear 72% retained. Windows display scaling applies. Logical feeding/depth geometry is unchanged. The ZIP below predates this size adjustment.
+The current source/Release build also implements the requested 100% display size: Front uses one source pixel per DIP, with Middle 86% and Rear 72% retained. Windows display scaling applies. Logical feeding/depth geometry is unchanged. The historical ZIPs listed below predate this size adjustment; v0.1.0 packages the current source.
 
-The latest source refinement removes the rectangular feeder panel. The canister can be picked up, shaken, and dropped; it falls to the primary work-area floor above the taskbar and can be picked up again, including while falling. Transparent pixels pass clicks through, and falling never dispenses food. Existing ZIPs predate this refinement. See [feeder verification](docs/feeder-object-verification.md) for mechanical results and participant acceptance.
+The latest source refinement removes the rectangular feeder panel. The canister can be picked up, shaken, and dropped; it falls to the primary work-area floor above the taskbar and can be picked up again, including while falling. Transparent pixels pass clicks through, and falling never dispenses food. Historical ZIPs predate this refinement; v0.1.0 packages it. See [feeder verification](docs/feeder-object-verification.md) for mechanical results and participant acceptance.
 
 ## Run
 
@@ -27,7 +40,7 @@ dotnet test tests/Aquarium.Core.Tests/Aquarium.Core.Tests.csproj -c Release
 dotnet run --project src/Aquarium.Windows/Aquarium.Windows.csproj -c Release -- --feed
 ```
 
-Or double-click `scripts/Start-Aquarium.cmd`. Install a .NET 10 SDK compatible with `global.json`; initial restore needs package-server access. No separate asset-generation step is needed: the runtime sprites and metadata are committed. The target is Windows 11 x64 on the primary display; current native test evidence is specifically an RDP session, not general compatibility certification. No current binary release is published; the ZIP paths below are ignored local archives, not files included in a clone.
+Or double-click `scripts/Start-Aquarium.cmd`. Source builds require a .NET 10 SDK compatible with `global.json`; initial restore needs package-server access. No separate asset-generation step is needed: the runtime sprites and metadata are committed. The target is Windows 11 x64 on the primary display; native test evidence covers the recorded RDP/Sandbox environments, not general compatibility certification. The portable release above bundles .NET. Historical ZIP paths below are ignored local archives, not files included in a clone.
 
 Pick up the feeder body, shake left/right while holding, and release to drop it to the work-area floor. Ordinary cursor movement never dispenses food. X closes only the feeder. The tray provides Open feeder / Hide / Show again / Exit. Fullscreen protection and manual Hide are distinct. No registration at login, background service, account, model download or external runtime API is added.
 

@@ -3,11 +3,13 @@ doc: prd
 status: approved
 ---
 
-# Desktop Aquarium — Product Requirements (working label)
+# Desktop Aquarium — Product Requirements
 
 A local desktop habitat for someone who works at a computer for long periods and wants small, optional moments of life and interaction on a familiar screen.
 
-Source: `scope.md > Who It's For`, `The Unique Kernel`, `The Core Loop`, and the learner's subsequent PRD interview answers. The learner approved this PRD, including the five remaining product defaults presented for review. This is an approved product plan, not final submission copy or evidence of working software. The final project name remains the learner's decision.
+Source: `scope.md > Who It's For`, `The Unique Kernel`, `The Core Loop`, and the learner's subsequent PRD interview answers. The learner approved this PRD, including the five remaining product defaults presented for review. This is an approved product plan, not final submission copy or evidence of working software. The participant subsequently submitted it as Desktop Aquarium.
+
+Portable distribution (2026-09-28): optional delivery improvement authorized by the owner. A user extracts the whole Windows x64 ZIP, optionally onto their Desktop, runs `Start-Aquarium.cmd`, and can create a Desktop **Feed Fish** icon with `Setup-FeederShortcut.cmd`. The runtime is bundled; no admin installation, startup registration or security-policy change is added. The complete extracted folder must remain together. This is delivery of the accepted interaction, not a new aquarium feature; see `../docs/release-v0.1.0.md`.
 
 ## Platform and Documentation Decisions
 

@@ -3,11 +3,13 @@ doc: scope
 status: approved
 ---
 
-# Desktop Aquarium — working label
+# Desktop Aquarium
 
 A local desktop experience in which the display itself becomes a living aquarium, and a desktop feeder icon lets the user shake the mouse to feed its fish.
 
-The learner approved this scope after review and chose an additional visual HTML planning companion. Feeding interaction is the first-prototype boundary. The final project name remains undecided. This document defines approved scope, not implementation completion. Its interaction wording is synchronized with the approved PRD; the feeding-only prototype boundary is unchanged.
+The learner approved this scope after review and chose an additional visual HTML planning companion. Feeding interaction is the first-prototype boundary. The participant submitted the project as Desktop Aquarium on 2026-09-28. This document defines approved scope, not implementation completion. Its interaction wording is synchronized with the approved PRD; the feeding-only prototype boundary is unchanged.
+
+Portable distribution (2026-09-28): the owner requested a downloadable GitHub release of the accepted app. Classification: optional distribution improvement, not a contest-required binary or a product scope expansion. The Windows x64 ZIP includes .NET, complete licensing notices, a direct launcher and an optional Desktop feeder-shortcut helper. App behavior remains unchanged; verification and publication status are in `../docs/release-v0.1.0.md`.
 
 Current bounded refinement (2026-09-27): the participant approved the 32 independently extracted fish-art frames, which are now integrated through a variable-rectangle runtime atlas and metadata. This is optional visual polish within the accepted Final Review, with no new product capability or scope expansion. The existing movement, feeding, depth and occlusion logic remains unchanged. Artwork approval is not final package acceptance. Evidence: `../docs/fish-sprite-verification.md` and `../docs/fish-runtime-verification.md`.
 
